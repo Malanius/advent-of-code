@@ -32,8 +32,12 @@ def part1(data: str) -> int:
 
 
 @perf
-def part2(data):
-    """Solve part 2"""
+def part2(data: str) -> int:
+    """Find out how many calories top 3 elfs have"""
+    totals = count_calories_per_elf(data)
+    top_three = sorted(totals, reverse=True)[:3]
+    print(top_three)
+    return sum(top_three)
 
 
 def solve(puzzle_input):

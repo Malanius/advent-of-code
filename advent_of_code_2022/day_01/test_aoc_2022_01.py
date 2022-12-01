@@ -34,10 +34,9 @@ def test_parse_example1(example):
 
 def test_part1_example1(example):
     """Test part 1 on example input"""
-    assert aoc_2022_01.part1(example) == 24000
+    assert aoc_2022_01.part1(example) == 24_000
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
+def test_part2_example2(example):
     """Test part 2 on example input"""
-    assert aoc_2022_01.part2(example2) == ...
+    assert aoc_2022_01.part2(example) == 45_000
