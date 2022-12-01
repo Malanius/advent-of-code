@@ -20,6 +20,7 @@ def count_calories_per_elf(data: str) -> list[int]:
             carried = 0
         else:
             carried += int(line)
+    totals.append(carried)
     return totals
 
 
