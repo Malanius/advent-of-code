@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, StrEnum
 import pathlib
 
 from advent_of_code_2022.util.perf import perf
@@ -23,6 +23,12 @@ HAND_MAP = {
     "Y": Hand.PAPER,
     "Z": Hand.SCISSORS,
 }
+
+
+class Strategy(StrEnum):
+    LOSE = "X"
+    DRAW = "Y"
+    WIN = "Z"
 
 
 def parse(puzzle_input: str) -> list[str]:
@@ -92,8 +98,22 @@ def part1(data: list[str]) -> int:
 
 
 @perf
-def part2(data):
+def part2(data: list[str]) -> int:
     """Solve part 2"""
+    score = 0
+    for line in data:
+        elf_hand, my_strategy = line.split()
+        elf_hand = convert_hand(elf_hand)
+        if my_strategy == Strategy.WIN:
+            my_hand = play_win(elf_hand)
+            score += WIN_SCORE
+        elif my_strategy == Strategy.DRAW:
+            my_hand = play_draw(elf_hand)
+            score += DRAW_SCORE
+        else:
+            my_hand = play_loss(elf_hand)
+        score += my_hand.value
+    return score
 
 
 def solve(puzzle_input):

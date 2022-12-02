@@ -63,5 +63,7 @@ def test_play_lose():
     assert aoc_2022_02.play_loss(aoc_2022_02.Hand.ROCK) == aoc_2022_02.Hand.SCISSORS
     assert aoc_2022_02.play_loss(aoc_2022_02.Hand.PAPER) == aoc_2022_02.Hand.ROCK
     assert aoc_2022_02.play_loss(aoc_2022_02.Hand.SCISSORS) == aoc_2022_02.Hand.PAPER
+
+def test_part2_example2(example):
     """Test part 2 on example input"""
-    assert aoc_2022_02.part2(example2) == ...
+    assert aoc_2022_02.part2(example) == 12
