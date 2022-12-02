@@ -41,10 +41,9 @@ def test_is_draw():
     assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.PAPER)
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part1_example1(example1):
+def test_part1_example1(example):
     """Test part 1 on example input"""
-    assert aoc_2022_02.part1(example1) == ...
+    assert aoc_2022_02.part1(example) == 15
 
 
 @pytest.mark.skip(reason="Not implemented")
