@@ -15,16 +15,6 @@ class Hand(Enum):
     SCISSORS = 3
 
 
-HAND_MAP = {
-    "A": Hand.ROCK,
-    "B": Hand.PAPER,
-    "C": Hand.SCISSORS,
-    "X": Hand.ROCK,
-    "Y": Hand.PAPER,
-    "Z": Hand.SCISSORS,
-}
-
-
 class Outcome(StrEnum):
     LOSS = "X"
     DRAW = "Y"
@@ -38,24 +28,34 @@ def parse(puzzle_input: str) -> list[str]:
 
 def convert_hand(hand: str) -> Hand:
     """Convert a hand string to a Hand enum"""
-    return HAND_MAP[hand]
+    match hand:
+        case "A" | "X":
+            return Hand.ROCK
+        case "B" | "Y":
+            return Hand.PAPER
+        case "C" | "Z":
+            return Hand.SCISSORS
+        case _:
+            raise ValueError(f"Invalid hand: {hand}")
 
 
 def get_outcome(my_hand: Hand, elf_hand: Hand) -> Outcome:
     """Get the outcome of a game"""
     match (my_hand, elf_hand):
-        case (Hand.ROCK, Hand.PAPER):
-            return Outcome.LOSS
         case (Hand.ROCK, Hand.SCISSORS):
             return Outcome.WIN
         case (Hand.PAPER, Hand.ROCK):
             return Outcome.WIN
+        case (Hand.SCISSORS, Hand.PAPER):
+            return Outcome.WIN
+
+        case (Hand.ROCK, Hand.PAPER):
+            return Outcome.LOSS
         case (Hand.PAPER, Hand.SCISSORS):
             return Outcome.LOSS
         case (Hand.SCISSORS, Hand.ROCK):
             return Outcome.LOSS
-        case (Hand.SCISSORS, Hand.PAPER):
-            return Outcome.WIN
+
         case _:
             return Outcome.DRAW
 

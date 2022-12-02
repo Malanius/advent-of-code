@@ -5,6 +5,7 @@ import pytest
 from advent_of_code_2022.day_02.aoc_2022_02 import (
     Hand,
     Outcome,
+    convert_hand,
     get_outcome,
     parse,
     part1,
@@ -76,3 +77,23 @@ def test_play_hand():
     assert play_hand(Hand.ROCK, Outcome.WIN) == Hand.PAPER
     assert play_hand(Hand.PAPER, Outcome.WIN) == Hand.SCISSORS
     assert play_hand(Hand.SCISSORS, Outcome.WIN) == Hand.ROCK
+
+
+def test_convert_hand():
+    """Test that convert_hand works properly"""
+    assert convert_hand("A") == Hand.ROCK
+    assert convert_hand("B") == Hand.PAPER
+    assert convert_hand("C") == Hand.SCISSORS
+
+    assert convert_hand("X") == Hand.ROCK
+    assert convert_hand("Y") == Hand.PAPER
+    assert convert_hand("Z") == Hand.SCISSORS
+
+    with pytest.raises(ValueError):
+        convert_hand("D")
+
+    with pytest.raises(ValueError):
+        convert_hand("")
+
+    with pytest.raises(ValueError):
+        convert_hand("1")
