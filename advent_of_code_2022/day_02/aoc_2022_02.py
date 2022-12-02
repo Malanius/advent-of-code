@@ -27,6 +27,11 @@ def is_win(hand1: Hand, hand2: Hand) -> bool:
         return hand2 == Hand.PAPER
 
 
+def is_draw(hand1: Hand, hand2: Hand) -> bool:
+    """Determine if hand1 and hand2 are a draw"""
+    return hand1 == hand2
+
+
 @perf
 def part1(data):
     """Solve part 1"""

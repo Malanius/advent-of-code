@@ -28,6 +28,18 @@ def test_is_win():
     assert not aoc_2022_02.is_win(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.PAPER)
     assert not aoc_2022_02.is_win(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.SCISSORS)
 
+def test_is_draw():
+    """Test that is_draw works properly"""
+    assert aoc_2022_02.is_draw(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.ROCK)
+    assert aoc_2022_02.is_draw(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.PAPER)
+    assert aoc_2022_02.is_draw(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.SCISSORS)
+    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.ROCK)
+    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.PAPER)
+    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.SCISSORS)
+    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.SCISSORS)
+    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.ROCK)
+    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.PAPER)
+
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
