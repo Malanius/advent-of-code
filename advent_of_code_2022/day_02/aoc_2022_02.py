@@ -1,5 +1,5 @@
-from enum import Enum, StrEnum
 import pathlib
+from enum import Enum, StrEnum
 
 from advent_of_code_2022.util.perf import perf
 
@@ -81,30 +81,6 @@ def play_hand(elf_hand: Hand, outcome: Outcome) -> Hand:
             return elf_hand
 
 
-def play_win(elf_hand: Hand) -> Hand:
-    """Play a winning hand"""
-    if elf_hand == Hand.ROCK:
-        return Hand.PAPER
-    if elf_hand == Hand.PAPER:
-        return Hand.SCISSORS
-
-    return Hand.ROCK
-
-
-def play_draw(elf_hand: Hand) -> Hand:
-    """Play a draw hand"""
-    return elf_hand
-
-
-def play_loss(elf_hand: Hand) -> Hand:
-    """Play a losing hand"""
-    if elf_hand == Hand.ROCK:
-        return Hand.SCISSORS
-    if elf_hand == Hand.PAPER:
-        return Hand.ROCK
-    return Hand.PAPER
-
-
 @perf
 def part1(data: list[str]) -> int:
     """Calculate total score for provided strategy"""
@@ -131,13 +107,13 @@ def part2(data: list[str]) -> int:
         elf_play, my_strategy = line.split()
         elf_hand = convert_hand(elf_play)
         if my_strategy == Outcome.WIN:
-            my_hand = play_win(elf_hand)
+            my_hand = play_hand(elf_hand, Outcome.WIN)
             score += WIN_SCORE
-        elif my_strategy == Outcome.DRAW:
-            my_hand = play_draw(elf_hand)
-            score += DRAW_SCORE
+        elif my_strategy == Outcome.LOSS:
+            my_hand = play_hand(elf_hand, Outcome.LOSS)
         else:
-            my_hand = play_loss(elf_hand)
+            my_hand = elf_hand
+            score += DRAW_SCORE
         score += my_hand.value
     return score
 
