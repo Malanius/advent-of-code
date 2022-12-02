@@ -47,8 +47,7 @@ def is_win(hand1: Hand, hand2: Hand) -> bool:
         return hand2 == Hand.SCISSORS
     if hand1 == Hand.PAPER:
         return hand2 == Hand.ROCK
-    if hand1 == Hand.SCISSORS:
-        return hand2 == Hand.PAPER
+    return hand2 == Hand.PAPER
 
 
 def is_draw(hand1: Hand, hand2: Hand) -> bool:
@@ -62,8 +61,8 @@ def play_win(elf_hand: Hand) -> Hand:
         return Hand.PAPER
     if elf_hand == Hand.PAPER:
         return Hand.SCISSORS
-    if elf_hand == Hand.SCISSORS:
-        return Hand.ROCK
+
+    return Hand.ROCK
 
 
 def play_draw(elf_hand: Hand) -> Hand:
@@ -77,8 +76,7 @@ def play_loss(elf_hand: Hand) -> Hand:
         return Hand.SCISSORS
     if elf_hand == Hand.PAPER:
         return Hand.ROCK
-    if elf_hand == Hand.SCISSORS:
-        return Hand.PAPER
+    return Hand.PAPER
 
 
 @perf
@@ -86,9 +84,9 @@ def part1(data: list[str]) -> int:
     """Calculate total score for provided strategy"""
     score = 0
     for line in data:
-        elf_hand, my_hand = line.split()
-        elf_hand = convert_hand(elf_hand)
-        my_hand = convert_hand(my_hand)
+        elf_play, my_play = line.split()
+        elf_hand = convert_hand(elf_play)
+        my_hand = convert_hand(my_play)
         if is_win(my_hand, elf_hand):
             score += WIN_SCORE
         elif is_draw(my_hand, elf_hand):
@@ -102,8 +100,8 @@ def part2(data: list[str]) -> int:
     """Solve part 2"""
     score = 0
     for line in data:
-        elf_hand, my_strategy = line.split()
-        elf_hand = convert_hand(elf_hand)
+        elf_play, my_strategy = line.split()
+        elf_hand = convert_hand(elf_play)
         if my_strategy == Strategy.WIN:
             my_hand = play_win(elf_hand)
             score += WIN_SCORE
