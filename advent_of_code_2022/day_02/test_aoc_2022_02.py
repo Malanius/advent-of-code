@@ -28,6 +28,7 @@ def test_is_win():
     assert not aoc_2022_02.is_win(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.PAPER)
     assert not aoc_2022_02.is_win(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.SCISSORS)
 
+
 def test_is_draw():
     """Test that is_draw works properly"""
     assert aoc_2022_02.is_draw(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.ROCK)
@@ -45,8 +46,22 @@ def test_part1_example1(example):
     """Test part 1 on example input"""
     assert aoc_2022_02.part1(example) == 15
 
+def test_play_win():
+    """Test that play win works properly"""
+    assert aoc_2022_02.play_win(aoc_2022_02.Hand.ROCK) == aoc_2022_02.Hand.PAPER
+    assert aoc_2022_02.play_win(aoc_2022_02.Hand.PAPER) == aoc_2022_02.Hand.SCISSORS
+    assert aoc_2022_02.play_win(aoc_2022_02.Hand.SCISSORS) == aoc_2022_02.Hand.ROCK
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
+def test_play_draw():
+    """Test that play draw works properly"""
+    assert aoc_2022_02.play_draw(aoc_2022_02.Hand.ROCK) == aoc_2022_02.Hand.ROCK
+    assert aoc_2022_02.play_draw(aoc_2022_02.Hand.PAPER) == aoc_2022_02.Hand.PAPER
+    assert aoc_2022_02.play_draw(aoc_2022_02.Hand.SCISSORS) == aoc_2022_02.Hand.SCISSORS
+
+def test_play_lose():
+    """Test that play lose works properly"""
+    assert aoc_2022_02.play_loss(aoc_2022_02.Hand.ROCK) == aoc_2022_02.Hand.SCISSORS
+    assert aoc_2022_02.play_loss(aoc_2022_02.Hand.PAPER) == aoc_2022_02.Hand.ROCK
+    assert aoc_2022_02.play_loss(aoc_2022_02.Hand.SCISSORS) == aoc_2022_02.Hand.PAPER
     """Test part 2 on example input"""
     assert aoc_2022_02.part2(example2) == ...

@@ -50,6 +50,31 @@ def is_draw(hand1: Hand, hand2: Hand) -> bool:
     return hand1 == hand2
 
 
+def play_win(elf_hand: Hand) -> Hand:
+    """Play a winning hand"""
+    if elf_hand == Hand.ROCK:
+        return Hand.PAPER
+    if elf_hand == Hand.PAPER:
+        return Hand.SCISSORS
+    if elf_hand == Hand.SCISSORS:
+        return Hand.ROCK
+
+
+def play_draw(elf_hand: Hand) -> Hand:
+    """Play a draw hand"""
+    return elf_hand
+
+
+def play_loss(elf_hand: Hand) -> Hand:
+    """Play a losing hand"""
+    if elf_hand == Hand.ROCK:
+        return Hand.SCISSORS
+    if elf_hand == Hand.PAPER:
+        return Hand.ROCK
+    if elf_hand == Hand.SCISSORS:
+        return Hand.PAPER
+
+
 @perf
 def part1(data: list[str]) -> int:
     """Calculate total score for provided strategy"""
