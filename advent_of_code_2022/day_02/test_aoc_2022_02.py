@@ -1,6 +1,20 @@
 import pathlib
+
 import pytest
-import advent_of_code_2022.day_02.aoc_2022_02 as aoc_2022_02
+
+from advent_of_code_2022.day_02.aoc_2022_02 import (
+    Hand,
+    Outcome,
+    get_outcome,
+    is_draw,
+    is_win,
+    parse,
+    part1,
+    part2,
+    play_draw,
+    play_loss,
+    play_win,
+)
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -8,7 +22,7 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 @pytest.fixture
 def example():
     puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
-    return aoc_2022_02.parse(puzzle_input)
+    return parse(puzzle_input)
 
 
 def test_parse_example1(example):
@@ -18,62 +32,68 @@ def test_parse_example1(example):
 
 def test_is_win():
     """Test that is_win works properly"""
-    assert aoc_2022_02.is_win(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.SCISSORS)
-    assert aoc_2022_02.is_win(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.ROCK)
-    assert aoc_2022_02.is_win(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.PAPER)
-    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.ROCK)
-    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.PAPER)
-    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.SCISSORS)
-    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.ROCK)
-    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.PAPER)
-    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.SCISSORS)
+    assert is_win(Hand.ROCK, Hand.SCISSORS)
+    assert is_win(Hand.PAPER, Hand.ROCK)
+    assert is_win(Hand.SCISSORS, Hand.PAPER)
+    assert not is_win(Hand.SCISSORS, Hand.ROCK)
+    assert not is_win(Hand.ROCK, Hand.PAPER)
+    assert not is_win(Hand.PAPER, Hand.SCISSORS)
+    assert not is_win(Hand.ROCK, Hand.ROCK)
+    assert not is_win(Hand.PAPER, Hand.PAPER)
+    assert not is_win(Hand.SCISSORS, Hand.SCISSORS)
 
 
 def test_is_draw():
     """Test that is_draw works properly"""
-    assert aoc_2022_02.is_draw(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.ROCK)
-    assert aoc_2022_02.is_draw(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.PAPER)
-    assert aoc_2022_02.is_draw(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.SCISSORS)
-    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.ROCK)
-    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.PAPER)
-    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.SCISSORS)
-    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.SCISSORS)
-    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.ROCK)
-    assert not aoc_2022_02.is_draw(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.PAPER)
+    assert is_draw(Hand.ROCK, Hand.ROCK)
+    assert is_draw(Hand.PAPER, Hand.PAPER)
+    assert is_draw(Hand.SCISSORS, Hand.SCISSORS)
+    assert not is_draw(Hand.SCISSORS, Hand.ROCK)
+    assert not is_draw(Hand.ROCK, Hand.PAPER)
+    assert not is_draw(Hand.PAPER, Hand.SCISSORS)
+    assert not is_draw(Hand.ROCK, Hand.SCISSORS)
+    assert not is_draw(Hand.PAPER, Hand.ROCK)
+    assert not is_draw(Hand.SCISSORS, Hand.PAPER)
 
 
 def test_part1_example1(example):
     """Test part 1 on example input"""
-    assert aoc_2022_02.part1(example) == 15
+    assert part1(example) == 15
+
 
 def test_play_win():
     """Test that play win works properly"""
-    assert aoc_2022_02.play_win(aoc_2022_02.Hand.ROCK) == aoc_2022_02.Hand.PAPER
-    assert aoc_2022_02.play_win(aoc_2022_02.Hand.PAPER) == aoc_2022_02.Hand.SCISSORS
-    assert aoc_2022_02.play_win(aoc_2022_02.Hand.SCISSORS) == aoc_2022_02.Hand.ROCK
+    assert play_win(Hand.ROCK) == Hand.PAPER
+    assert play_win(Hand.PAPER) == Hand.SCISSORS
+    assert play_win(Hand.SCISSORS) == Hand.ROCK
+
 
 def test_play_draw():
     """Test that play draw works properly"""
-    assert aoc_2022_02.play_draw(aoc_2022_02.Hand.ROCK) == aoc_2022_02.Hand.ROCK
-    assert aoc_2022_02.play_draw(aoc_2022_02.Hand.PAPER) == aoc_2022_02.Hand.PAPER
-    assert aoc_2022_02.play_draw(aoc_2022_02.Hand.SCISSORS) == aoc_2022_02.Hand.SCISSORS
+    assert play_draw(Hand.ROCK) == Hand.ROCK
+    assert play_draw(Hand.PAPER) == Hand.PAPER
+    assert play_draw(Hand.SCISSORS) == Hand.SCISSORS
+
 
 def test_play_lose():
     """Test that play lose works properly"""
-    assert aoc_2022_02.play_loss(aoc_2022_02.Hand.ROCK) == aoc_2022_02.Hand.SCISSORS
-    assert aoc_2022_02.play_loss(aoc_2022_02.Hand.PAPER) == aoc_2022_02.Hand.ROCK
-    assert aoc_2022_02.play_loss(aoc_2022_02.Hand.SCISSORS) == aoc_2022_02.Hand.PAPER
+    assert play_loss(Hand.ROCK) == Hand.SCISSORS
+    assert play_loss(Hand.PAPER) == Hand.ROCK
+    assert play_loss(Hand.SCISSORS) == Hand.PAPER
+
 
 def test_part2_example2(example):
     """Test part 2 on example input"""
-    assert aoc_2022_02.part2(example) == 12
+    assert part2(example) == 12
+
 
 def test_part1_data():
     """Test part 1 on data input"""
     puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
-    assert aoc_2022_02.part1(aoc_2022_02.parse(puzzle_input)) == 11475
+    assert part1(parse(puzzle_input)) == 11475
+
 
 def test_part2_data():
     """Test part 2 on data input"""
     puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
-    assert aoc_2022_02.part2(aoc_2022_02.parse(puzzle_input)) == 16862
+    assert part2(parse(puzzle_input)) == 16862
