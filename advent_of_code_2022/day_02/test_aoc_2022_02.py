@@ -16,6 +16,19 @@ def test_parse_example1(example):
     assert example == ["A Y", "B X", "C Z"]
 
 
+def test_is_win():
+    """Test that is_win works properly"""
+    assert aoc_2022_02.is_win(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.SCISSORS)
+    assert aoc_2022_02.is_win(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.ROCK)
+    assert aoc_2022_02.is_win(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.PAPER)
+    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.ROCK)
+    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.PAPER)
+    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.SCISSORS)
+    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.ROCK, aoc_2022_02.Hand.ROCK)
+    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.PAPER, aoc_2022_02.Hand.PAPER)
+    assert not aoc_2022_02.is_win(aoc_2022_02.Hand.SCISSORS, aoc_2022_02.Hand.SCISSORS)
+
+
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input"""

@@ -1,3 +1,4 @@
+from enum import Enum
 import pathlib
 
 from advent_of_code_2022.util.perf import perf
@@ -5,9 +6,25 @@ from advent_of_code_2022.util.perf import perf
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
+class Hand(Enum):
+    ROCK = 1
+    PAPER = 2
+    SCISSORS = 3
+
+
 def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
     return puzzle_input.splitlines()
+
+
+def is_win(hand1: Hand, hand2: Hand) -> bool:
+    """Determine if hand1 beats hand2"""
+    if hand1 == Hand.ROCK:
+        return hand2 == Hand.SCISSORS
+    if hand1 == Hand.PAPER:
+        return hand2 == Hand.ROCK
+    if hand1 == Hand.SCISSORS:
+        return hand2 == Hand.PAPER
 
 
 @perf
