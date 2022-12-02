@@ -67,3 +67,13 @@ def test_play_lose():
 def test_part2_example2(example):
     """Test part 2 on example input"""
     assert aoc_2022_02.part2(example) == 12
+
+def test_part1_data():
+    """Test part 1 on data input"""
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
+    assert aoc_2022_02.part1(aoc_2022_02.parse(puzzle_input)) == 11475
+
+def test_part2_data():
+    """Test part 2 on data input"""
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
+    assert aoc_2022_02.part2(aoc_2022_02.parse(puzzle_input)) == 16862
