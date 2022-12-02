@@ -10,6 +10,7 @@ from advent_of_code_2022.day_02.aoc_2022_02 import (
     part1,
     part2,
     play_draw,
+    play_hand,
     play_loss,
     play_win,
 )
@@ -84,3 +85,18 @@ def test_get_outcome():
     assert get_outcome(Hand.ROCK, Hand.SCISSORS) == Outcome.WIN
     assert get_outcome(Hand.PAPER, Hand.ROCK) == Outcome.WIN
     assert get_outcome(Hand.SCISSORS, Hand.PAPER) == Outcome.WIN
+
+
+def test_play_hand():
+    """Test that play_hand works properly"""
+    assert play_hand(Hand.ROCK, Outcome.DRAW) == Hand.ROCK
+    assert play_hand(Hand.PAPER, Outcome.DRAW) == Hand.PAPER
+    assert play_hand(Hand.SCISSORS, Outcome.DRAW) == Hand.SCISSORS
+
+    assert play_hand(Hand.ROCK, Outcome.LOSS) == Hand.SCISSORS
+    assert play_hand(Hand.PAPER, Outcome.LOSS) == Hand.ROCK
+    assert play_hand(Hand.SCISSORS, Outcome.LOSS) == Hand.PAPER
+
+    assert play_hand(Hand.ROCK, Outcome.WIN) == Hand.PAPER
+    assert play_hand(Hand.PAPER, Outcome.WIN) == Hand.SCISSORS
+    assert play_hand(Hand.SCISSORS, Outcome.WIN) == Hand.ROCK

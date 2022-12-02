@@ -60,6 +60,27 @@ def get_outcome(my_hand: Hand, elf_hand: Hand) -> Outcome:
             return Outcome.DRAW
 
 
+def play_hand(elf_hand: Hand, outcome: Outcome) -> Hand:
+    """Play a hand based on the outcome"""
+    match (elf_hand, outcome):
+        case (Hand.ROCK, Outcome.WIN):
+            return Hand.PAPER
+        case (Hand.PAPER, Outcome.WIN):
+            return Hand.SCISSORS
+        case (Hand.SCISSORS, Outcome.WIN):
+            return Hand.ROCK
+
+        case (Hand.ROCK, Outcome.LOSS):
+            return Hand.SCISSORS
+        case (Hand.PAPER, Outcome.LOSS):
+            return Hand.ROCK
+        case (Hand.SCISSORS, Outcome.LOSS):
+            return Hand.PAPER
+
+        case _:
+            return elf_hand
+
+
 def play_win(elf_hand: Hand) -> Hand:
     """Play a winning hand"""
     if elf_hand == Hand.ROCK:
