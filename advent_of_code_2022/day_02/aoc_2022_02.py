@@ -60,20 +60,6 @@ def get_outcome(my_hand: Hand, elf_hand: Hand) -> Outcome:
             return Outcome.DRAW
 
 
-def is_win(hand1: Hand, hand2: Hand) -> bool:
-    """Determine if hand1 beats hand2"""
-    if hand1 == Hand.ROCK:
-        return hand2 == Hand.SCISSORS
-    if hand1 == Hand.PAPER:
-        return hand2 == Hand.ROCK
-    return hand2 == Hand.PAPER
-
-
-def is_draw(hand1: Hand, hand2: Hand) -> bool:
-    """Determine if hand1 and hand2 are a draw"""
-    return hand1 == hand2
-
-
 def play_win(elf_hand: Hand) -> Hand:
     """Play a winning hand"""
     if elf_hand == Hand.ROCK:
@@ -106,10 +92,12 @@ def part1(data: list[str]) -> int:
         elf_play, my_play = line.split()
         elf_hand = convert_hand(elf_play)
         my_hand = convert_hand(my_play)
-        if is_win(my_hand, elf_hand):
-            score += WIN_SCORE
-        elif is_draw(my_hand, elf_hand):
-            score += DRAW_SCORE
+        outcome = get_outcome(my_hand, elf_hand)
+        match outcome:
+            case Outcome.WIN:
+                score += WIN_SCORE
+            case Outcome.DRAW:
+                score += DRAW_SCORE
         score += my_hand.value
     return score
 
