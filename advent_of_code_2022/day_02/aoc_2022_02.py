@@ -81,6 +81,18 @@ def play_hand(elf_hand: Hand, outcome: Outcome) -> Hand:
             return elf_hand
 
 
+def count_score(my_hand: Hand, outcome: Outcome) -> int:
+    """Count the score for a hand"""
+    hand_score = my_hand.value
+    match outcome:
+        case Outcome.WIN:
+            return hand_score + WIN_SCORE
+        case Outcome.DRAW:
+            return hand_score + DRAW_SCORE
+        case Outcome.LOSS:
+            return hand_score
+
+
 @perf
 def part1(data: list[str]) -> int:
     """Calculate total score for provided strategy"""
@@ -90,12 +102,7 @@ def part1(data: list[str]) -> int:
         elf_hand = convert_hand(elf_play)
         my_hand = convert_hand(my_play)
         outcome = get_outcome(my_hand, elf_hand)
-        match outcome:
-            case Outcome.WIN:
-                score += WIN_SCORE
-            case Outcome.DRAW:
-                score += DRAW_SCORE
-        score += my_hand.value
+        score += count_score(my_hand, outcome)
     return score
 
 
@@ -104,17 +111,11 @@ def part2(data: list[str]) -> int:
     """Solve part 2"""
     score = 0
     for line in data:
-        elf_play, my_strategy = line.split()
+        elf_play, expected_outcome = line.split()
         elf_hand = convert_hand(elf_play)
-        if my_strategy == Outcome.WIN:
-            my_hand = play_hand(elf_hand, Outcome.WIN)
-            score += WIN_SCORE
-        elif my_strategy == Outcome.LOSS:
-            my_hand = play_hand(elf_hand, Outcome.LOSS)
-        else:
-            my_hand = elf_hand
-            score += DRAW_SCORE
-        score += my_hand.value
+        outcome = Outcome(expected_outcome)
+        my_hand = play_hand(elf_hand, outcome)
+        score += count_score(my_hand, outcome)
     return score
 
 
