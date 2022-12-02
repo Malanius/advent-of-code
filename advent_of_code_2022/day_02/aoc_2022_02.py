@@ -25,8 +25,8 @@ HAND_MAP = {
 }
 
 
-class Strategy(StrEnum):
-    LOSE = "X"
+class Outcome(StrEnum):
+    LOSS = "X"
     DRAW = "Y"
     WIN = "Z"
 
@@ -39,6 +39,25 @@ def parse(puzzle_input: str) -> list[str]:
 def convert_hand(hand: str) -> Hand:
     """Convert a hand string to a Hand enum"""
     return HAND_MAP[hand]
+
+
+def get_outcome(my_hand: Hand, elf_hand: Hand) -> Outcome:
+    """Get the outcome of a game"""
+    match (my_hand, elf_hand):
+        case (Hand.ROCK, Hand.PAPER):
+            return Outcome.LOSS
+        case (Hand.ROCK, Hand.SCISSORS):
+            return Outcome.WIN
+        case (Hand.PAPER, Hand.ROCK):
+            return Outcome.WIN
+        case (Hand.PAPER, Hand.SCISSORS):
+            return Outcome.LOSS
+        case (Hand.SCISSORS, Hand.ROCK):
+            return Outcome.LOSS
+        case (Hand.SCISSORS, Hand.PAPER):
+            return Outcome.WIN
+        case _:
+            return Outcome.DRAW
 
 
 def is_win(hand1: Hand, hand2: Hand) -> bool:
@@ -102,10 +121,10 @@ def part2(data: list[str]) -> int:
     for line in data:
         elf_play, my_strategy = line.split()
         elf_hand = convert_hand(elf_play)
-        if my_strategy == Strategy.WIN:
+        if my_strategy == Outcome.WIN:
             my_hand = play_win(elf_hand)
             score += WIN_SCORE
-        elif my_strategy == Strategy.DRAW:
+        elif my_strategy == Outcome.DRAW:
             my_hand = play_draw(elf_hand)
             score += DRAW_SCORE
         else:

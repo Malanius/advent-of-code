@@ -97,3 +97,18 @@ def test_part2_data():
     """Test part 2 on data input"""
     puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     assert part2(parse(puzzle_input)) == 16862
+
+
+def test_get_outcome():
+    """Test that get_outcome works properly"""
+    assert get_outcome(Hand.ROCK, Hand.ROCK) == Outcome.DRAW
+    assert get_outcome(Hand.PAPER, Hand.PAPER) == Outcome.DRAW
+    assert get_outcome(Hand.SCISSORS, Hand.SCISSORS) == Outcome.DRAW
+
+    assert get_outcome(Hand.SCISSORS, Hand.ROCK) == Outcome.LOSS
+    assert get_outcome(Hand.ROCK, Hand.PAPER) == Outcome.LOSS
+    assert get_outcome(Hand.PAPER, Hand.SCISSORS) == Outcome.LOSS
+
+    assert get_outcome(Hand.ROCK, Hand.SCISSORS) == Outcome.WIN
+    assert get_outcome(Hand.PAPER, Hand.ROCK) == Outcome.WIN
+    assert get_outcome(Hand.SCISSORS, Hand.PAPER) == Outcome.WIN
