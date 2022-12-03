@@ -23,10 +23,9 @@ def test_parse_example(example):
     ]
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_example(example):
     """Test part 1 on example input"""
-    assert aoc_2022_03.part1(example) == ...
+    assert aoc_2022_03.part1(example) == 157
 
 
 @pytest.mark.skip(reason="Not implemented")

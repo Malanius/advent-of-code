@@ -1,9 +1,14 @@
 import pathlib
-from typing import Generator
+import string
+from typing import Generator, Iterable
 
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
+
+PRIORITIES = dict(zip(string.ascii_lowercase, range(1, 27))) | dict(
+    zip(string.ascii_uppercase, range(27, 57))
+)
 
 
 def parse(puzzle_input: str) -> Generator[tuple[str, str], None, None]:
@@ -14,8 +19,15 @@ def parse(puzzle_input: str) -> Generator[tuple[str, str], None, None]:
 
 
 @perf
-def part1(data):
-    """Solve part 1"""
+def part1(inventory: Iterable[tuple[str, str]]) -> int:
+    """Find items that are in both inventories and return sum of their priorities"""
+    priority_sum = 0
+    for inventory_left, inventory_right in inventory:
+        # Using sets as first part doesn't seem to care if item is duplicated in one compartment
+        set_left = set(inventory_left)
+        set_right = set(inventory_right)
+        priority_sum += sum(PRIORITIES[item] for item in set_left if item in set_right)
+    return priority_sum
 
 
 @perf
