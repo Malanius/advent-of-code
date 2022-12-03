@@ -40,7 +40,13 @@ def part1(inventory: Iterable[tuple[str, str]]) -> int:
 
 @perf
 def part2(data):
-    """Solve part 2"""
+    """Find common item in group inventories and return sum of their priorities"""
+    priority_sum = 0
+    for group in data:
+        first_inventory = set(group[0])
+        common = first_inventory.intersection(*group)
+        priority_sum += PRIORITIES[common.pop()]
+    return priority_sum
 
 
 def solve(puzzle_input):
