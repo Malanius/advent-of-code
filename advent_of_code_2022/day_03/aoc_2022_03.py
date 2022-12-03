@@ -9,13 +9,21 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 PRIORITIES = dict(zip(string.ascii_lowercase, range(1, 27))) | dict(
     zip(string.ascii_uppercase, range(27, 57))
 )
+GROUP_SIZE = 3
 
 
-def parse(puzzle_input: str) -> Generator[tuple[str, str], None, None]:
+def parse_part1(puzzle_input: str) -> Generator[tuple[str, str], None, None]:
     """Parse input"""
     for line in puzzle_input.splitlines():
         half = len(line) // 2
         yield (line[:half], line[half:])
+
+
+def parse_part2(puzzle_input: str) -> Generator[list[str], None, None]:
+    """Parse input"""
+    lines = puzzle_input.splitlines()
+    for i in range(0, len(lines), GROUP_SIZE):
+        yield lines[i : i + GROUP_SIZE]
 
 
 @perf
@@ -37,9 +45,10 @@ def part2(data):
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
-    data = parse(puzzle_input)
-    solution1 = part1(data)
-    solution2 = part2(data)
+    data1 = parse_part1(puzzle_input)
+    data2 = parse_part2(puzzle_input)
+    solution1 = part1(data1)
+    solution2 = part2(data2)
     return solution1, solution2
 
 
