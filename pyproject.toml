@@ -23,3 +23,6 @@ black = "^22.10.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+daystrap = "advent_of_code_2022.util.daystrapper:main"

@@ -1,6 +1,6 @@
 import pathlib
 import pytest
-import solver as solver
+import {{SOLVER}} as solver
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
