@@ -13,8 +13,14 @@ def example():
 
 
 @pytest.fixture
-def example2():
-    puzzle_input = (PUZZLE_DIR / "example-2.txt").read_text().strip()
+def data():
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
+    return solver.parse(puzzle_input)
+
+
+@pytest.fixture
+def data2():
+    puzzle_input = (PUZZLE_DIR / "data-2.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
 
@@ -33,6 +39,14 @@ def test_parse_example1(example):
 def test_part1_example(example):
     """Test part 1 on example input"""
     assert solver.part1(example) == 2
+
+def test_part1_data(data):
+    """Test part 1 on example input"""
+    assert solver.part1(data) == 536
+
+def test_part1_data2(data2):
+    """Test part 1 on example input"""
+    assert solver.part1(data2) == 511
 
 
 @pytest.mark.skip(reason="Not implemented")
