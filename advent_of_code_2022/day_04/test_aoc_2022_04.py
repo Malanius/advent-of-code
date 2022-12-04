@@ -40,16 +40,27 @@ def test_part1_example(example):
     """Test part 1 on example input"""
     assert solver.part1(example) == 2
 
+
 def test_part1_data(data):
-    """Test part 1 on example input"""
+    """Test part 1 on data input"""
     assert solver.part1(data) == 536
 
+
 def test_part1_data2(data2):
-    """Test part 1 on example input"""
+    """Test part 1 on @pybobs data input"""
     assert solver.part1(data2) == 511
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
+def test_part2_example(example):
     """Test part 2 on example input"""
-    assert solver.part2(example2) == ...
+    assert solver.part2(example) == 4
+
+
+def test_part2_data(data):
+    """Test part 2 on example input"""
+    assert solver.part2(data) == 845
+
+
+def test_part2_data2(data2):
+    """Test part 2 on example input"""
+    assert solver.part2(data2) == 821

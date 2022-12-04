@@ -16,12 +16,23 @@ def parse(puzzle_input: str) -> list[tuple[range, range]]:
         data.append((range(int(start1), int(end1)), range(int(start2), int(end2))))
     return data
 
+def convert_to_sets(plan1: range, plan2: range) -> tuple[set, set]:
+    """Convert data to set"""
+    plan1_set = set(range(plan1.start, plan1.stop + 1))
+    plan2_set = set(range(plan2.start, plan2.stop + 1))
+    return plan1_set, plan2_set
 
 def is_fully_overlapping(plan1: range, plan2: range) -> bool:
     """Check if two plans are fully overlapping"""
-    plan1_set = set(range(plan1.start, plan1.stop + 1))
-    plan2_set = set(range(plan2.start, plan2.stop + 1))
+    plan1_set, plan2_set = convert_to_sets(plan1, plan2)
     return plan1_set.issubset(plan2_set) or plan2_set.issubset(plan1_set)
+
+
+def is_partially_overlapping(plan1: range, plan2: range) -> bool:
+    """Check if two plans are partially overlapping"""
+    plan1_set, plan2_set = convert_to_sets(plan1, plan2)
+    return bool(plan1_set.intersection(plan2_set))
+
 
 @perf
 def part1(data: list[tuple[range, range]]) -> int:
@@ -32,6 +43,7 @@ def part1(data: list[tuple[range, range]]) -> int:
 @perf
 def part2(data):
     """Solve part 2"""
+    return sum(is_partially_overlapping(*plans) for plans in data)
 
 
 def solve(puzzle_input):
