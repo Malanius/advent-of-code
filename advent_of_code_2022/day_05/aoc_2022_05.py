@@ -1,3 +1,4 @@
+from copy import deepcopy
 import pathlib
 import re
 from collections import deque
@@ -80,8 +81,8 @@ def solve(init_input, moves_input):
     """Solve the puzzle for the given input"""
     init_data = parse_init(init_input)
     moves = parse_moves(moves_input)
-    solution1 = part1(init_data, moves)
-    solution2 = part2(init_data, moves)
+    solution1 = part1(deepcopy(init_data), moves)
+    solution2 = part2(deepcopy(init_data), moves)
     return solution1, solution2
 
 
