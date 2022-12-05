@@ -10,6 +10,10 @@ from advent_of_code_2022.util.perf import perf
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
+INIT_PATTERN = re.compile(r"(\d+):(.*)")
+COMMAND_PATTERN = re.compile(r"move (\d+) from (\d+) to (\d+)")
+
+
 @dataclass
 class Move:
     count: int
@@ -17,8 +21,17 @@ class Move:
     target: int
 
 
-INIT_PATTERN = re.compile(r"(\d+):(.*)")
-COMMAND_PATTERN = re.compile(r"move (\d+) from (\d+) to (\d+)")
+@dataclass
+class CrateState:
+    stacks: dict[int, deque[str]]
+
+    def process_move(self, move: Move):
+        source = self.stacks[move.source]
+        target = self.stacks[move.target]
+        target.extend(source.pop() for _ in range(move.count))
+
+    def get_top_crates(self) -> str:
+        return "".join(stack[-1] for stack in self.stacks.values())
 
 
 def parse_init(init_input):
@@ -27,9 +40,7 @@ def parse_init(init_input):
     for line in init_input.splitlines():
         match = INIT_PATTERN.match(line)
         if match:
-            init_data[int(match.group(1))] = deque(
-                reversed(match.group(2).strip().split(","))
-            )
+            init_data[int(match.group(1))] = deque(match.group(2).strip().split(","))
     return init_data
 
 
@@ -46,6 +57,10 @@ def parse_moves(moves_input: str) -> list[Move]:
 @perf
 def part1(init, moves):
     """Solve part 1"""
+    state = CrateState(init)
+    for move in moves:
+        state.process_move(move)
+    return state.get_top_crates()
 
 
 @perf
