@@ -14,8 +14,8 @@ def example_init():
 
 
 @pytest.fixture
-def data_moves():
-    puzzle_input = (PUZZLE_DIR / "data-moves.txt").read_text().strip()
+def example_moves():
+    puzzle_input = (PUZZLE_DIR / "example-moves.txt").read_text().strip()
     return solver.parse_moves(puzzle_input)
 
 
@@ -26,8 +26,8 @@ def data_init():
 
 
 @pytest.fixture
-def example_moves():
-    puzzle_input = (PUZZLE_DIR / "example-moves.txt").read_text().strip()
+def data_moves():
+    puzzle_input = (PUZZLE_DIR / "data-moves.txt").read_text().strip()
     return solver.parse_moves(puzzle_input)
 
 
@@ -60,7 +60,11 @@ def test_part1_data(data_init, data_moves):
     assert solver.part1(data_init, data_moves) == "PSNRGBTFT"
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_example(example_init, example_moves):
     """Test part 2 on example input"""
-    assert solver.part2(example_init, example_moves) == ...
+    assert solver.part2(example_init, example_moves) == "MCD"
+
+
+def test_part2_data(data_init, data_moves):
+    """Test part 2 on example input"""
+    assert solver.part2(data_init, data_moves) == "BNTZFPMMW"

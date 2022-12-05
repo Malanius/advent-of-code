@@ -2,7 +2,6 @@ import pathlib
 import re
 from collections import deque
 from dataclasses import dataclass
-from typing import TypedDict
 
 from advent_of_code_2022.util.perf import perf
 
@@ -24,10 +23,16 @@ class Move:
 class CrateState:
     stacks: dict[int, deque[str]]
 
-    def process_move(self, move: Move):
+    def process_move_by_single_crate(self, move: Move):
         source = self.stacks[move.source]
         target = self.stacks[move.target]
         target.extend(source.pop() for _ in range(move.count))
+
+    def process_move_by_multiple_crates(self, move: Move):
+        source = self.stacks[move.source]
+        target = self.stacks[move.target]
+        taken = reversed([source.pop() for _ in range(move.count)])
+        target.extend(taken)
 
     def get_top_crates(self) -> str:
         return "".join(stack[-1] for stack in self.stacks.values())
@@ -58,13 +63,17 @@ def part1(init, moves):
     """Solve part 1"""
     state = CrateState(init)
     for move in moves:
-        state.process_move(move)
+        state.process_move_by_single_crate(move)
     return state.get_top_crates()
 
 
 @perf
 def part2(init, moves):
     """Solve part 2"""
+    state = CrateState(init)
+    for move in moves:
+        state.process_move_by_multiple_crates(move)
+    return state.get_top_crates()
 
 
 def solve(init_input, moves_input):
