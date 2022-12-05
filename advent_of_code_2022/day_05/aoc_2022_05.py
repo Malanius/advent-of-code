@@ -1,5 +1,7 @@
 import pathlib
 import re
+from collections import deque
+from typing import TypedDict
 
 from attr import dataclass
 
@@ -15,11 +17,20 @@ class Move:
     target: int
 
 
+INIT_PATTERN = re.compile(r"(\d+):(.*)")
 COMMAND_PATTERN = re.compile(r"move (\d+) from (\d+) to (\d+)")
 
 
-def parse_init(puzzle_input):
+def parse_init(init_input):
     """Parse initial state"""
+    init_data = {}
+    for line in init_input.splitlines():
+        match = INIT_PATTERN.match(line)
+        if match:
+            init_data[int(match.group(1))] = deque(
+                reversed(match.group(2).strip().split(","))
+            )
+    return init_data
 
 
 def parse_moves(moves_input: str) -> list[Move]:
@@ -52,7 +63,7 @@ def solve(init_input, moves_input):
 
 
 if __name__ == "__main__":
-    init_input = (PUZZLE_DIR / "data-init.csv").read_text().strip()
+    init_input = (PUZZLE_DIR / "data-init.txt").read_text().strip()
     moves_input = (PUZZLE_DIR / "data-moves.txt").read_text().strip()
     solutions = solve(init_input, moves_input)
     print("\n".join(str(solution) for solution in solutions))

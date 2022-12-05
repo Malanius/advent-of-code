@@ -1,3 +1,4 @@
+from collections import deque
 import pathlib
 import pytest
 import aoc_2022_05 as solver
@@ -7,7 +8,7 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 @pytest.fixture
 def example_init():
-    puzzle_input = (PUZZLE_DIR / "example-init.csv").read_text().strip()
+    puzzle_input = (PUZZLE_DIR / "example-init.txt").read_text().strip()
     return solver.parse_init(puzzle_input)
 
 
@@ -17,10 +18,13 @@ def example_moves():
     return solver.parse_moves(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_parse_init(example_init):
     """Test that init input is parsed properly"""
-    assert example_init == ...
+    assert example_init == {
+        1: deque(["N", "Z"]),
+        2: deque(["D", "C", "M"]),
+        3: deque(["P"]),
+    }
 
 
 def test_parse_moves(example_moves):
@@ -36,7 +40,7 @@ def test_parse_moves(example_moves):
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example(example_init, example_moves):
     """Test part 1 on example input"""
-    assert solver.part1(example_init,example_moves) == ...
+    assert solver.part1(example_init, example_moves) == ...
 
 
 @pytest.mark.skip(reason="Not implemented")

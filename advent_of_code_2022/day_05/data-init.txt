@@ -1,0 +1,9 @@
+1:D,H,N,Q,T,W,V,B
+2:D,W,B
+3:T,S,Q,W,J,C
+4:F,J,R,N,Z,T,P
+5:G,P,V,J,M,S,T
+6:B,W,F,T,N
+7:B,L,D,Q,F,H,V,N
+8:H,P,F,R
+9:Z,S,M,B,L,N,P,H
