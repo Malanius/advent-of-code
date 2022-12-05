@@ -1,9 +1,8 @@
 import pathlib
 import re
 from collections import deque
+from dataclasses import dataclass
 from typing import TypedDict
-
-from attr import dataclass
 
 from advent_of_code_2022.util.perf import perf
 
