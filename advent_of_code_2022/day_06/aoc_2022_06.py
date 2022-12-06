@@ -23,21 +23,26 @@ def sliding_window(data: Iterable, n: int) -> Iterable:
         yield tuple(window)
 
 
-@perf
-def part1(data):
-    """Solve part 1"""
-    size = 4
+def find_marker(data, size):
     for window in sliding_window(data, size):
         letter_counts = Counter(window)
         if len(letter_counts) == size:
             index = data.find("".join(window)) + size
-            print(window, index)
             return index
+
+
+@perf
+def part1(data):
+    """Solve part 1"""
+    size = 4
+    return find_marker(data, size)
 
 
 @perf
 def part2(data):
     """Solve part 2"""
+    size = 14
+    return find_marker(data, size)
 
 
 def solve(puzzle_input):

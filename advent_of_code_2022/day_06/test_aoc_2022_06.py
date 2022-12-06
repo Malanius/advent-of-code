@@ -31,7 +31,21 @@ def test_part1_data(data):
     assert solver.part1(data) == 1766
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
+@pytest.mark.parametrize(
+    "input, expected",
+    [
+        ("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 19),
+        ("bvwbjplbgvbhsrlpgdmjqwftvncz", 23),
+        ("nppdvjthqldpwncqszvftbrmjlhg", 23),
+        ("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29),
+        ("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26),
+    ],
+)
+def test_part2_examples(input, expected):
+    """Test part 1 on example input"""
+    assert solver.part2(input) == expected
+
+
+def test_part2_data(data):
     """Test part 2 on example input"""
-    assert solver.part2(example2) == ...
+    assert solver.part2(data) == 2383
