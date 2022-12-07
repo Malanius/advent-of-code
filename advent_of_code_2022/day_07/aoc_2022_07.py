@@ -14,6 +14,23 @@ class File:
     def __str__(self) -> str:
         return f"- {self.name} (file, size={self.size})"
 
+
+@dataclass
+class Directory:
+    name: str
+    parent: "Directory" | None = None
+    subdirs: dict[str, "Directory"] = dict()
+    files: list[File] = list()
+
+    def __str__(self) -> str:
+        repr = f"- {self.name} (dir)"
+        for subdir in self.subdirs:
+            repr += f"\t{subdir}"
+        for file in self.files:
+            repr += f"\t{file}"
+        return repr
+
+
 def parse(puzzle_input):
     """Parse input"""
 
