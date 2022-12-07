@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+from collections import deque
+from dataclasses import dataclass, field
 import pathlib
 
 from advent_of_code_2022.util.perf import perf
@@ -18,9 +19,9 @@ class File:
 @dataclass
 class Directory:
     name: str
-    parent: "Directory" | None = None
-    subdirs: dict[str, "Directory"] = dict()
-    files: list[File] = list()
+    parent: "Directory | None" = None
+    subdirs: dict[str, "Directory"] = field(default_factory=dict)
+    files: list[File] = field(default_factory=list)
 
     def __str__(self) -> str:
         repr = f"- {self.name} (dir)"
