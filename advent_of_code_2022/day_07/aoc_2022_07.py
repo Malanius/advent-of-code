@@ -1,6 +1,6 @@
+import pathlib
 from collections import deque
 from dataclasses import dataclass, field
-import pathlib
 
 from advent_of_code_2022.util.perf import perf
 
@@ -12,9 +12,6 @@ class File:
     name: str
     size: int
 
-    def __str__(self) -> str:
-        return f"- {self.name} (file, size={self.size})"
-
 
 @dataclass
 class Directory:
@@ -23,13 +20,11 @@ class Directory:
     subdirs: dict[str, "Directory"] = field(default_factory=dict)
     files: list[File] = field(default_factory=list)
 
-    def __str__(self) -> str:
-        repr = f"- {self.name} (dir)"
-        for subdir in self.subdirs:
-            repr += f"\t{subdir}"
-        for file in self.files:
-            repr += f"\t{file}"
-        return repr
+    @property
+    def size(self):
+        file_sizes = sum(file.size for file in self.files)
+        subdir_sizes = sum(subdir.size for subdir in self.subdirs.values())
+        return file_sizes + subdir_sizes
 
 
 @dataclass
@@ -39,12 +34,11 @@ class FileSystem:
     def __post_init__(self):
         self.pwd = self.root
 
-    def __str__(self) -> str:
-        return str(self.root)
-
     def cd(self, name: str) -> None:
         if name == ".." and self.pwd.parent is not None:
             self.pwd = self.pwd.parent
+        elif name == "/":
+            self.pwd = self.root
         else:
             self.pwd = self.pwd.subdirs[name]
 
@@ -56,8 +50,42 @@ class FileSystem:
         self.pwd.files.append(File(name, size))
 
 
-def parse(puzzle_input):
+@dataclass
+class Device:
+    terminal_history: deque[str]
+    filesystem: FileSystem = field(default_factory=lambda: FileSystem(Directory("/")))
+
+    def process_history(self) -> None:
+        while self.terminal_history:
+            line = self.terminal_history.popleft()
+            if line.startswith("$"):
+                self._proccess_command(line[2:])
+
+    def _proccess_command(self, command: str) -> None:
+        command, *args = command.split()
+        match command:
+            case "cd":
+                self.filesystem.cd(args[0])
+            case "ls":
+                self._proccess_ls()
+
+    def _proccess_ls(self) -> None:
+        while self.terminal_history and not self.terminal_history[0].startswith("$"):
+            line = self.terminal_history.popleft()
+            if line.startswith("dir"):
+                _, dir = line.split()
+                self.filesystem.mkdir(dir)
+            else:
+                size, file_name = line.split()
+                self.filesystem.addfile(file_name, int(size))
+
+
+def parse(puzzle_input: str) -> FileSystem:
     """Parse input"""
+    terminal_history = deque(puzzle_input.splitlines())
+    device = Device(terminal_history)
+    device.process_history()
+    return device.filesystem
 
 
 @perf
