@@ -106,8 +106,14 @@ def part1(data: FileSystem) -> int:
 
 
 @perf
-def part2(data):
+def part2(data: FileSystem) -> int:
     """Solve part 2"""
+    fs_size = 70_000_000
+    space_required = 30_000_000
+    unused = fs_size - data.root.size
+    to_clear = space_required - unused
+    clearable_dirs = [dir for dir in data.walk(data.root) if dir.size >= to_clear]
+    return min(dir.size for dir in clearable_dirs)
 
 
 def solve(puzzle_input):
