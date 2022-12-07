@@ -1,6 +1,7 @@
 import pathlib
 from collections import deque
 from dataclasses import dataclass, field
+from typing import Generator
 
 from advent_of_code_2022.util.perf import perf
 
@@ -49,6 +50,11 @@ class FileSystem:
     def addfile(self, name: str, size: int) -> None:
         self.pwd.files.append(File(name, size))
 
+    def walk(self, start_dir: Directory) -> Generator[Directory, None, None]:
+        yield start_dir
+        for subdir in start_dir.subdirs.values():
+            yield from self.walk(subdir)
+
 
 @dataclass
 class Device:
@@ -89,8 +95,14 @@ def parse(puzzle_input: str) -> FileSystem:
 
 
 @perf
-def part1(data):
+def part1(data: FileSystem) -> int:
     """Solve part 1"""
+    treshold = 100_000
+    return sum(
+        directory.size
+        for directory in data.walk(data.root)
+        if directory.size <= treshold
+    )
 
 
 @perf
