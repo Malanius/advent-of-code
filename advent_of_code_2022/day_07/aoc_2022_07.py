@@ -1,9 +1,18 @@
+from dataclasses import dataclass
 import pathlib
 
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
+
+@dataclass
+class File:
+    name: str
+    size: int
+
+    def __str__(self) -> str:
+        return f"- {self.name} (file, size={self.size})"
 
 def parse(puzzle_input):
     """Parse input"""
