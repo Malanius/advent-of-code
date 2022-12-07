@@ -31,6 +31,30 @@ class Directory:
         return repr
 
 
+@dataclass
+class FileSystem:
+    root: Directory
+
+    def __post_init__(self):
+        self.pwd = self.root
+
+    def __str__(self) -> str:
+        return str(self.root)
+
+    def cd(self, name: str) -> None:
+        if name == ".." and self.pwd.parent is not None:
+            self.pwd = self.pwd.parent
+        else:
+            self.pwd = self.pwd.subdirs[name]
+
+    def mkdir(self, name: str) -> None:
+        if name not in self.pwd.subdirs:
+            self.pwd.subdirs[name] = Directory(name, self.pwd)
+
+    def addfile(self, name: str, size: int) -> None:
+        self.pwd.files.append(File(name, size))
+
+
 def parse(puzzle_input):
     """Parse input"""
 
