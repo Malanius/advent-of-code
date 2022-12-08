@@ -1,3 +1,4 @@
+import math
 import pathlib
 from dataclasses import dataclass, field
 from enum import Enum
@@ -10,10 +11,10 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 class VisibilityDirection(Enum):
     """Direction of visibility"""
 
-    FROM_LEFT = "left"
-    FROM_RIGHT = "right"
-    FROM_TOP = "top"
-    FROM_BOTTOM = "bottom"
+    LEFT = "left"
+    RIGHT = "right"
+    TOP = "top"
+    BOTTOM = "bottom"
 
 
 @dataclass
@@ -21,10 +22,18 @@ class Tree:
     height: int
     visibility: dict[VisibilityDirection, bool] = field(
         default_factory=lambda: {
-            VisibilityDirection.FROM_LEFT: False,
-            VisibilityDirection.FROM_RIGHT: False,
-            VisibilityDirection.FROM_TOP: False,
-            VisibilityDirection.FROM_BOTTOM: False,
+            VisibilityDirection.LEFT: False,
+            VisibilityDirection.RIGHT: False,
+            VisibilityDirection.TOP: False,
+            VisibilityDirection.BOTTOM: False,
+        }
+    )
+    seen_trees: dict[VisibilityDirection, int] = field(
+        default_factory=lambda: {
+            VisibilityDirection.LEFT: 0,
+            VisibilityDirection.RIGHT: 0,
+            VisibilityDirection.TOP: 0,
+            VisibilityDirection.BOTTOM: 0,
         }
     )
 
@@ -32,6 +41,11 @@ class Tree:
     def is_visible(self) -> bool:
         """Is the tree visible?"""
         return any(self.visibility.values())
+
+    @property
+    def scenic_score(self) -> int:
+        """Calculate scenic score"""
+        return math.prod(self.seen_trees.values())
 
 
 def parse(puzzle_input: str) -> list[list[Tree]]:
@@ -64,22 +78,28 @@ def calculate_visibility(trees: list[Tree], direction: VisibilityDirection) -> N
 def calculate_visibility_from_left(trees: list[list[Tree]]) -> None:
     """Calculate visibility of trees from the left"""
     for row in trees:
-        calculate_visibility(row, VisibilityDirection.FROM_LEFT)
+        calculate_visibility(row, VisibilityDirection.LEFT)
+
 
 def calculate_visibility_from_right(trees: list[list[Tree]]) -> None:
     """Calculate visibility of trees from the right"""
     for row in trees:
-        calculate_visibility(row[::-1], VisibilityDirection.FROM_RIGHT)
+        calculate_visibility(row[::-1], VisibilityDirection.RIGHT)
+
 
 def calculate_visibility_from_top(trees: list[list[Tree]]) -> None:
     """Calculate visibility of trees from the top"""
     for i in range(len(trees[0])):
-        calculate_visibility([row[i] for row in trees], VisibilityDirection.FROM_TOP)
+        calculate_visibility([row[i] for row in trees], VisibilityDirection.TOP)
+
 
 def calculate_visibility_from_bottom(trees: list[list[Tree]]) -> None:
     """Calculate visibility of trees from the bottom"""
     for i in range(len(trees[0])):
-        calculate_visibility([row[i] for row in trees[::-1]], VisibilityDirection.FROM_BOTTOM)
+        calculate_visibility(
+            [row[i] for row in trees[::-1]], VisibilityDirection.BOTTOM
+        )
+
 
 def calculate_visibility_from_all_directions(trees: list[list[Tree]]) -> None:
     """Calculate visibility of trees from all directions"""
@@ -87,6 +107,7 @@ def calculate_visibility_from_all_directions(trees: list[list[Tree]]) -> None:
     calculate_visibility_from_right(trees)
     calculate_visibility_from_top(trees)
     calculate_visibility_from_bottom(trees)
+
 
 @perf
 def part1(data: list[list[Tree]]) -> int:
@@ -99,6 +120,9 @@ def part1(data: list[list[Tree]]) -> int:
 @perf
 def part2(data):
     """Solve part 2"""
+    # TODO: calculate scenic score for each tree
+    flat_trees = flatten(data)
+    return max(tree.scenic_score for tree in flat_trees)
 
 
 def solve(puzzle_input):
