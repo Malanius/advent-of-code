@@ -148,7 +148,12 @@ def test_count_seen_trees_bottom(example):
     assert data[1][3].seen_trees[direction] == 1
     assert data[1][4].seen_trees[direction] == 1
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
+
+def test_part2_example(example):
     """Test part 2 on example input"""
-    assert solver.part2(example2) == ...
+    assert solver.part2(example) == 8
+
+
+def test_part2_data(data):
+    """Test part 2 on actual input"""
+    assert solver.part2(data) == 180_000

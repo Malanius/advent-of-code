@@ -156,10 +156,18 @@ def count_visible_trees_bottom(trees: list[list[Tree]]) -> None:
         )
 
 
+def count_visible_trees_from_all_directions(trees: list[list[Tree]]) -> None:
+    """Calculate visible trees from tree in a given direction"""
+    calculate_visible_trees_left(trees)
+    count_visible_trees_right(trees)
+    count_visible_trees_top(trees)
+    count_visible_trees_bottom(trees)
+
+
 @perf
 def part2(data):
     """Solve part 2"""
-    # TODO: calculate scenic score for each tree
+    count_visible_trees_from_all_directions(data)
     flat_trees = flatten(data)
     return max(tree.scenic_score for tree in flat_trees)
 
