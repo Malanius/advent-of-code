@@ -1,6 +1,7 @@
 import pathlib
 import pytest
 import aoc_2022_08 as solver
+from aoc_2022_08 import Tree
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -20,11 +21,11 @@ def data():
 def test_parse_example(example):
     """Test that input is parsed properly"""
     assert example == [
-        [3, 0, 3, 7, 3],
-        [2, 5, 5, 1, 2],
-        [6, 5, 3, 3, 2],
-        [3, 3, 5, 4, 9],
-        [3, 5, 3, 9, 0],
+        [Tree(3), Tree(0), Tree(3), Tree(7), Tree(3)],
+        [Tree(2), Tree(5), Tree(5), Tree(1), Tree(2)],
+        [Tree(6), Tree(5), Tree(3), Tree(3), Tree(2)],
+        [Tree(3), Tree(3), Tree(5), Tree(4), Tree(9)],
+        [Tree(3), Tree(5), Tree(3), Tree(9), Tree(0)],
     ]
 
 
