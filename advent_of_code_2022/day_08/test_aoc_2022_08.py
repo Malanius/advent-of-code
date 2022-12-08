@@ -1,3 +1,4 @@
+from copy import deepcopy
 import pathlib
 import pytest
 import aoc_2022_08 as solver
@@ -36,6 +37,35 @@ def test_find_tallest():
     assert solver.find_tallest([Tree(6), Tree(5), Tree(3), Tree(3), Tree(2)]) == 0
     assert solver.find_tallest([Tree(3), Tree(3), Tree(5), Tree(4), Tree(9)]) == 4
     assert solver.find_tallest([Tree(3), Tree(5), Tree(3), Tree(9), Tree(0)]) == 3
+
+
+def test_count_visibility_from_left(example):
+    """Test that visibility is counted properly"""
+    data = deepcopy(example)
+    solver.calculate_visibility_from_left(data)
+    assert sum(1 for tree in solver.flatten(data) if tree.is_visible) == 11
+
+
+def test_count_visibility_from_right(example):
+    """Test that visibility is counted properly"""
+    data = deepcopy(example)
+    solver.calculate_visibility_from_right(data)
+    assert sum(1 for tree in solver.flatten(data) if tree.is_visible) == 11
+
+
+def test_count_visibility_from_top(example):
+    """Test that visibility is counted properly"""
+    data = deepcopy(example)
+    solver.calculate_visibility_from_top(data)
+    assert sum(1 for tree in solver.flatten(data) if tree.is_visible) == 10
+
+def test_count_visibility_from_bottom(example):
+    """Test that visibility is counted properly"""
+    data = deepcopy(example)
+    solver.calculate_visibility_from_bottom(data)
+    assert sum(1 for tree in solver.flatten(data) if tree.is_visible) == 8
+
+
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input"""

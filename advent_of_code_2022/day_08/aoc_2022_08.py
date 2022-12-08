@@ -43,9 +43,43 @@ def flatten(list: list[list[Tree]]) -> list[Tree]:
     """Flatten a list of lists"""
     return [item for sublist in list for item in sublist]
 
+
 def find_tallest(trees: list[Tree]) -> int:
     """Find index of the first tallest tree in a list"""
     return max(enumerate(trees), key=lambda x: x[1].height)[0]
+
+
+def calculate_visibility(trees: list[Tree], direction: VisibilityDirection) -> None:
+    """Calculate visibility of trees from the left"""
+    tallest_index = find_tallest(trees)
+    trees[0].visibility[direction] = True  # first tree is always visible
+    trees[tallest_index].visibility[direction] = True
+    track_height = trees[0].height
+    for i in range(1, tallest_index):
+        if trees[i].height > track_height:
+            track_height = trees[i].height
+            trees[i].visibility[direction] = True
+
+
+def calculate_visibility_from_left(trees: list[list[Tree]]) -> None:
+    """Calculate visibility of trees from the left"""
+    for row in trees:
+        calculate_visibility(row, VisibilityDirection.FROM_LEFT)
+
+def calculate_visibility_from_right(trees: list[list[Tree]]) -> None:
+    """Calculate visibility of trees from the right"""
+    for row in trees:
+        calculate_visibility(row[::-1], VisibilityDirection.FROM_RIGHT)
+
+def calculate_visibility_from_top(trees: list[list[Tree]]) -> None:
+    """Calculate visibility of trees from the top"""
+    for i in range(len(trees[0])):
+        calculate_visibility([row[i] for row in trees], VisibilityDirection.FROM_TOP)
+
+def calculate_visibility_from_bottom(trees: list[list[Tree]]) -> None:
+    """Calculate visibility of trees from the bottom"""
+    for i in range(len(trees[0])):
+        calculate_visibility([row[i] for row in trees[::-1]], VisibilityDirection.FROM_BOTTOM)
 
 @perf
 def part1(data: list[list[Tree]]) -> int:
