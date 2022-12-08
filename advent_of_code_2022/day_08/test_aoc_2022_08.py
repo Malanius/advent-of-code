@@ -29,6 +29,13 @@ def test_parse_example(example):
     ]
 
 
+def test_find_tallest():
+    """Test that tallest tree is found properly"""
+    assert solver.find_tallest([Tree(3), Tree(0), Tree(3), Tree(7), Tree(3)]) == 3
+    assert solver.find_tallest([Tree(2), Tree(5), Tree(5), Tree(1), Tree(2)]) == 1
+    assert solver.find_tallest([Tree(6), Tree(5), Tree(3), Tree(3), Tree(2)]) == 0
+    assert solver.find_tallest([Tree(3), Tree(3), Tree(5), Tree(4), Tree(9)]) == 4
+    assert solver.find_tallest([Tree(3), Tree(5), Tree(3), Tree(9), Tree(0)]) == 3
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input"""

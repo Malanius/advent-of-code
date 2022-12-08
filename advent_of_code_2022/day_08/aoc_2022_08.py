@@ -43,6 +43,9 @@ def flatten(list: list[list[Tree]]) -> list[Tree]:
     """Flatten a list of lists"""
     return [item for sublist in list for item in sublist]
 
+def find_tallest(trees: list[Tree]) -> int:
+    """Find index of the first tallest tree in a list"""
+    return max(enumerate(trees), key=lambda x: x[1].height)[0]
 
 @perf
 def part1(data: list[list[Tree]]) -> int:
