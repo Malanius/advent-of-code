@@ -66,10 +66,16 @@ def find_tallest(trees: list[Tree]) -> int:
 
 def calculate_visibility(trees: list[Tree], direction: VisibilityDirection) -> None:
     """Calculate visibility of trees from the left"""
+    # first tree is always visible
+    trees[0].visibility[direction] = True
+
+    # the first highest tree will be visible and block all behind, so no need to process all
     tallest_index = find_tallest(trees)
-    trees[0].visibility[direction] = True  # first tree is always visible
     trees[tallest_index].visibility[direction] = True
+
+    # we can see only trees that are higher than the previous tallest one
     track_height = trees[0].height
+
     for i in range(1, tallest_index):
         if trees[i].height > track_height:
             track_height = trees[i].height
@@ -121,10 +127,13 @@ def part1(data: list[list[Tree]]) -> int:
 def calculate_visible_trees(trees: list[Tree], direction: VisibilityDirection) -> None:
     """Calculate visible trees from tree in a given direction"""
     for index, tree in enumerate(trees):
+        # we are only interested in trees that are in front of the current one
+        # and as we see them in reverse order, we need to reverse the list
         trees_left = reversed(trees[:index])
         seen = 0
         for tree_left in trees_left:
-            seen += 1
+            seen += 1 # we always see at least one tree, if not at edge
+            # if the tree is same height or higher, we can't see anything behind it
             if tree_left.height >= tree.height:
                 break
         tree.seen_trees[direction] = seen
