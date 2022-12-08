@@ -2,7 +2,7 @@ from copy import deepcopy
 import pathlib
 import pytest
 import aoc_2022_08 as solver
-from aoc_2022_08 import Tree
+from aoc_2022_08 import Tree, VisibilityDirection
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -59,6 +59,7 @@ def test_count_visibility_from_top(example):
     solver.calculate_visibility_from_top(data)
     assert sum(1 for tree in solver.flatten(data) if tree.is_visible) == 10
 
+
 def test_count_visibility_from_bottom(example):
     """Test that visibility is counted properly"""
     data = deepcopy(example)
@@ -70,10 +71,82 @@ def test_part1_example(example):
     """Test part 1 on example input"""
     assert solver.part1(example) == 21
 
+
 def test_part1_data(data):
     """Test part 1 on actual input"""
     assert solver.part1(data) == 1843
 
+
+def test_count_seen_trees_left(example):
+    """Test that visible trees are counted properly"""
+    data = deepcopy(example)
+    solver.calculate_visible_trees_left(data)
+    direction = VisibilityDirection.LEFT
+    assert data[0][0].seen_trees[direction] == 0
+    assert data[0][1].seen_trees[direction] == 1
+    assert data[0][2].seen_trees[direction] == 2
+    assert data[0][3].seen_trees[direction] == 3
+    assert data[0][4].seen_trees[direction] == 1
+
+    assert data[1][0].seen_trees[direction] == 0
+    assert data[1][1].seen_trees[direction] == 1
+    assert data[1][2].seen_trees[direction] == 1
+    assert data[1][3].seen_trees[direction] == 1
+    assert data[1][4].seen_trees[direction] == 2
+
+
+def test_count_seen_trees_right(example):
+    """Test that visible trees are counted properly"""
+    data = deepcopy(example)
+    solver.count_visible_trees_right(data)
+    direction = VisibilityDirection.RIGHT
+    assert data[0][0].seen_trees[direction] == 2
+    assert data[0][1].seen_trees[direction] == 1
+    assert data[0][2].seen_trees[direction] == 1
+    assert data[0][3].seen_trees[direction] == 1
+    assert data[0][4].seen_trees[direction] == 0
+
+    assert data[1][0].seen_trees[direction] == 1
+    assert data[1][1].seen_trees[direction] == 1
+    assert data[1][2].seen_trees[direction] == 2
+    assert data[1][3].seen_trees[direction] == 1
+    assert data[1][4].seen_trees[direction] == 0
+
+
+def test_count_seen_trees_top(example):
+    """Test that visible trees are counted properly"""
+    data = deepcopy(example)
+    solver.count_visible_trees_top(data)
+    direction = VisibilityDirection.TOP
+    assert data[4][0].seen_trees[direction] == 1
+    assert data[4][1].seen_trees[direction] == 2
+    assert data[4][2].seen_trees[direction] == 1
+    assert data[4][3].seen_trees[direction] == 4
+    assert data[4][4].seen_trees[direction] == 1
+
+    assert data[3][0].seen_trees[direction] == 1
+    assert data[3][1].seen_trees[direction] == 1
+    assert data[3][2].seen_trees[direction] == 2
+    assert data[3][3].seen_trees[direction] == 3
+    assert data[3][4].seen_trees[direction] == 3
+
+
+def test_count_seen_trees_bottom(example):
+    """Test that visible trees are counted properly"""
+    data = deepcopy(example)
+    solver.count_visible_trees_bottom(data)
+    direction = VisibilityDirection.BOTTOM
+    assert data[0][0].seen_trees[direction] == 2
+    assert data[0][1].seen_trees[direction] == 1
+    assert data[0][2].seen_trees[direction] == 1
+    assert data[0][3].seen_trees[direction] == 4
+    assert data[0][4].seen_trees[direction] == 3
+
+    assert data[1][0].seen_trees[direction] == 1
+    assert data[1][1].seen_trees[direction] == 1
+    assert data[1][2].seen_trees[direction] == 2
+    assert data[1][3].seen_trees[direction] == 1
+    assert data[1][4].seen_trees[direction] == 1
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_example2(example2):

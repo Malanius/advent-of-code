@@ -1,3 +1,4 @@
+import itertools
 import math
 import pathlib
 from dataclasses import dataclass, field
@@ -115,6 +116,44 @@ def part1(data: list[list[Tree]]) -> int:
     calculate_visibility_from_all_directions(data)
     flat_trees = flatten(data)
     return sum(1 for tree in flat_trees if tree.is_visible)
+
+
+def calculate_visible_trees(trees: list[Tree], direction: VisibilityDirection) -> None:
+    """Calculate visible trees from tree in a given direction"""
+    for index, tree in enumerate(trees):
+        trees_left = reversed(trees[:index])
+        seen = 0
+        for tree_left in trees_left:
+            seen += 1
+            if tree_left.height >= tree.height:
+                break
+        tree.seen_trees[direction] = seen
+
+
+def calculate_visible_trees_left(trees: list[list[Tree]]) -> None:
+    """Calculate visible trees from tree in a given direction"""
+    for row in trees:
+        calculate_visible_trees(row, VisibilityDirection.LEFT)
+
+
+def count_visible_trees_right(trees: list[list[Tree]]) -> None:
+    """Calculate visible trees from tree in a given direction"""
+    for row in trees:
+        calculate_visible_trees(row[::-1], VisibilityDirection.RIGHT)
+
+
+def count_visible_trees_top(trees: list[list[Tree]]) -> None:
+    """Calculate visible trees from tree in a given direction"""
+    for i in range(len(trees[0])):
+        calculate_visible_trees([row[i] for row in trees], VisibilityDirection.TOP)
+
+
+def count_visible_trees_bottom(trees: list[list[Tree]]) -> None:
+    """Calculate visible trees from tree in a given direction"""
+    for i in range(len(trees[0])):
+        calculate_visible_trees(
+            [row[i] for row in trees[::-1]], VisibilityDirection.BOTTOM
+        )
 
 
 @perf
