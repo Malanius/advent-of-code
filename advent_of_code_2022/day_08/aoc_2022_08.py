@@ -81,10 +81,17 @@ def calculate_visibility_from_bottom(trees: list[list[Tree]]) -> None:
     for i in range(len(trees[0])):
         calculate_visibility([row[i] for row in trees[::-1]], VisibilityDirection.FROM_BOTTOM)
 
+def calculate_visibility_from_all_directions(trees: list[list[Tree]]) -> None:
+    """Calculate visibility of trees from all directions"""
+    calculate_visibility_from_left(trees)
+    calculate_visibility_from_right(trees)
+    calculate_visibility_from_top(trees)
+    calculate_visibility_from_bottom(trees)
+
 @perf
 def part1(data: list[list[Tree]]) -> int:
     """Solve part 1"""
-    # TODO: calculate visibility from each side
+    calculate_visibility_from_all_directions(data)
     flat_trees = flatten(data)
     return sum(1 for tree in flat_trees if tree.is_visible)
 

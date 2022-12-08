@@ -66,10 +66,13 @@ def test_count_visibility_from_bottom(example):
     assert sum(1 for tree in solver.flatten(data) if tree.is_visible) == 8
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part1_example1(example1):
+def test_part1_example(example):
     """Test part 1 on example input"""
-    assert solver.part1(example1) == ...
+    assert solver.part1(example) == 21
+
+def test_part1_data(data):
+    """Test part 1 on actual input"""
+    assert solver.part1(data) == 1843
 
 
 @pytest.mark.skip(reason="Not implemented")
