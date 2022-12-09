@@ -1,7 +1,7 @@
 import pathlib
 import pytest
 import aoc_2022_09 as solver
-from aoc_2022_09 import Direction, MoveCommand, Head
+from aoc_2022_09 import Direction, MoveCommand, Knot, process_moves
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -29,6 +29,25 @@ def test_parse_example(example):
         MoveCommand(Direction("D"), 1),
         MoveCommand(Direction("L"), 5),
         MoveCommand(Direction("R"), 2),
+    ]
+
+
+def test_head_moves(example):
+    """Test that head moves properly"""
+    head = Knot()
+    process_moves(example, head)
+    assert head.visited == [
+        (0, 0),  # Start
+        # fmt: off
+        (1, 0), (2, 0), (3, 0), (4, 0),  # R 4
+        (4, 1), (4, 2), (4, 3), (4, 4),  # U 4
+        (3, 4), (2, 4), (1, 4),  # L 3
+        (1, 3),  # D 1
+        (2, 3), (3, 3), (4, 3), (5, 3),  # R 4
+        (5, 2),  # D 1
+        (4, 2), (3, 2), (2, 2), (1, 2), (0, 2),  # L 5
+        (1, 2), (2, 2),  # R 2
+        # fmt: on
     ]
 
 
