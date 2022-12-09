@@ -7,8 +7,14 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example():
-    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
+def example1():
+    puzzle_input = (PUZZLE_DIR / "example1.txt").read_text().strip()
+    return solver.parse(puzzle_input)
+
+
+@pytest.fixture
+def example2():
+    puzzle_input = (PUZZLE_DIR / "example2.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
 
@@ -28,9 +34,9 @@ def tail():
     return Knot()
 
 
-def test_parse_example(example):
+def test_parse_example(example1):
     """Test that input is parsed properly"""
-    assert example == [
+    assert example1 == [
         MoveCommand(Direction("R"), 4),
         MoveCommand(Direction("U"), 4),
         MoveCommand(Direction("L"), 3),
@@ -42,9 +48,9 @@ def test_parse_example(example):
     ]
 
 
-def test_head_moves(example, head, tail):
+def test_head_moves(example1, head, tail):
     """Test that head moves properly"""
-    process_moves(example, head, tail)
+    process_moves(example1, head, tail)
     assert head.visited == [
         (0, 0),  # Start
         # fmt: off
@@ -61,8 +67,8 @@ def test_head_moves(example, head, tail):
     ]
 
 
-def test_tail_moves(example, head, tail):
-    process_moves(example, head, tail)
+def test_tail_moves(example1, head, tail):
+    process_moves(example1, head, tail)
     assert tail.visited == [
         (0, 0),  # Start
         # fmt: off
@@ -78,9 +84,9 @@ def test_tail_moves(example, head, tail):
     ]
 
 
-def test_part1_example1(example):
+def test_part1_example1(example1):
     """Test part 1 on example input"""
-    assert solver.part1(example) == 13
+    assert solver.part1(example1) == 13
 
 
 def test_part1_data(data):
@@ -89,6 +95,6 @@ def test_part1_data(data):
 
 
 @pytest.mark.skip(reason="Not implemented")
-def test_part2_example(example):
+def test_part2_example1(example):
     """Test part 2 on example input"""
     assert solver.part2(example) == ...
