@@ -1,12 +1,28 @@
 import pathlib
+from dataclasses import dataclass
+from enum import Enum
 
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
-def parse(puzzle_input):
+class Direction(Enum):
+    RIGHT = "R"
+    LEFT = "L"
+    UP = "U"
+    DOWN = "D"
+
+
+@dataclass
+class MoveCommand:
+    direction: Direction
+    distance: int
+
+def parse(puzzle_input: str) -> list[MoveCommand]:
     """Parse input"""
+    lines = puzzle_input.splitlines()
+    return [MoveCommand(Direction(line[0]), int(line[1:])) for line in lines]
 
 
 @perf

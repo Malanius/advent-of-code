@@ -1,13 +1,14 @@
 import pathlib
 import pytest
 import aoc_2022_09 as solver
+from aoc_2022_09 import Direction, MoveCommand, Head
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example1():
-    puzzle_input = (PUZZLE_DIR / "example-1.txt").read_text().strip()
+def example():
+    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
 
@@ -17,10 +18,18 @@ def example2():
     return solver.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_parse_example1(example1):
+def test_parse_example(example):
     """Test that input is parsed properly"""
-    assert example1 == ...
+    assert example == [
+        MoveCommand(Direction("R"), 4),
+        MoveCommand(Direction("U"), 4),
+        MoveCommand(Direction("L"), 3),
+        MoveCommand(Direction("D"), 1),
+        MoveCommand(Direction("R"), 4),
+        MoveCommand(Direction("D"), 1),
+        MoveCommand(Direction("L"), 5),
+        MoveCommand(Direction("R"), 2),
+    ]
 
 
 @pytest.mark.skip(reason="Not implemented")
