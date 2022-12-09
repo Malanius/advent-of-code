@@ -109,9 +109,12 @@ def process_moves(moves: list[MoveCommand], head: Knot, tail: Knot) -> None:
 
 
 @perf
-def part1(data):
+def part1(data: list[MoveCommand]) -> int:
     """Solve part 1"""
     head = Knot()
+    tail = Knot()
+    process_moves(data, head, tail)
+    return sum(1 for point in set(tail.visited))
 
 
 @perf

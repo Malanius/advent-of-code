@@ -13,8 +13,8 @@ def example():
 
 
 @pytest.fixture
-def example2():
-    puzzle_input = (PUZZLE_DIR / "example-2.txt").read_text().strip()
+def data():
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
 
@@ -55,7 +55,8 @@ def test_head_moves(example, head, tail):
         (2, 3), (3, 3), (4, 3), (5, 3), # R 4
         (5, 2), # D 1
         (4, 2), (3, 2), (2, 2), (1, 2), (0, 2), # L 5
-        (1, 2), (2, 2), # R 2
+        (1, 2), (2, 2),
+        # R 2
         # fmt: on
     ]
 
@@ -71,15 +72,23 @@ def test_tail_moves(example, head, tail):
         # Head D 1
         (3, 3), (4, 3), # Head R 4
         # Head D 1
-        (3, 2), (2, 2), (1, 2), # Head L 5
+        (3, 2), (2, 2), (1, 2),
+        # Head L 5
         # Head R 2
     ]
 
+
+def test_part1_example1(example):
     """Test part 1 on example input"""
-    assert solver.part1(example1) == ...
+    assert solver.part1(example) == 13
+
+
+def test_part1_data(data):
+    """Test part 1 on example input"""
+    assert solver.part1(data) == 6522
 
 
 @pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
+def test_part2_example(example):
     """Test part 2 on example input"""
-    assert solver.part2(example2) == ...
+    assert solver.part2(example) == ...
