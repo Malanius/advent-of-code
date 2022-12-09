@@ -108,12 +108,38 @@ def process_moves(moves: list[MoveCommand], head: Knot, tail: Knot) -> None:
     logging.debug(f"Tail: {tail.visited}")
 
 
+def print_tail_visits(head: Knot, tail: Knot):
+    """Print the visited points"""
+    max_x = max(x for x, _ in head.visited)
+    min_x = min(x for x, _ in head.visited)
+    max_y = max(y for _, y in head.visited)
+    min_y = min(y for _, y in head.visited)
+
+    len_x = max_x - min_x + 1
+    len_y = max_y - min_y + 1
+    print(f"Grid size: {len_x} x {len_y}")
+
+    grid = [["." for _ in range(len_x)] for _ in range(len_y)]
+
+    for x, y in tail.visited:
+        correctex_x = x - min_x
+        correctex_y = y - min_y
+        grid[correctex_y][correctex_x] = "#"
+
+    grid[0 - min_y][0 - min_x] = "s"
+
+    joiner = " " if len_x < 10 else ""
+    for row in reversed(grid):
+        print(joiner.join(row))
+
+
 @perf
 def part1(data: list[MoveCommand]) -> int:
     """Solve part 1"""
     head = Knot()
     tail = Knot()
     process_moves(data, head, tail)
+    print_tail_visits(head, tail)
     return len(set(tail.visited))
 
 
@@ -128,6 +154,7 @@ def part2(data: list[MoveCommand]) -> int:
             for i in range(1, len(rope)):
                 rope[i].catch_up(rope[i - 1])
 
+    print_tail_visits(rope[0], rope[-1])
     return len(set(rope[-1].visited))
 
 
