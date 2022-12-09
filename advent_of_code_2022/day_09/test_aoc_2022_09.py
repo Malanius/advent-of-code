@@ -90,11 +90,20 @@ def test_part1_example1(example1):
 
 
 def test_part1_data(data):
-    """Test part 1 on example input"""
+    """Test part 1 on data input"""
     assert solver.part1(data) == 6522
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example1(example):
+def test_part2_example1(example1):
     """Test part 2 on example input"""
-    assert solver.part2(example) == ...
+    assert solver.part2(example1) == 1
+
+
+def test_part2_example2(example2):
+    """Test part 2 on example input"""
+    assert solver.part2(example2) == 36
+
+
+def test_part2_data(data):
+    """Test part 2 on data input"""
+    assert solver.part2(data) == 2717

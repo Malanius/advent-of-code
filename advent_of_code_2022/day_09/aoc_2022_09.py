@@ -114,12 +114,21 @@ def part1(data: list[MoveCommand]) -> int:
     head = Knot()
     tail = Knot()
     process_moves(data, head, tail)
-    return sum(1 for point in set(tail.visited))
+    return len(set(tail.visited))
 
 
 @perf
-def part2(data):
+def part2(data: list[MoveCommand]) -> int:
     """Solve part 2"""
+    rope = [Knot() for _ in range(10)]
+
+    for move in data:
+        for _ in range(move.distance):
+            rope[0].move(move.direction)
+            for i in range(1, len(rope)):
+                rope[i].catch_up(rope[i - 1])
+
+    return len(set(rope[-1].visited))
 
 
 def solve(puzzle_input):
