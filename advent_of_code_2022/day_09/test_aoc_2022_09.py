@@ -18,6 +18,16 @@ def example2():
     return solver.parse(puzzle_input)
 
 
+@pytest.fixture
+def head():
+    return Knot()
+
+
+@pytest.fixture
+def tail():
+    return Knot()
+
+
 def test_parse_example(example):
     """Test that input is parsed properly"""
     assert example == [
@@ -32,27 +42,39 @@ def test_parse_example(example):
     ]
 
 
-def test_head_moves(example):
+def test_head_moves(example, head, tail):
     """Test that head moves properly"""
-    head = Knot()
-    process_moves(example, head)
+    process_moves(example, head, tail)
     assert head.visited == [
         (0, 0),  # Start
         # fmt: off
-        (1, 0), (2, 0), (3, 0), (4, 0),  # R 4
-        (4, 1), (4, 2), (4, 3), (4, 4),  # U 4
-        (3, 4), (2, 4), (1, 4),  # L 3
-        (1, 3),  # D 1
-        (2, 3), (3, 3), (4, 3), (5, 3),  # R 4
-        (5, 2),  # D 1
-        (4, 2), (3, 2), (2, 2), (1, 2), (0, 2),  # L 5
-        (1, 2), (2, 2),  # R 2
+        (1, 0), (2, 0), (3, 0), (4, 0), # R 4
+        (4, 1), (4, 2), (4, 3), (4, 4), # U 4
+        (3, 4), (2, 4), (1, 4), # L 3
+        (1, 3), # D 1
+        (2, 3), (3, 3), (4, 3), (5, 3), # R 4
+        (5, 2), # D 1
+        (4, 2), (3, 2), (2, 2), (1, 2), (0, 2), # L 5
+        (1, 2), (2, 2), # R 2
         # fmt: on
     ]
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part1_example1(example1):
+def test_tail_moves(example, head, tail):
+    process_moves(example, head, tail)
+    assert tail.visited == [
+        (0, 0),  # Start
+        # fmt: off
+        (1, 0), (2, 0), (3, 0), # Head R 4
+        (4, 1), (4, 2), (4, 3), # Head U 4
+        (3, 4), (2, 4), # Head L 3
+        # Head D 1
+        (3, 3), (4, 3), # Head R 4
+        # Head D 1
+        (3, 2), (2, 2), (1, 2), # Head L 5
+        # Head R 2
+    ]
+
     """Test part 1 on example input"""
     assert solver.part1(example1) == ...
 
