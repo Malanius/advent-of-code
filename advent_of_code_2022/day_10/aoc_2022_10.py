@@ -116,8 +116,13 @@ def part1(data: list[str]) -> int:
 
 
 @perf
-def part2(data):
+def part2(data: list[str]) -> str:
     """Solve part 2"""
+    cpu = Cpu()
+    cpu.process_instructions(data)
+    screen = Screen()
+    screen.process_signals(cpu.states_during)
+    return str(screen)
 
 
 def solve(puzzle_input):

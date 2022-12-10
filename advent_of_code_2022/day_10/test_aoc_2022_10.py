@@ -1,6 +1,8 @@
 import pathlib
-import pytest
+import textwrap
+
 import aoc_2022_10 as solver
+import pytest
 from aoc_2022_10 import Cpu, Screen
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -81,16 +83,25 @@ def test_part1_data(data):
 
 def test_part2_example(example: list[str], cpu: Cpu, screen: Screen) -> None:
     """Test that the screen is drawn properly"""
-    assert solver.part2(example) =="""##..##..##..##..##..##..##..##..##..##..
-###...###...###...###...###...###...###.
-####....####....####....####....####....
-#####.....#####.....#####.....#####.....
-######......######......######......####
-#######.......#######.......#######....."""
-    
+    assert solver.part2(example) == textwrap.dedent(
+        """\
+        ##..##..##..##..##..##..##..##..##..##..
+        ###...###...###...###...###...###...###.
+        ####....####....####....####....####....
+        #####.....#####.....#####.....#####.....
+        ######......######......######......####
+        #######.......#######.......#######....."""
+    )
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
-    """Test part 2 on example input"""
-    assert solver.part2(example2) == 13680
+def test_part2_data(data: list[str], cpu: Cpu, screen: Screen) -> None:
+    """Test that the screen is drawn properly"""
+    assert solver.part2(data) == textwrap.dedent(
+        """\
+        ###..####..##..###..#..#.###..####.###..
+        #..#....#.#..#.#..#.#.#..#..#.#....#..#.
+        #..#...#..#....#..#.##...#..#.###..###..
+        ###...#...#.##.###..#.#..###..#....#..#.
+        #....#....#..#.#....#.#..#....#....#..#.
+        #....####..###.#....#..#.#....####.###.."""
+    )
