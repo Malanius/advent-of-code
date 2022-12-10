@@ -60,13 +60,55 @@ class Cpu:
         return strengts[start - 1 :: step]
 
 
+@dataclass
+class Screen:
+    width: int = 40
+    height: int = 6
+    cycle: int = 0
+    pixels: list[list[str]] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        """Initialize the screen"""
+        self.pixels = [["." for _ in range(self.width)] for _ in range(self.height)]
+
+    def __str__(self) -> str:
+        """Print the screen"""
+        return "\n".join("".join(row) for row in self.pixels)
+
+    def tick(self) -> None:
+        """Tick the clock"""
+        self.cycle += 1
+        logging.debug(f"tick: Cycle {self.cycle}")
+
+    def process_signal(self, signal: int) -> None:
+        """Process a signal"""
+        row = self.cycle // self.width
+        col = self.cycle % self.width
+        sprite_center = signal
+        sprite_left = sprite_center - 1
+        sprite_right = sprite_center + 1
+        logging.debug(
+            f"cycle: {self.cycle} row: {row}, col: {col}, sprite_center: {sprite_center}, sprite_left: {sprite_left}, sprite_right: {sprite_right}"
+        )
+        # if sprite shape covers actual screen possition, set it to "#"
+        if col == sprite_center or col == sprite_left or col == sprite_right:
+            logging.debug(f"setting pixel at row: {row}, col: {col} to #")
+            self.pixels[row][col] = "#"
+        self.tick()
+
+    def process_signals(self, signals: list[int]) -> None:
+        """Process a list of signals"""
+        for signal in signals:
+            self.process_signal(signal)
+
+
 def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
     return puzzle_input.splitlines()
 
 
 @perf
-def part1(data):
+def part1(data: list[str]) -> int:
     """Solve part 1"""
     cpu = Cpu()
     cpu.process_instructions(data)

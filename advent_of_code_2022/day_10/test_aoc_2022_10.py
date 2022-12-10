@@ -1,7 +1,7 @@
 import pathlib
 import pytest
 import aoc_2022_10 as solver
-from aoc_2022_10 import Cpu
+from aoc_2022_10 import Cpu, Screen
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -9,6 +9,11 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 @pytest.fixture
 def cpu() -> Cpu:
     return Cpu()
+
+
+@pytest.fixture
+def screen() -> Screen:
+    return Screen()
 
 
 @pytest.fixture
@@ -72,6 +77,17 @@ def test_part1_example(example):
 def test_part1_data(data):
     """Test part 1 on example input"""
     assert solver.part1(data) == 13680
+
+
+def test_part2_example(example: list[str], cpu: Cpu, screen: Screen) -> None:
+    """Test that the screen is drawn properly"""
+    assert solver.part2(example) =="""##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######....."""
+    
 
 
 @pytest.mark.skip(reason="Not implemented")
