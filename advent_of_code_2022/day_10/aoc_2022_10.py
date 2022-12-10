@@ -47,6 +47,9 @@ class Cpu:
         for instruction in instructions:
             self.execute(instruction)
 
+    def get_states_during_cycles(self, start: int = 20, step: int = 40) -> list[int]:
+        """Get the state of the register at a given cycle"""
+        return self.states_during[start - 1 :: step]
 
 def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
