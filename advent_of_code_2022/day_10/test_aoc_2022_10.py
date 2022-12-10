@@ -29,6 +29,13 @@ def test_parse_sample(sample):
     """Test that input is parsed properly"""
     assert sample == ["noop", "addx 3", "addx -5"]
 
+def test_sample_execution(sample):
+    """Test that sample input is executed properly"""
+    cpu = solver.Cpu()
+    cpu.process_instructions(sample)
+    assert cpu.reg_x == -1, "Register X should be -1"
+    assert cpu.cycles == 5, "Should take 5 cycles to complete"
+    assert cpu.states == [1, 1, 4, 4, -1], "Should have correct states"
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
