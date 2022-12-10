@@ -1,31 +1,39 @@
 from dataclasses import dataclass, field
 import pathlib
+import logging
 
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
+
+logging.basicConfig(level=logging.DEBUG, format="%(message)s")
 
 
 @dataclass
 class Cpu:
     reg_x: int = 1
     cycles: int = 0
-    states: list[int] = field(default_factory=list)
+    states_during: list[int] = field(default_factory=list)
+
+    def tick(self) -> None:
+        """Tick the clock"""
+        self.cycles += 1
+        self.states_during.append(self.reg_x)
+        logging.debug(f"tick: Cycle {self.cycles}, X: {self.reg_x}")
 
     def noop(self) -> None:
         """No operation, takes one cycle to complete"""
-        self.cycles += 1
-        self.states.append(self.reg_x)
+        self.tick()
 
     def addx(self, value: int) -> None:
-        """Add value to register, takes two cycles to complete"""
-        self.noop()
-        self.cycles += 1
+        """Add value to register, completes after two cycles"""
+        self.tick()
+        self.tick()
         self.reg_x += value
-        self.states.append(self.reg_x)
 
     def execute(self, instruction: str) -> None:
         """Execute instruction"""
+        logging.debug(f"--- Executing instruction: {instruction} ---")
         match instruction.split():
             case ["noop"]:
                 self.noop()
