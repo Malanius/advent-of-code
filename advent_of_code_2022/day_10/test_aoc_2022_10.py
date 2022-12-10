@@ -6,8 +6,16 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example1():
-    puzzle_input = (PUZZLE_DIR / "example-1.txt").read_text().strip()
+def sample():
+    puzzle_input = """noop
+addx 3
+addx -5"""
+    return solver.parse(puzzle_input)
+
+
+@pytest.fixture
+def example():
+    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
 
@@ -17,10 +25,9 @@ def example2():
     return solver.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_parse_example1(example1):
+def test_parse_sample(sample):
     """Test that input is parsed properly"""
-    assert example1 == ...
+    assert sample == ["noop", "addx 3", "addx -5"]
 
 
 @pytest.mark.skip(reason="Not implemented")

@@ -5,9 +5,9 @@ from advent_of_code_2022.util.perf import perf
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
-
+    return puzzle_input.splitlines()
 
 @perf
 def part1(data):
