@@ -68,6 +68,9 @@ def parse(puzzle_input: str) -> list[str]:
 @perf
 def part1(data):
     """Solve part 1"""
+    cpu = Cpu()
+    cpu.process_instructions(data)
+    return sum(cpu.get_signal_strength_during_cycles())
 
 
 @perf

@@ -26,8 +26,8 @@ def example() -> list[str]:
 
 
 @pytest.fixture
-def example2():
-    puzzle_input = (PUZZLE_DIR / "example-2.txt").read_text().strip()
+def data() -> list[str]:
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
 
@@ -64,13 +64,17 @@ def test_get_singal_strenght_at_cycle(example: list[str]) -> None:
     ]
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part1_example1(example1):
+def test_part1_example(example):
     """Test part 1 on example input"""
-    assert solver.part1(example1) == ...
+    assert solver.part1(example) == 13140
+
+
+def test_part1_data(data):
+    """Test part 1 on example input"""
+    assert solver.part1(data) == 13680
 
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_example2(example2):
     """Test part 2 on example input"""
-    assert solver.part2(example2) == ...
+    assert solver.part2(example2) == 13680
