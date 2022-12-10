@@ -51,6 +51,15 @@ class Cpu:
         """Get the state of the register at a given cycle"""
         return self.states_during[start - 1 :: step]
 
+    def get_signal_strength_during_cycles(
+        self, start: int = 20, step: int = 40
+    ) -> list[int]:
+        """Get the signal strength at a given cycle"""
+        enumerated = enumerate(self.states_during, 1)
+        strengts = [cycle * state for cycle, state in enumerated]
+        return strengts[start - 1 :: step]
+
+
 def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
     return puzzle_input.splitlines()

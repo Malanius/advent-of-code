@@ -49,6 +49,21 @@ def test_get_state_at_cycle(example: list[str], cpu: Cpu) -> None:
     cpu.process_instructions(example)
     assert cpu.get_states_during_cycles() == [21, 19, 18, 21, 16, 18]
 
+
+def test_get_singal_strenght_at_cycle(example: list[str]) -> None:
+    """Test that we can get the signal strength at a given cycle"""
+    cpu = solver.Cpu()
+    cpu.process_instructions(example)
+    assert cpu.get_signal_strength_during_cycles() == [
+        420,
+        1140,
+        1800,
+        2940,
+        2880,
+        3960,
+    ]
+
+
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input"""
