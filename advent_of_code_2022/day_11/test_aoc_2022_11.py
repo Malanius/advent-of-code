@@ -2,6 +2,7 @@ from collections import deque
 import pathlib
 import pytest
 import aoc_2022_11 as solver
+from aoc_2022_11 import play_rounds, parse, Monkey, part1, part2
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -9,13 +10,13 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 @pytest.fixture
 def example():
     puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
-    return solver.parse(puzzle_input)
+    return parse(puzzle_input)
 
 
 @pytest.fixture
 def example2():
     puzzle_input = (PUZZLE_DIR / "example-2.txt").read_text().strip()
-    return solver.parse(puzzle_input)
+    return parse(puzzle_input)
 
 
 def test_parse_example(example):
@@ -57,13 +58,37 @@ def test_parse_example(example):
     assert monkey3.test_false_target == 1, "Monkey 3 should throw to monkey 1 if false"
 
 
+def test_example_inventories_one_round(example):
+    play_rounds(example, 1)
+    assert example[0].items == deque(
+        [20, 23, 27, 26]
+    ), "Monkey 0 should have items 20, 23, 27, 26"
+    assert example[1].items == deque(
+        [2080, 25, 167, 207, 401, 1046]
+    ), "Monkey 1 should have items 2080, 25, 167, 207, 401, 1046"
+    assert len(example[2].items) == 0, "Monkey 2 should have no items"
+    assert len(example[3].items) == 0, "Monkey 3 should have no items"
+
+
+def test_example_inventories_twenty_rounds(example):
+    play_rounds(example, 20)
+    assert example[0].items == deque(
+        [10, 12, 14, 26, 34]
+    ), "Monkey 0 should have items 10, 12, 14, 26, 34"
+    assert example[1].items == deque(
+        [245, 93, 53, 199, 115]
+    ), "Monkey 1 should have items 245, 93, 53, 199, 115"
+    assert len(example[2].items) == 0, "Monkey 2 should have no items"
+    assert len(example[3].items) == 0, "Monkey 3 should have no items"
+
+
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input"""
-    assert solver.part1(example1) == ...
+    assert part1(example1) == ...
 
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_example2(example2):
     """Test part 2 on example input"""
-    assert solver.part2(example2) == ...
+    assert part2(example2) == ...

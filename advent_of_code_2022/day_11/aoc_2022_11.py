@@ -100,7 +100,7 @@ def parse(puzzle_input: str) -> dict[int, Monkey]:
 
 def play_rounds(monkeys: dict[int, Monkey], rounds: int):
     """Play rounds of the monkey business game"""
-    for i in range(1):
+    for i in range(rounds):
         logging.debug(f"--- Round {i + 1}: ---")
         for monkey in monkeys.values():
             monkey.play_round(monkeys)
@@ -113,7 +113,7 @@ def play_rounds(monkeys: dict[int, Monkey], rounds: int):
 @perf
 def part1(data):
     """Solve part 1"""
-    play_rounds(data, 1)
+    play_rounds(data, 20)
 
 
 @perf
