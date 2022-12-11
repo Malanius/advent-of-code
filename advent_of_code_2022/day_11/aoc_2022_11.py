@@ -1,8 +1,8 @@
 import logging
 import pathlib
 from collections import deque
+from copy import deepcopy
 from dataclasses import dataclass
-from enum import Enum
 from typing import Optional
 
 from advent_of_code_2022.util.perf import perf
@@ -20,6 +20,50 @@ class Monkey:
     test_divisible_by: Optional[int] = None
     test_true_target: Optional[int] = None
     test_false_target: Optional[int] = None
+
+    def inspect(self, item: int) -> int:
+        """Inspect item"""
+        assert self.operation is not None
+        logging.debug(f"  Monkey inspects an item with a worry level of {item}.")
+        old, new = item, item
+        logging.debug(f"->> {self.operation}")
+        exec(self.operation)
+        logging.debug(f"    Worry level is increased to {new}.")
+        bored = new // 3
+        logging.debug(
+            f"    Monkey gets bored with item. Worry level is divided by 3 to {bored}."
+        )
+        return bored
+
+    def test(self, worry: int) -> bool:
+        """Test item"""
+        assert self.test_divisible_by is not None
+        divisible = worry % self.test_divisible_by == 0
+        logging.debug(
+            f"    Current worry level is{'not ' if divisible else ''} divisible by {self.test_divisible_by}."
+        )
+        return divisible
+
+    def throw(self, target: "Monkey", item: int):
+        """Throw item to target monkey"""
+        assert target.items is not None
+        logging.debug(
+            f"    Item with worry level {item} is thrown to monkey {target.id}."
+        )
+        target.items.append(item)
+
+    def play_round(self, monkeys: dict[int, "Monkey"]):
+        """Play one round of the monkey business game"""
+        logging.debug(f"Monkey {self.id}:")
+        while self.items:
+            item = self.items.popleft()
+            item = self.inspect(item)
+            if self.test(item):
+                target = self.test_true_target
+            else:
+                target = self.test_false_target
+            assert target is not None
+            self.throw(monkeys[target], item)
 
 
 def parse(puzzle_input: str) -> dict[int, Monkey]:
@@ -55,9 +99,22 @@ def parse(puzzle_input: str) -> dict[int, Monkey]:
     return monkeys
 
 
+def play_rounds(monkeys: dict[int, Monkey], rounds: int):
+    """Play rounds of the monkey business game"""
+    for i in range(1):
+        logging.debug(f"--- Round {i + 1}: ---")
+        for monkey in monkeys.values():
+            monkey.play_round(monkeys)
+        logging.debug("")
+        for monkey in monkeys.values():
+            logging.debug(f"Monkey {monkey.id}: {monkey.items}")
+        logging.debug("")
+
+
 @perf
 def part1(data):
     """Solve part 1"""
+    play_rounds(data, 1)
 
 
 @perf
@@ -68,12 +125,12 @@ def part2(data):
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
     data = parse(puzzle_input)
-    solution1 = part1(data)
-    solution2 = part2(data)
+    solution1 = part1(deepcopy(data))
+    solution2 = part2(deepcopy(data))
     return solution1, solution2
 
 
 if __name__ == "__main__":
-    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
+    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
     solutions = solve(puzzle_input)
     print("\n".join(str(solution) for solution in solutions))
