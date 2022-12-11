@@ -39,7 +39,7 @@ class Monkey:
         assert self.test_divisible_by is not None
         divisible = worry % self.test_divisible_by == 0
         logging.debug(
-            f"    Current worry level is{'not ' if divisible else ''} divisible by {self.test_divisible_by}."
+            f"    Current worry level is{'' if divisible else ' not'} divisible by {self.test_divisible_by}."
         )
         return divisible
 
