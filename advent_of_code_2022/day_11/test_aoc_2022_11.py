@@ -14,8 +14,8 @@ def example():
 
 
 @pytest.fixture
-def example2():
-    puzzle_input = (PUZZLE_DIR / "example-2.txt").read_text().strip()
+def data():
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return parse(puzzle_input)
 
 
@@ -90,10 +90,14 @@ def test_example_inspects(example):
     assert example[3].inspects == 105, "Monkey 3 should have inspected 105 items"
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part1_example1(example1):
+def test_part1_example(example):
     """Test part 1 on example input"""
-    assert part1(example1) == ...
+    assert part1(example) == 10605
+
+
+def test_part1_data(data):
+    """Test part 1 on example input"""
+    assert part1(data) == 119715
 
 
 @pytest.mark.skip(reason="Not implemented")

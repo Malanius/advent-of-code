@@ -121,6 +121,11 @@ def play_rounds(monkeys: dict[int, Monkey], rounds: int):
 def part1(data):
     """Solve part 1"""
     play_rounds(data, 20)
+    monkeys_activity = sorted(
+        [monkey.inspects for monkey in data.values()], reverse=True
+    )
+    monkey_bussiness = monkeys_activity[0] * monkeys_activity[1]
+    return monkey_bussiness
 
 
 @perf
@@ -137,6 +142,6 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":
-    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     solutions = solve(puzzle_input)
     print("\n".join(str(solution) for solution in solutions))
