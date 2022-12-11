@@ -20,10 +20,12 @@ class Monkey:
     test_divisible_by: Optional[int] = None
     test_true_target: Optional[int] = None
     test_false_target: Optional[int] = None
+    inspects: int = 0
 
     def inspect(self, item: int) -> int:
         """Inspect item"""
         assert self.operation is not None
+        self.inspects += 1
         logging.debug(f"  Monkey inspects an item with a worry level of {item}.")
         old = item
         new = eval(self.operation)
@@ -107,6 +109,11 @@ def play_rounds(monkeys: dict[int, Monkey], rounds: int):
         logging.debug("")
         for monkey in monkeys.values():
             logging.debug(f"Monkey {monkey.id}: {monkey.items}")
+        logging.debug("")
+        for monkey in monkeys.values():
+            logging.debug(
+                f"Monkey {monkey.id} inspected items {monkey.inspects} times."
+            )
         logging.debug("")
 
 

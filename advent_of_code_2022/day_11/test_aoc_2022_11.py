@@ -82,6 +82,14 @@ def test_example_inventories_twenty_rounds(example):
     assert len(example[3].items) == 0, "Monkey 3 should have no items"
 
 
+def test_example_inspects(example):
+    play_rounds(example, 20)
+    assert example[0].inspects == 101, "Monkey 0 should have inspected 101 items"
+    assert example[1].inspects == 95, "Monkey 1 should have inspected 95 items"
+    assert example[2].inspects == 7, "Monkey 2 should have inspected 7 items"
+    assert example[3].inspects == 105, "Monkey 3 should have inspected 105 items"
+
+
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input"""
