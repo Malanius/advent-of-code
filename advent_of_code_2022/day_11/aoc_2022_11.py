@@ -21,6 +21,7 @@ class Monkey:
     test_true_target: Optional[int] = None
     test_false_target: Optional[int] = None
     inspects: int = 0
+    worry_managed = True
 
     def inspect(self, item: int) -> int:
         """Inspect item"""
@@ -30,7 +31,9 @@ class Monkey:
         old = item
         new = eval(self.operation)
         logging.debug(f"    Worry level is increased to {new}.")
-        bored = new // 3
+        bored = new
+        if self.worry_managed:
+            bored = new // 3
         logging.debug(
             f"    Monkey gets bored with item. Worry level is divided by 3 to {bored}."
         )
@@ -131,6 +134,9 @@ def part1(data):
 @perf
 def part2(data):
     """Solve part 2"""
+    for monkey in data.values():
+        monkey.worry_managed = False
+    play_rounds(data, 10_000)
 
 
 def solve(puzzle_input):
