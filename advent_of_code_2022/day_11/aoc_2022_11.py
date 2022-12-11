@@ -1,4 +1,5 @@
 import logging
+import math
 import pathlib
 from collections import deque
 from copy import deepcopy
@@ -9,29 +10,31 @@ from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
-logging.basicConfig(level=logging.DEBUG, format="%(message)s")
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 @dataclass
 class Monkey:
     id: int
-    items: Optional[deque] = None
+    items: Optional[deque[int]] = None
     operation: Optional[str] = None
     test_divisible_by: Optional[int] = None
     test_true_target: Optional[int] = None
     test_false_target: Optional[int] = None
     inspects: int = 0
     worry_managed = True
+    supermod: Optional[int] = None
 
     def inspect(self, item: int) -> int:
         """Inspect item"""
         assert self.operation is not None
+        assert self.supermod is not None
         self.inspects += 1
         logging.debug(f"  Monkey inspects an item with a worry level of {item}.")
         old = item
         new = eval(self.operation)
         logging.debug(f"    Worry level is increased to {new}.")
-        bored = new
+        bored = new % self.supermod
         if self.worry_managed:
             bored = new // 3
         logging.debug(
@@ -99,6 +102,18 @@ def parse(puzzle_input: str) -> dict[int, Monkey]:
             case ["If", "false:", "throw", "to", "monkey", n]:
                 monkeys[current_monkey].test_false_target = int(n)
                 logging.debug(f"    Monkey {current_monkey} tests false throws to {n}")
+
+    supermod = math.prod(
+        [
+            monkey.test_divisible_by
+            for monkey in monkeys.values()
+            if monkey.test_divisible_by is not None
+        ]
+    )
+    print(f"Supermod: {supermod}")
+    for monkey in monkeys.values():
+        monkey.supermod = supermod
+
     logging.debug(monkeys)
     return monkeys
 
