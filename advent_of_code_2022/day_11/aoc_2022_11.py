@@ -25,9 +25,8 @@ class Monkey:
         """Inspect item"""
         assert self.operation is not None
         logging.debug(f"  Monkey inspects an item with a worry level of {item}.")
-        old, new = item, item
-        logging.debug(f"->> {self.operation}")
-        exec(self.operation)
+        old = item
+        new = eval(self.operation)
         logging.debug(f"    Worry level is increased to {new}.")
         bored = new // 3
         logging.debug(
@@ -82,7 +81,7 @@ def parse(puzzle_input: str) -> dict[int, Monkey]:
                 items = deque(int(item) for item in items)
                 monkeys[current_monkey].items = items
                 logging.debug(f"  Monkey {current_monkey} has items {items}")
-            case ["Operation:", *operation]:
+            case ["Operation:", "new", "=", *operation]:
                 operation = " ".join(operation)
                 monkeys[current_monkey].operation = operation
                 logging.debug(f"  Monkey {current_monkey} has operation: {operation}")
