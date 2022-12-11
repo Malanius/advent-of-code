@@ -8,18 +8,18 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example():
+def example() -> dict[int, Monkey]:
     puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
     return parse(puzzle_input)
 
 
 @pytest.fixture
-def data():
+def data() -> dict[int, Monkey]:
     puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return parse(puzzle_input)
 
 
-def test_parse_example(example):
+def test_parse_example(example: dict[int, Monkey]) -> None:
     """Test that input is parsed properly"""
     assert len(example) == 4, "Should have 4 monkeys"
 
@@ -58,7 +58,7 @@ def test_parse_example(example):
     assert monkey3.test_false_target == 1, "Monkey 3 should throw to monkey 1 if false"
 
 
-def test_example_inventories_one_round(example):
+def test_example_inventories_one_round(example: dict[int, Monkey]) -> None:
     play_rounds(example, 1)
     assert example[0].items == deque(
         [20, 23, 27, 26]
@@ -66,11 +66,11 @@ def test_example_inventories_one_round(example):
     assert example[1].items == deque(
         [2080, 25, 167, 207, 401, 1046]
     ), "Monkey 1 should have items 2080, 25, 167, 207, 401, 1046"
-    assert len(example[2].items) == 0, "Monkey 2 should have no items"
-    assert len(example[3].items) == 0, "Monkey 3 should have no items"
+    assert example[2].items == deque([]), "Monkey 2 should have no items"
+    assert example[3].items == deque([]), "Monkey 3 should have no items"
 
 
-def test_example_inventories_twenty_rounds(example):
+def test_example_inventories_twenty_rounds(example: dict[int, Monkey]):
     play_rounds(example, 20)
     assert example[0].items == deque(
         [10, 12, 14, 26, 34]
@@ -78,11 +78,11 @@ def test_example_inventories_twenty_rounds(example):
     assert example[1].items == deque(
         [245, 93, 53, 199, 115]
     ), "Monkey 1 should have items 245, 93, 53, 199, 115"
-    assert len(example[2].items) == 0, "Monkey 2 should have no items"
-    assert len(example[3].items) == 0, "Monkey 3 should have no items"
+    assert example[2].items == deque([]), "Monkey 2 should have no items"
+    assert example[3].items == deque([]), "Monkey 3 should have no items"
 
 
-def test_example_inspects(example):
+def test_example_inspects_20_rounds(example):
     play_rounds(example, 20)
     assert example[0].inspects == 101, "Monkey 0 should have inspected 101 items"
     assert example[1].inspects == 95, "Monkey 1 should have inspected 95 items"
@@ -92,15 +92,24 @@ def test_example_inspects(example):
 
 def test_part1_example(example):
     """Test part 1 on example input"""
-    assert part1(example) == 10605
+    assert part1(example) == 10_605
 
 
 def test_part1_data(data):
     """Test part 1 on example input"""
-    assert part1(data) == 119715
+    assert part1(data) == 119_715
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
+def test_example_inspects_10k_rounds(example: dict[int, Monkey]):
+    for monkey in example.values():
+        monkey.worry_managed = False
+    play_rounds(example, 10_000)
+    assert example[0].inspects == 52_166, "Monkey 0 should have inspected 52166 items"
+    assert example[1].inspects == 47_830, "Monkey 1 should have inspected 47830 items"
+    assert example[2].inspects == 1_938, "Monkey 2 should have inspected 1938 items"
+    assert example[3].inspects == 52_013, "Monkey 3 should have inspected 52013 items"
+
+
+def test_part2_example(example):
     """Test part 2 on example input"""
-    assert part2(example2) == ...
+    assert part2(example) == 2_713_310_158
