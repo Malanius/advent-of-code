@@ -110,7 +110,7 @@ def parse(puzzle_input: str) -> dict[int, Monkey]:
             if monkey.test_divisible_by is not None
         ]
     )
-    print(f"Supermod: {supermod}")
+    logging.debug(f"Supermod: {supermod}")
     for monkey in monkeys.values():
         monkey.supermod = supermod
 
@@ -147,11 +147,16 @@ def part1(data):
 
 
 @perf
-def part2(data):
+def part2(data: dict[int, Monkey]):
     """Solve part 2"""
     for monkey in data.values():
         monkey.worry_managed = False
     play_rounds(data, 10_000)
+    monkeys_activity = sorted(
+        [monkey.inspects for monkey in data.values()], reverse=True
+    )
+    monkey_bussiness = monkeys_activity[0] * monkeys_activity[1]
+    return monkey_bussiness
 
 
 def solve(puzzle_input):
