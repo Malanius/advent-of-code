@@ -9,7 +9,7 @@ from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
-logging.basicConfig(level=logging.DEBUG, format="%(message)s")
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 class ParsedInput(TypedDict):
@@ -154,7 +154,8 @@ def find_path(
 @perf
 def part1(data):
     """Solve part 1"""
-    print_grid(data["grid"])
+    path = find_path(data["grid"], data["start"], data["end"])
+    return len(path) - 1  # don't count start
 
 
 @perf
@@ -171,6 +172,6 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":
-    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     solutions = solve(puzzle_input)
     print("\n".join(str(solution) for solution in solutions))
