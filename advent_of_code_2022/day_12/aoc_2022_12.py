@@ -1,3 +1,4 @@
+from collections import deque
 import logging
 import pathlib
 from dataclasses import dataclass
@@ -28,7 +29,7 @@ class Coord:
     def is_valid(cls, coord: "Coord", grid_size: int) -> bool:
         return 0 <= coord.x < grid_size and 0 <= coord.y < grid_size
 
-    def can_move(self, other: "Coord") -> bool:
+    def can_move_to(self, other: "Coord") -> bool:
         # can move on same height
         # can climb down by any
         if self.height >= other.height:
@@ -42,11 +43,32 @@ class Coord:
 
         return False
 
+    def get_path(self) -> list["Coord"]:
+        path = []
+        current = self
+        while current:
+            logging.debug(f"Adding {current} to path")
+            path.append(current)
+            current = current.parent
+        return path
+
     def __add__(self, other):
         return Coord(self.x + other.x, self.y + other.y)
 
     def __sub__(self, other):
         return Coord(self.x - other.x, self.y - other.y)
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+    def __hash__(self):
+        return hash((self.x, self.y))
+
+    def __repr__(self):
+        return f"Coord({self.x}, {self.y}, {self.height})"
+
+    def __str__(self) -> str:
+        return f"({self.x}, {self.y}, {self.height})"
 
 
 class Direction(Enum):
@@ -82,6 +104,51 @@ def parse(puzzle_input: str) -> ParsedInput:
 def print_grid(grid):
     for row in grid:
         print("".join(row))
+
+
+def find_path(
+    grid: list[list[str]], start: tuple[int, int], end: tuple[int, int]
+) -> list[Coord]:
+    grid_size_x = len(grid)
+    grid_size_y = len(grid[0])
+    start_coord = Coord(*start, height=ord(grid[start[0]][start[1]]) - ord("a"))
+    end_coord = Coord(*end, height=ord(grid[end[0]][end[1]]) - ord("a"))
+    queue = deque([start_coord])
+    visited = set()
+
+    while queue:
+        current = queue.popleft()
+        logging.debug(f"Processing: {current}")
+
+        if current in visited:
+            logging.debug(f"Already visited: {current}")
+            continue
+        visited.add(current)
+
+        if current == end_coord:
+            logging.debug(f"Found end: {current}")
+            return current.get_path()
+
+        for direction in Direction:
+            new_coord = current + direction.value
+            logging.debug(f"New coord: {new_coord}")
+
+            if not Coord.is_valid(new_coord, (grid_size_x, grid_size_y)):
+                logging.debug(f"Invalid coord: {new_coord}")
+                continue
+
+            new_coord.height = ord(grid[new_coord.x][new_coord.y]) - ord("a")
+
+            if not current.can_move_to(new_coord):
+                logging.debug(f"Can't move to: {new_coord}")
+                continue
+
+            logging.debug(f"Can move to: {new_coord}")
+            new_coord.parent = current
+            queue.append(new_coord)
+
+    logging.debug("No path found")
+    return []
 
 
 @perf
