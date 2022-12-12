@@ -1,3 +1,4 @@
+import logging
 import pathlib
 from dataclasses import dataclass
 from enum import Enum
@@ -6,6 +7,8 @@ from typing import Optional, TypedDict
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
+
+logging.basicConfig(level=logging.DEBUG, format="%(message)s")
 
 
 class ParsedInput(TypedDict):
@@ -29,10 +32,12 @@ class Coord:
         # can move on same height
         # can climb down by any
         if self.height >= other.height:
+            logging.debug(f"Can move from {self.height} to {other.height}")
             return True
 
         # can climb up by one
         if other.height - self.height == 1:
+            logging.debug(f"Can climb from {self.height} to {other.height}")
             return True
 
         return False
