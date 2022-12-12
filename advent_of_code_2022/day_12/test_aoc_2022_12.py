@@ -6,8 +6,8 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example1():
-    puzzle_input = (PUZZLE_DIR / "example-1.txt").read_text().strip()
+def example():
+    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
 
@@ -17,10 +17,17 @@ def example2():
     return solver.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_parse_example1(example1):
+def test_parse_example(example: solver.ParsedInput):
     """Test that input is parsed properly"""
-    assert example1 == ...
+    assert example["start"] == (0, 0)
+    assert example["end"] == (2, 5)
+    assert example["grid"] == [
+        ["a", "a", "b", "q", "p", "o", "n", "m"],
+        ["a", "b", "c", "r", "y", "x", "x", "l"],
+        ["a", "c", "c", "s", "z", "z", "x", "k"],
+        ["a", "c", "c", "t", "u", "v", "w", "j"],
+        ["a", "b", "d", "e", "f", "g", "h", "i"],
+    ]
 
 
 @pytest.mark.skip(reason="Not implemented")
