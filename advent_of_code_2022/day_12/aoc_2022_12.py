@@ -26,8 +26,8 @@ class Coord:
     parent: Optional["Coord"] = None
 
     @classmethod
-    def is_valid(cls, coord: "Coord", grid_size: int) -> bool:
-        return 0 <= coord.x < grid_size and 0 <= coord.y < grid_size
+    def is_valid(cls, coord: "Coord", grid_size: tuple[int, int]) -> bool:
+        return 0 <= coord.x < grid_size[0] and 0 <= coord.y < grid_size[1]
 
     def can_move_to(self, other: "Coord") -> bool:
         # can move on same height
