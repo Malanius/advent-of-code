@@ -40,7 +40,11 @@ def test_part1_data(data: solver.ParsedInput) -> None:
     assert solver.part1(data) == 520
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
+def test_part2_example2(example):
     """Test part 2 on example input"""
-    assert solver.part2(example2) == ...
+    assert solver.part2(example) == 29
+
+
+def test_part2_data(data):
+    """Test part 2 on example input"""
+    assert solver.part2(data) == 508

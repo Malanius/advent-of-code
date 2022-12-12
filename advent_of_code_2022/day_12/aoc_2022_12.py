@@ -152,15 +152,29 @@ def find_path(
 
 
 @perf
-def part1(data):
+def part1(data: ParsedInput) -> int:
     """Solve part 1"""
     path = find_path(data["grid"], data["start"], data["end"])
     return len(path) - 1  # don't count start
 
 
 @perf
-def part2(data):
+def part2(data: ParsedInput) -> int:
     """Solve part 2"""
+    grid = data["grid"]
+    possible_starts =[]
+    for x, row in enumerate(grid):
+        for y, char in enumerate(row):
+            if char == "a":
+                possible_starts.append((x, y))
+
+    paths = []
+    for start in possible_starts:
+        path = find_path(grid, start, data["end"])
+        if path:
+            paths.append(path)
+
+    return min(len(path) - 1 for path in paths)
 
 
 def solve(puzzle_input):
