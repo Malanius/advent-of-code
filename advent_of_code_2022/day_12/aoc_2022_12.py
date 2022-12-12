@@ -1,5 +1,7 @@
 import pathlib
-from typing import TypedDict
+from dataclasses import dataclass
+from enum import Enum
+from typing import Optional, TypedDict
 
 from advent_of_code_2022.util.perf import perf
 
@@ -10,6 +12,43 @@ class ParsedInput(TypedDict):
     grid: list[list[str]]
     start: tuple[int, int]
     end: tuple[int, int]
+
+
+@dataclass
+class Coord:
+    x: int
+    y: int
+    height: int = 0
+    parent: Optional["Coord"] = None
+
+    @classmethod
+    def is_valid(cls, coord: "Coord", grid_size: int) -> bool:
+        return 0 <= coord.x < grid_size and 0 <= coord.y < grid_size
+
+    def can_move(self, other: "Coord") -> bool:
+        # can move on same height
+        # can climb down by any
+        if self.height >= other.height:
+            return True
+
+        # can climb up by one
+        if other.height - self.height == 1:
+            return True
+
+        return False
+
+    def __add__(self, other):
+        return Coord(self.x + other.x, self.y + other.y)
+
+    def __sub__(self, other):
+        return Coord(self.x - other.x, self.y - other.y)
+
+
+class Direction(Enum):
+    UP = Coord(0, -1)
+    DOWN = Coord(0, 1)
+    LEFT = Coord(-1, 0)
+    RIGHT = Coord(1, 0)
 
 
 def parse(puzzle_input: str) -> ParsedInput:
