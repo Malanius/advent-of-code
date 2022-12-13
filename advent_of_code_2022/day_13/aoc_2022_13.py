@@ -102,6 +102,6 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":
-    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     solutions = solve(puzzle_input)
     print("\n".join(str(solution) for solution in solutions))

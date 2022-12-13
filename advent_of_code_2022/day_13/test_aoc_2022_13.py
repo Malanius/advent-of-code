@@ -37,6 +37,11 @@ def test_part1_example(example):
     assert solver.part1(example) == 13
 
 
+def test_part1_data(data):
+    """Test part 1 on puzzle input"""
+    assert solver.part1(data) == 6101
+
+
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_example2(example2):
     """Test part 2 on example input"""
