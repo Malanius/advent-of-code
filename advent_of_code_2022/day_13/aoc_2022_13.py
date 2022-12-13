@@ -23,7 +23,7 @@ class Check(Enum):
     OK = 1
 
 
-def parse(puzzle_input: str) -> Generator[Pair, None, None]:
+def parse_part1(puzzle_input: str) -> Generator[Pair, None, None]:
     """Parse input"""
     pairs = puzzle_input.split("\n\n")
     for pair in pairs:
@@ -32,6 +32,11 @@ def parse(puzzle_input: str) -> Generator[Pair, None, None]:
         left = json.loads(parts[0])
         right = json.loads(parts[1])
         yield Pair(left, right)
+
+
+def parse_part2(puzzle_input: str) -> list[list]:
+    """Parse input"""
+    return [json.loads(line) for line in puzzle_input.splitlines() if line]
 
 
 def is_ordered_correctly(pair: Pair) -> Check:
@@ -95,9 +100,10 @@ def part2(data):
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
-    data = parse(puzzle_input)
-    solution1 = part1(data)
-    solution2 = part2(data)
+    data_part1 = parse_part1(puzzle_input)
+    data_part2 = parse_part2(puzzle_input)
+    solution1 = part1(data_part1)
+    solution2 = part2(data_part2)
     return solution1, solution2
 
 
