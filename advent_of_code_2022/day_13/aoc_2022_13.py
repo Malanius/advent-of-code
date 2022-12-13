@@ -1,12 +1,24 @@
+from collections import namedtuple
+import json
 import pathlib
+from typing import Generator
 
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
+Pair = namedtuple("Pair", ["left", "right"])
 
-def parse(puzzle_input):
+
+def parse(puzzle_input: str) -> Generator[Pair, None, None]:
     """Parse input"""
+    pairs = puzzle_input.split("\n\n")
+    for pair in pairs:
+        parts = pair.splitlines()
+        assert len(parts) == 2
+        left = json.loads(parts[0])
+        right = json.loads(parts[1])
+        yield Pair(left, right)
 
 
 @perf
