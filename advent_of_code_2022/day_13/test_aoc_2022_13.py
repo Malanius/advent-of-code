@@ -23,6 +23,10 @@ def data_part1():
     puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return solver.parse_part1(puzzle_input)
 
+@pytest.fixture
+def data_part2():
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
+    return solver.parse_part2(puzzle_input)
 
 def test_parse_example_part1(example_part1):
     """Test that input is parsed properly"""
@@ -69,7 +73,11 @@ def test_part1_data(data_part1):
     assert solver.part1(data_part1) == 6101
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
+def test_part2_example(example_part2):
     """Test part 2 on example input"""
-    assert solver.part2(example2) == ...
+    assert solver.part2(example_part2) == 140
+
+
+def test_part2_data(data_part2):
+    """Test part 2 on example input"""
+    assert solver.part2(data_part2) == 21909

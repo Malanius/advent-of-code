@@ -1,8 +1,8 @@
 import json
 import logging
+import math
 import pathlib
 from collections import namedtuple
-from dataclasses import dataclass
 from enum import Enum
 from itertools import zip_longest
 from typing import Generator
@@ -10,7 +10,7 @@ from typing import Generator
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
-logging.basicConfig(level=logging.DEBUG, format="%(message)s")
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 Pair = namedtuple("Pair", ["left", "right"])
 
@@ -94,8 +94,30 @@ def part1(data: Generator[Pair, None, None]) -> int:
 
 
 @perf
-def part2(data):
+def part2(packets: list[list]) -> int:
     """Solve part 2"""
+    divider_packets = [[[2]], [[6]]]
+    all_packets = packets + divider_packets
+    is_sorted = False
+
+    while not is_sorted:
+        is_sorted = True
+        for index, (left, right) in enumerate(zip(all_packets, all_packets[1:])):
+            if is_ordered_correctly(Pair(left, right)) == Check.WRONG:
+                is_sorted = False
+                all_packets[index], all_packets[index + 1] = (
+                    all_packets[index + 1],
+                    all_packets[index],
+                )
+                break
+
+    divider_indexes = [
+        index
+        for index, packet in enumerate(all_packets, start=1)
+        if packet in divider_packets
+    ]
+
+    return math.prod(divider_indexes)
 
 
 def solve(puzzle_input):
