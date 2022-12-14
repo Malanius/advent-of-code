@@ -50,7 +50,10 @@ class Sand(Element):
         return False
 
 
+@dataclass
 class Simulation:
+    grid: list[list[Element]] = field(default_factory=list)
+
     def __str__(self) -> str:
         return "\n".join("".join(str(element) for element in row) for row in self.grid)
 
@@ -75,7 +78,10 @@ class Simulation:
         self.size_y = max_y
 
     def _create_grid(self) -> None:
-        self.grid = [[Air() for _ in range(self.size_x)] for _ in range(self.size_y)]
+        self.grid = [
+            [Air() for _ in range(self.size_x + 1)] for _ in range(self.size_y + 1)
+        ]
+
 
     def bootstrap(self, puzzle_input: str) -> None:
         self._parse_data(puzzle_input)
