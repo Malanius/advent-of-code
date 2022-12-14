@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+from enum import Enum
 import pathlib
 
 from advent_of_code_2022.util.perf import perf
@@ -5,7 +7,47 @@ from advent_of_code_2022.util.perf import perf
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
-def parse(puzzle_input):
+class Direction(Enum):
+    DOWN = (1, 0)
+    DOWN_LEFT = (1, -1)
+    DOWN_RIGHT = (1, 1)
+
+
+class Element:
+    pass
+
+
+class SandGenerator(Element):
+    def __str__(self) -> str:
+        return "+"
+
+
+class Rock(Element):
+    def __str__(self) -> str:
+        return "#"
+
+
+@dataclass
+class Air(Element):
+    visited: bool = False
+
+    def __str__(self) -> str:
+        return "~" if self.visited else "."
+
+
+@dataclass
+class Sand(Element):
+    is_resting: bool = False
+
+    def __str__(self) -> str:
+        return "o" if self.is_resting else "*"
+
+    def can_move_to(self, element: Element) -> bool:
+        if isinstance(element, Air):
+            return True
+        if isinstance(element, Sand):
+            return element.is_resting
+        return False
     """Parse input"""
 
 
