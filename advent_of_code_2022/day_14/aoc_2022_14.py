@@ -1,10 +1,14 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
+from itertools import pairwise
 import pathlib
+import logging
 
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
+
+logging.basicConfig(level=logging.DEBUG, format="%(message)s")
 
 
 class Direction(Enum):
@@ -76,16 +80,44 @@ class Simulation:
             self.rock_lines.append(rock_line_coords)
         self.size_x = max_x - int(min_x)
         self.size_y = max_y
+        self.offset_x = int(min_x)
 
     def _create_grid(self) -> None:
         self.grid = [
             [Air() for _ in range(self.size_x + 1)] for _ in range(self.size_y + 1)
         ]
 
+    def _create_vertical_rock(self, start: tuple[int, int], end: tuple[int, int]) -> None:
+        logging.debug(f"Drawing vertical line, start: {start}, end: {end}")
+        for y in range(start[1], end[1] + 1):
+            self.grid[y][start[0] - self.offset_x] = Rock()
+
+    def _create_horizontal_rock(
+        self, start: tuple[int, int], end: tuple[int, int]
+    ) -> None:
+        logging.debug(f"Drawing horizontal line, start: {start}, end: {end}")
+        draw_left = start[0] < end[0]
+        if draw_left:
+            start, end = end, start
+        for x in range(start[0], end[0] - 1, -1):
+            self.grid[start[1]][x - self.offset_x] = Rock()
+
+    def _create_rock(self, start: tuple[int, int], end: tuple[int, int]) -> None:
+        is_vertitcal = start[0] == end[0]
+        if is_vertitcal:
+            self._create_vertical_rock(start, end)
+        else:
+            self._create_horizontal_rock(start, end)
+
+    def _create_rocks(self) -> None:
+        for rock_line in self.rock_lines:
+            for start, end in pairwise(rock_line):
+                self._create_rock(start, end)
 
     def bootstrap(self, puzzle_input: str) -> None:
         self._parse_data(puzzle_input)
         self._create_grid()
+        self._create_rocks()
 
 
 def parse(puzzle_input: str) -> Simulation:
