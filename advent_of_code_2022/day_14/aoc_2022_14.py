@@ -57,6 +57,7 @@ class Sand(Element):
 @dataclass
 class Simulation:
     grid: list[list[Element]] = field(default_factory=list)
+    generator_coords: tuple[int, int] = field(default_factory=lambda: (500, 0))
 
     def __str__(self) -> str:
         return "\n".join("".join(str(element) for element in row) for row in self.grid)
