@@ -88,4 +88,8 @@ class Simulation:
         if self.interactive:
             os.system("clear")
         while True:
-            self._move_sand()
+            try:
+                self._move_sand()
+            except IndexError:
+                self._print_state()
+                break
