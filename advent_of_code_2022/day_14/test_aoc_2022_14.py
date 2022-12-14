@@ -1,14 +1,15 @@
 import pathlib
-import textwrap
 
 import aoc_2022_14 as solver
 import pytest
+
+from advent_of_code_2022.day_14.grid import Grid
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def simulation() -> solver.Simulation:
+def grid() -> Grid:
     puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
@@ -17,23 +18,6 @@ def simulation() -> solver.Simulation:
 def example2():
     puzzle_input = (PUZZLE_DIR / "example-2.txt").read_text().strip()
     return solver.parse(puzzle_input)
-
-
-def test_parse_example(simulation):
-    """Test that input is parsed properly"""
-    assert str(simulation) == textwrap.dedent(
-        """\
-        ......+...
-        ..........
-        ..........
-        ..........
-        ....#...##
-        ....#...#.
-        ..###...#.
-        ........#.
-        ........#.
-        #########."""
-    )
 
 
 @pytest.mark.skip(reason="Not implemented")
