@@ -5,7 +5,7 @@ import sys
 import time
 
 from advent_of_code_2022.day_14.direction import Direction
-from advent_of_code_2022.day_14.elements import Air, Sand
+from advent_of_code_2022.day_14.elements import Air, Grain
 from advent_of_code_2022.day_14.grid import Grid
 
 
@@ -14,11 +14,12 @@ class Simulation:
     grid: Grid
     visited_airs: list[Air] = field(default_factory=list)
     interactive: bool = False
+    sand_count: int = 0
 
     def _spawn_sand(self) -> None:
         gen_x, gen_y = self.grid.generator_coords
         gen_x -= self.grid.offset_x
-        self.current_grain = Sand((gen_x, gen_y))
+        self.current_grain = Grain((gen_x, gen_y))
 
     def _mark_visited(self) -> None:
         gen_x, gen_y = self.grid.generator_coords
@@ -46,7 +47,7 @@ class Simulation:
         sys.stdout.flush()
         time.sleep(0.1)
 
-    def _move_sand(self) -> None:
+    def _pour_sand(self) -> None:
         self._spawn_sand()
         while True:
             x, y = self.current_grain.coords
@@ -77,6 +78,7 @@ class Simulation:
 
             self._mark_resting()
             self._clear_air()
+            self.sand_count += 1
 
             break
 
@@ -89,7 +91,7 @@ class Simulation:
             os.system("clear")
         while True:
             try:
-                self._move_sand()
+                self._pour_sand()
             except IndexError:
                 self._print_state()
                 break

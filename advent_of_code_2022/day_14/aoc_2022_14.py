@@ -22,7 +22,7 @@ def part1(grid: Grid, interactive: bool = False):
     """Solve part 1"""
     simulation = Simulation(grid, interactive=interactive)
     simulation.run()
-    return simulation.grid.count_resting_sand()
+    return simulation.sand_count
 
 @perf
 def part2(data):

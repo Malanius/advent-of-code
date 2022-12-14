@@ -26,7 +26,7 @@ class Air(Element):
 
 
 @dataclass
-class Sand(Element):
+class Grain(Element):
     coords: tuple[int, int]
     is_resting: bool = False
 
@@ -36,7 +36,7 @@ class Sand(Element):
     def can_move_to(self, element: Element) -> bool:
         if isinstance(element, Air):
             return True
-        if isinstance(element, Sand):
+        if isinstance(element, Grain):
             return not element.is_resting
         return False
 

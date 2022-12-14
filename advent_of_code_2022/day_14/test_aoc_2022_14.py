@@ -9,7 +9,7 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def grid() -> Grid:
+def sample_grid() -> Grid:
     puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
@@ -20,10 +20,9 @@ def example2():
     return solver.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part1_example1(example1):
+def test_part1_example1(sample_grid):
     """Test part 1 on example input"""
-    assert solver.part1(example1) == ...
+    assert solver.part1(sample_grid) == 24
 
 
 @pytest.mark.skip(reason="Not implemented")

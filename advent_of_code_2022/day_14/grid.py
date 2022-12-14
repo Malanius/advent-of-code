@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass, field
 from itertools import pairwise
 
-from advent_of_code_2022.day_14.elements import Air, Element, Rock, SandGenerator
+from advent_of_code_2022.day_14.elements import Air, Element, Rock, Grain, SandGenerator
 
 
 @dataclass
@@ -69,13 +69,14 @@ class Grid:
                 self._create_rock(start, end)
 
     def _create_sand_generator(self) -> None:
-        self.grid[0][500 - self.offset_x] = SandGenerator()
+        gen_x, gen_y = self.generator_coords
+        self.grid[gen_y][gen_x - self.offset_x] = SandGenerator()
 
     @classmethod
     def construct(cls, puzzle_input: str) -> "Grid":
-        simulation = Grid()
-        simulation._parse_data(puzzle_input)
-        simulation._create_grid()
-        simulation._create_rocks()
-        simulation._create_sand_generator()
-        return simulation
+        grid = Grid()
+        grid._parse_data(puzzle_input)
+        grid._create_grid()
+        grid._create_rocks()
+        grid._create_sand_generator()
+        return grid
