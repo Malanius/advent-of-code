@@ -117,18 +117,19 @@ class Simulation:
     def _create_sand_generator(self) -> None:
         self.grid[0][500 - self.offset_x] = SandGenerator()
 
-    def bootstrap(self, puzzle_input: str) -> None:
-        self._parse_data(puzzle_input)
-        self._create_grid()
-        self._create_rocks()
-        self._create_sand_generator()
+    @classmethod
+    def bootstrap(cls, puzzle_input: str) -> "Simulation":
+        simulation = Simulation()
+        simulation._parse_data(puzzle_input)
+        simulation._create_grid()
+        simulation._create_rocks()
+        simulation._create_sand_generator()
+        return simulation
 
 
 def parse(puzzle_input: str) -> Simulation:
     """Parse input"""
-    simulation = Simulation()
-    simulation.bootstrap(puzzle_input)
-    print(simulation)
+    simulation = Simulation.bootstrap(puzzle_input)
     return simulation
 
 
