@@ -37,7 +37,7 @@ class Sand(Element):
         if isinstance(element, Air):
             return True
         if isinstance(element, Sand):
-            return element.is_resting
+            return not element.is_resting
         return False
 
     def move(self, direction: Direction):
