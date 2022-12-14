@@ -48,7 +48,46 @@ class Sand(Element):
         if isinstance(element, Sand):
             return element.is_resting
         return False
+
+
+class Simulation:
+    def __str__(self) -> str:
+        return "\n".join("".join(str(element) for element in row) for row in self.grid)
+
+    def _parse_data(self, puzzle_input: str) -> None:
+        self.rock_lines = []
+        min_x, max_x, max_y = float("inf"), 0, 0
+        for line in puzzle_input.splitlines():
+            rock_line_points = line.split(" -> ")
+            rock_line_coords = []
+            for rock_line_point in rock_line_points:
+                rock_line_point = rock_line_point.split(",")
+                rock_line_coord = (int(rock_line_point[0]), int(rock_line_point[1]))
+                if rock_line_coord[0] < min_x:
+                    min_x = rock_line_coord[0]
+                if rock_line_coord[0] > max_x:
+                    max_x = rock_line_coord[0]
+                if rock_line_coord[1] > max_y:
+                    max_y = rock_line_coord[1]
+                rock_line_coords.append(rock_line_coord)
+            self.rock_lines.append(rock_line_coords)
+        self.size_x = max_x - int(min_x)
+        self.size_y = max_y
+
+    def _create_grid(self) -> None:
+        self.grid = [[Air() for _ in range(self.size_x)] for _ in range(self.size_y)]
+
+    def bootstrap(self, puzzle_input: str) -> None:
+        self._parse_data(puzzle_input)
+        self._create_grid()
+
+
+def parse(puzzle_input: str) -> Simulation:
     """Parse input"""
+    simulation = Simulation()
+    simulation.bootstrap(puzzle_input)
+    print(simulation)
+    return simulation
 
 
 @perf
@@ -70,6 +109,6 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":
-    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
+    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
     solutions = solve(puzzle_input)
     print("\n".join(str(solution) for solution in solutions))
