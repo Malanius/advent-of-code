@@ -114,10 +114,14 @@ class Simulation:
             for start, end in pairwise(rock_line):
                 self._create_rock(start, end)
 
+    def _create_sand_generator(self) -> None:
+        self.grid[0][500 - self.offset_x] = SandGenerator()
+
     def bootstrap(self, puzzle_input: str) -> None:
         self._parse_data(puzzle_input)
         self._create_grid()
         self._create_rocks()
+        self._create_sand_generator()
 
 
 def parse(puzzle_input: str) -> Simulation:
