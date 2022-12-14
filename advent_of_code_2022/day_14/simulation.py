@@ -15,9 +15,6 @@ class Simulation:
     visited_airs: list[Air] = field(default_factory=list)
     interactive: bool = False
 
-    def __post_init__(self) -> None:
-        self._spawn_sand()
-
     def _spawn_sand(self) -> None:
         gen_x, gen_y = self.grid.generator_coords
         gen_x -= self.grid.offset_x
@@ -44,15 +41,19 @@ class Simulation:
     def _mark_resting(self) -> None:
         self.current_grain.is_resting = True
 
+    def _print_state(self) -> None:
+        sys.stdout.write(f"\r{self.grid}\n")
+        sys.stdout.flush()
+        time.sleep(0.1)
+
     def _move_sand(self) -> None:
+        self._spawn_sand()
         while True:
             x, y = self.current_grain.coords
             logging.debug(f"Current grain coords: {x}, {y}")
 
             if self.interactive:
-                sys.stdout.write(f"\r{self.grid}\n")
-                sys.stdout.flush()
-                time.sleep(0.5)
+                self._print_state()
                 os.system("clear")
 
             can_move_down = self.current_grain.can_move_to(self.grid.grid[y + 1][x])
@@ -77,11 +78,6 @@ class Simulation:
             self._mark_resting()
             self._clear_air()
 
-            if self.interactive:
-                sys.stdout.write(f"\r{self.grid}")
-                sys.stdout.flush()
-                time.sleep(0.5)
-
             break
 
     def _clear_air(self) -> None:
@@ -91,4 +87,5 @@ class Simulation:
     def run(self) -> None:
         if self.interactive:
             os.system("clear")
-        self._move_sand()
+        while True:
+            self._move_sand()

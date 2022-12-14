@@ -13,16 +13,16 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 def parse(puzzle_input: str) -> Grid:
     """Parse input"""
-    simulation = Grid.bootstrap(puzzle_input)
+    simulation = Grid.construct(puzzle_input)
     return simulation
 
 
 @perf
-def part1(grid: Grid):
+def part1(grid: Grid, interactive: bool = False):
     """Solve part 1"""
-    simulation = Simulation(grid, interactive=True)
+    simulation = Simulation(grid, interactive=interactive)
     simulation.run()
-
+    return simulation.grid.count_resting_sand()
 
 @perf
 def part2(data):
@@ -32,7 +32,7 @@ def part2(data):
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
     data = parse(puzzle_input)
-    solution1 = part1(deepcopy(data))
+    solution1 = part1(deepcopy(data), interactive=True)
     solution2 = part2(deepcopy(data))
     return solution1, solution2
 

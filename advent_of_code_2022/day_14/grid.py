@@ -72,7 +72,7 @@ class Grid:
         self.grid[0][500 - self.offset_x] = SandGenerator()
 
     @classmethod
-    def bootstrap(cls, puzzle_input: str) -> "Grid":
+    def construct(cls, puzzle_input: str) -> "Grid":
         simulation = Grid()
         simulation._parse_data(puzzle_input)
         simulation._create_grid()

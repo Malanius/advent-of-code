@@ -11,7 +11,7 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 @pytest.fixture
 def grid() -> Grid:
     puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
-    return Grid.bootstrap(puzzle_input)
+    return Grid.construct(puzzle_input)
 
 
 def test_parse_example(grid):
