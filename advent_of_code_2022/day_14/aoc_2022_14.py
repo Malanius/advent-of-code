@@ -1,12 +1,14 @@
 import logging
 import pathlib
+from copy import deepcopy
 
 from advent_of_code_2022.day_14.grid import Grid
+from advent_of_code_2022.day_14.simulation import Simulation
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
-logging.basicConfig(level=logging.DEBUG, format="%(message)s")
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 def parse(puzzle_input: str) -> Grid:
@@ -16,8 +18,10 @@ def parse(puzzle_input: str) -> Grid:
 
 
 @perf
-def part1(data):
+def part1(grid: Grid):
     """Solve part 1"""
+    simulation = Simulation(grid, interactive=True)
+    simulation.run()
 
 
 @perf
@@ -28,8 +32,8 @@ def part2(data):
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
     data = parse(puzzle_input)
-    solution1 = part1(data)
-    solution2 = part2(data)
+    solution1 = part1(deepcopy(data))
+    solution2 = part2(deepcopy(data))
     return solution1, solution2
 
 
