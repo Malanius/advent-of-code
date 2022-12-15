@@ -15,8 +15,7 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 def parse(puzzle_input: str, interactive: bool = False, bedrock: bool = False) -> Grid:
     """Parse input"""
-    simulation = Grid.construct(puzzle_input, interactive, bedrock)
-    return simulation
+    return Grid.construct(puzzle_input, interactive, bedrock)
 
 
 @perf

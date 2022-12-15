@@ -20,6 +20,7 @@ class Simulation:
     def _spawn_sand(self) -> None:
         gen_x, gen_y = self.grid.generator_coords
         gen_x -= self.grid.offset_x
+        logging.debug(f"Spawning sand at {gen_x}, {gen_y}")
         self.current_grain = Grain((gen_x, gen_y))
 
     def _mark_visited(self) -> None:
@@ -41,6 +42,8 @@ class Simulation:
         self.grid.grid[new_y][new_x] = self.current_grain
 
     def _mark_resting(self) -> None:
+        x, y = self.current_grain.coords
+        logging.debug(f"Marking grain as resting at {x}, {y}")
         self.current_grain.is_resting = True
 
     def _print_state(self, clear: bool = True, partial: bool = True) -> None:
@@ -55,6 +58,8 @@ class Simulation:
 
     def _pour_sand(self) -> None:
         self._spawn_sand()
+        gen_x, gen_y = self.grid.generator_coords
+        gen_x -= self.grid.offset_x
         while True:
             x, y = self.current_grain.coords
             logging.debug(f"Current grain coords: {x}, {y}")
@@ -84,6 +89,14 @@ class Simulation:
             self._mark_resting()
             self._clear_air()
             self.sand_count += 1
+
+            if self.current_grain.coords == (gen_x, gen_y):
+                logging.debug("Sand reached generator")
+                gen_x, gen_y = self.grid.generator_coords
+                gen_x -= self.grid.offset_x
+                self.grid.grid[gen_y][gen_x] = Grain((gen_x, gen_y), is_resting=True)
+                self.sand_count += 1
+                raise IndexError
 
             break
 
