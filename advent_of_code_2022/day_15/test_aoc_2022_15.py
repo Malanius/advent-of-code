@@ -1,26 +1,40 @@
 import pathlib
 import pytest
+from advent_of_code_2022.day_15.coord import Coord
 import aoc_2022_15 as solver
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example1():
-    puzzle_input = (PUZZLE_DIR / "example-1.txt").read_text().strip()
+def example():
+    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
 
 @pytest.fixture
-def example2():
-    puzzle_input = (PUZZLE_DIR / "example-2.txt").read_text().strip()
+def data():
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_parse_example1(example1):
+def test_parse_example1(example):
     """Test that input is parsed properly"""
-    assert example1 == ...
+    assert example == {
+        Coord(9, 16): Coord(10, 16),
+        Coord(13, 2): Coord(15, 3),
+        Coord(12, 14): Coord(10, 16),
+        Coord(10, 20): Coord(10, 16),
+        Coord(14, 17): Coord(10, 16),
+        Coord(8, 7): Coord(2, 10),
+        Coord(2, 0): Coord(2, 10),
+        Coord(0, 11): Coord(2, 10),
+        Coord(20, 14): Coord(25, 17),
+        Coord(17, 20): Coord(21, 22),
+        Coord(16, 7): Coord(15, 3),
+        Coord(14, 3): Coord(15, 3),
+        Coord(20, 1): Coord(15, 3),
+    }
 
 
 @pytest.mark.skip(reason="Not implemented")
