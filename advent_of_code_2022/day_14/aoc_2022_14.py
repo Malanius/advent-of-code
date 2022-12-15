@@ -11,9 +11,9 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input: str) -> Grid:
+def parse(puzzle_input: str, interactive: bool = False) -> Grid:
     """Parse input"""
-    simulation = Grid.construct(puzzle_input)
+    simulation = Grid.construct(puzzle_input, interactive)
     return simulation
 
 
@@ -24,6 +24,7 @@ def part1(grid: Grid, interactive: bool = False):
     simulation.run()
     return simulation.sand_count
 
+
 @perf
 def part2(data):
     """Solve part 2"""
@@ -31,8 +32,9 @@ def part2(data):
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
-    data = parse(puzzle_input)
-    solution1 = part1(deepcopy(data), interactive=True)
+    interactive = True
+    data = parse(puzzle_input, interactive)
+    solution1 = part1(deepcopy(data), interactive)
     solution2 = part2(deepcopy(data))
     return solution1, solution2
 

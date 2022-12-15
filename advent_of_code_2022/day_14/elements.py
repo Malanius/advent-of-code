@@ -19,10 +19,14 @@ class Rock(Element):
 
 @dataclass
 class Air(Element):
+    transparent: bool = False
     visited: bool = False
 
+    def __post_init__(self) -> None:
+        self.char = " " if self.transparent else "."
+
     def __str__(self) -> str:
-        return "~" if self.visited else "."
+        return "~" if self.visited else self.char
 
 
 @dataclass

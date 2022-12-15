@@ -7,6 +7,7 @@ from advent_of_code_2022.day_14.elements import Air, Element, Rock, Grain, SandG
 
 @dataclass
 class Grid:
+    transparent_air: bool = False
     grid: list[list[Element]] = field(default_factory=list)
     generator_coords: tuple[int, int] = field(default_factory=lambda: (500, 0))
 
@@ -50,7 +51,8 @@ class Grid:
 
     def _create_grid(self) -> None:
         self.grid = [
-            [Air() for _ in range(self.size_x + 1)] for _ in range(self.size_y + 1)
+            [Air(transparent=self.transparent_air) for _ in range(self.size_x + 1)]
+            for _ in range(self.size_y + 1)
         ]
 
     def _create_vertical_rock(
@@ -87,8 +89,8 @@ class Grid:
         self.grid[gen_y][gen_x - self.offset_x] = SandGenerator()
 
     @classmethod
-    def construct(cls, puzzle_input: str) -> "Grid":
-        grid = Grid()
+    def construct(cls, puzzle_input: str, interactive: bool = False) -> "Grid":
+        grid = Grid(transparent_air=interactive)
         grid._parse_data(puzzle_input)
         grid._create_grid()
         grid._create_rocks()
