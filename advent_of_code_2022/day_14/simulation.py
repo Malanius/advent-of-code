@@ -95,7 +95,6 @@ class Simulation:
                 gen_x, gen_y = self.grid.generator_coords
                 gen_x -= self.grid.offset_x
                 self.grid.grid[gen_y][gen_x] = Grain((gen_x, gen_y), is_resting=True)
-                self.sand_count += 1
                 raise IndexError
 
             break

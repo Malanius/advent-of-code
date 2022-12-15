@@ -21,12 +21,18 @@ def data_grid() -> Grid:
 
 
 @pytest.fixture
-def example2():
-    puzzle_input = (PUZZLE_DIR / "example-2.txt").read_text().strip()
-    return solver.parse(puzzle_input)
+def sample_grid_bedrock() -> Grid:
+    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
+    return solver.parse(puzzle_input, bedrock=True)
 
 
-def test_part1_example1(sample_grid):
+@pytest.fixture
+def data_grid_bedrock() -> Grid:
+    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
+    return solver.parse(puzzle_input, bedrock=True)
+
+
+def test_part1_example(sample_grid):
     """Test part 1 on example input"""
     assert solver.part1(sample_grid) == 24
 
@@ -36,7 +42,11 @@ def test_part1_data(data_grid):
     assert solver.part1(data_grid) == 665
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
-    """Test part 2 on example input"""
-    assert solver.part2(example2) == ...
+def test_part2_example(sample_grid_bedrock):
+    """Test part 1 on example input"""
+    assert solver.part1(sample_grid_bedrock) == 93
+
+@pytest.mark.skip(reason="Way too slow")
+def test_part2_data(data_grid_bedrock):
+    """Test part 1 on example input"""
+    assert solver.part1(data_grid_bedrock) == 25434
