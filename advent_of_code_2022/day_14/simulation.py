@@ -28,7 +28,7 @@ class Simulation:
             return
         x, y = self.current_grain.coords
         logging.debug(f"Marking {x}, {y} as visited")
-        visited_air = Air(visited=True)
+        visited_air = Air(visited=True, transparent=self.grid.transparent_air)
         self.visited_airs.append(visited_air)
         self.grid.grid[y][x] = visited_air
 
@@ -46,7 +46,7 @@ class Simulation:
         current_y = self.current_grain.coords[1]
         grid = self.grid.partial_str(current_y) if partial else str(self.grid)
         sys.stdout.write(f"{grid}\n\n")
-        sys.stdout.write(f"Sand count: {self.sand_count}")
+        sys.stdout.write(f"Sand count: {self.sand_count}\n")
         sys.stdout.flush()
         time.sleep(0.1)
         if clear:
