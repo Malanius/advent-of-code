@@ -47,8 +47,13 @@ class Grid:
                 rock_line_coords.append(rock_line_coord)
             self.rock_lines.append(rock_line_coords)
         self.size_x = max_x - int(min_x)
-        self.size_y = max_y if not self.bedrock else max_y + 2
+        self.size_y = max_y
         self.offset_x = int(min_x)
+        if self.bedrock:
+            self.size_y += 2
+            self.size_x = self.size_y * 2 + 2 # 1 at each side
+            self.offset_x = self.offset_x - self.size_y // 2 - 1
+            logging.debug(f"Size with bedrock: {self.size_x}x{self.size_y}")
 
     def _create_grid(self) -> None:
         self.grid = [
@@ -105,7 +110,6 @@ class Grid:
         grid._create_grid()
         grid._create_rocks()
         if bedrock:
-            print("Creating bedrock")
             grid._create_bedrock()
         grid._create_sand_generator()
         return grid
