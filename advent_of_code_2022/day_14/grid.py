@@ -69,11 +69,11 @@ class Grid:
         self, start: tuple[int, int], end: tuple[int, int]
     ) -> None:
         logging.debug(f"Drawing horizontal line, start: {start}, end: {end}")
-        draw_left = start[0] < end[0]
-        if draw_left:
-            start, end = end, start
-        for x in range(start[0], end[0] - 1, -1):
-            self.grid[start[1]][x - self.offset_x] = Rock()
+        start_x, start_y = start
+        end_x, _ = end
+        direction = 1 if start_x < end_x else -1
+        for x in range(start_x, end_x + direction, direction):
+            self.grid[start_y][x - self.offset_x] = Rock()
 
     def _create_rock(self, start: tuple[int, int], end: tuple[int, int]) -> None:
         is_vertitcal = start[0] == end[0]
