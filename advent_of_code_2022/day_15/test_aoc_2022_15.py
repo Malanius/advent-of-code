@@ -1,7 +1,9 @@
 import pathlib
-import pytest
-from advent_of_code_2022.day_15.coord import Coord
+
 import aoc_2022_15 as solver
+import pytest
+
+from advent_of_code_2022.day_15.coord import Coord
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -40,6 +42,11 @@ def test_parse_example1(example):
 def test_part1_example1(example):
     """Test part 1 on example input"""
     assert solver.part1(example, 10) == 26
+
+
+def test_part1_data(data):
+    """Test part 1 on example input"""
+    assert solver.part1(data, 2_000_000) == 5511201
 
 
 @pytest.mark.skip(reason="Not implemented")

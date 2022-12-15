@@ -2,7 +2,7 @@ import logging
 import pathlib
 import re
 
-from advent_of_code_2022.day_15.coord import Coord
+from advent_of_code_2022.day_15.coord import Boundaries, Coord
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -29,56 +29,89 @@ def parse(puzzle_input: str) -> dict[Coord, Coord]:
     return data
 
 
-def fill_scan_area(
-    grid: dict[Coord, str], sensor: Coord, beacon: Coord
-) -> dict[Coord, str]:
-    """Fill the grid from sensor to beacon distance"""
-    logging.debug(f"Filling for Sensor: {sensor}, Beacon: {beacon}")
-    distance = sensor.distance(beacon)
-    for y in range(sensor.y - distance, sensor.y + distance + 1):
-        width = distance - abs(sensor.y - y)
-        for x in range(sensor.x - width, sensor.x + width + 1):
-            whats_there = grid.get(Coord(x, y), None)
-            if not whats_there:
-                logging.debug(f"Scanned: {Coord(x, y)}")
-                grid[Coord(x, y)] = SCANNED
-            else:
-                logging.debug(f"Avoided: {Coord(x, y)}, {whats_there}")
-
-    return grid
-
-
-def print_grid(grid: dict[Coord, str]):
+def grid_repr(grid: dict[Coord, str], boundaries: Boundaries):
     """Print the grid"""
-    min_x = min(coord.x for coord in grid.keys())
-    max_x = max(coord.x for coord in grid.keys())
-    min_y = min(coord.y for coord in grid.keys())
-    max_y = max(coord.y for coord in grid.keys())
+
+    min_x = boundaries.min_x
+    max_x = boundaries.max_x
+    min_y = boundaries.min_y
+    max_y = boundaries.max_y
+
+    repr = ""
 
     for y in range(min_y, max_y + 1):
         row = ""
         for x in range(min_x, max_x + 1):
             row += grid.get(Coord(x, y), ".")
-        print(f"{y:>3d}: {row}")
-    print()
+        repr += f"{y:>3d}: {row}\n"
+
+
+def get_scan_coverage_bounds(sensor_to_beacons: dict[Coord, Coord]) -> Boundaries:
+    max_x = max(coord.x for coord in sensor_to_beacons.keys())
+    max_y = max(coord.y for coord in sensor_to_beacons.keys())
+    min_x = min(coord.x for coord in sensor_to_beacons.keys())
+    min_y = min(coord.y for coord in sensor_to_beacons.keys())
+
+    for sensor, beacon in sensor_to_beacons.items():
+        distance_to_beacon = sensor.distance(beacon)
+
+        sensor_max_x = sensor.x + distance_to_beacon
+        if sensor_max_x > max_x:
+            max_x = sensor_max_x
+
+        sensor_max_y = sensor.y + distance_to_beacon
+        if sensor_max_y > max_y:
+            max_y = sensor_max_y
+
+        sensor_min_x = sensor.x - distance_to_beacon
+        if sensor_min_x < min_x:
+            min_x = sensor_min_x
+
+        sensor_min_y = sensor.y - distance_to_beacon
+        if sensor_min_y < min_y:
+            min_y = sensor_min_y
+
+    return Boundaries(max_x, max_y, min_x, min_y)
 
 
 @perf
 def part1(data: dict[Coord, Coord], row: int = 10) -> int:
     """Solve part 1"""
-    sensors = {Coord(8, 7): SENSOR}
-    beacons = {coord: BEACON for coord in data.values()}
-    grid = {**sensors, **beacons}
+    boundaries = get_scan_coverage_bounds(data)
+    min_x = boundaries.min_x
+    max_x = boundaries.max_x
+    logging.debug(f"min_x: {min_x}, max_x: {max_x}")
 
-    for sensor, beacon in data.items():
-        grid = fill_scan_area(grid, sensor, beacon)
+    scanned_row = {}
+    for x in range(min_x, max_x + 1):
+        logging.debug(f"=== Scanning x: {x}, y: {row} ===")
+        coord = Coord(x, row)
+        for sensor, beacon in data.items():
+            if sensor.y == row:
+                scanned_row[sensor] = SENSOR
 
-    print_grid(grid)
-    scan_row = {coord: grid[coord] for coord in grid if coord.y == row}
-    print("Scan row:")
-    print_grid(scan_row)
-    return sum(1 for coord in scan_row if scan_row[coord] == SCANNED)
+            if beacon.y == row:
+                scanned_row[beacon] = BEACON
 
+            distance_to_sensor = coord.distance(sensor)
+            sensor_scan_distance = sensor.distance(beacon)
+            logging.debug(
+                f"coord: {coord}, sensor: {sensor}, beacon: {beacon}, "
+                f"distance_to_sensor: {distance_to_sensor}, "
+                f"sensor_scan_distance: {sensor_scan_distance}"
+            )
+
+            if distance_to_sensor <= sensor_scan_distance:
+                logging.debug(f"Scanned: {coord}")
+                scanned_row[coord] = SCANNED
+                break  # No need to check other sensors
+        logging.debug("")
+
+    logging.debug("Scanned row:")
+    print_bounds = Boundaries(max_x, row, min_x, row)
+    logging.debug(grid_repr(scanned_row, print_bounds))
+
+    return sum(1 for coord in scanned_row.values() if coord == SCANNED)
 
 
 @perf
@@ -89,7 +122,7 @@ def part2(data):
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
     data = parse(puzzle_input)
-    solution1 = part1(data)
+    solution1 = part1(data, row=2_000_000)
     solution2 = part2(data)
     return solution1, solution2
 

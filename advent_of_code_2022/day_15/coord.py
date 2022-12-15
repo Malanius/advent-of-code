@@ -27,3 +27,10 @@ class Coord:
 
     def __str__(self) -> str:
         return f"({self.x}, {self.y})"
+
+@dataclass
+class Boundaries:
+    max_x: int
+    max_y: int
+    min_x: int
+    min_y: int
