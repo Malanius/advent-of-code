@@ -13,6 +13,20 @@ class Grid:
     def __str__(self) -> str:
         return "\n".join("".join(str(element) for element in row) for row in self.grid)
 
+    def partial_str(self, actual_y: int, height: int = 35) -> str:
+        half = height // 2
+        start = actual_y - half
+        end = actual_y + half
+        if start < 0:
+            start = 0
+            end = height
+        if end > len(self.grid):
+            end = len(self.grid)
+            start = end - height
+        return "\n".join(
+            "".join(str(element) for element in row) for row in self.grid[start:end]
+        )
+
     def _parse_data(self, puzzle_input: str) -> None:
         self.rock_lines = []
         min_x, max_x, max_y = float("inf"), 0, 0
