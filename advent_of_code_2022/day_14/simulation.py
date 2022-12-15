@@ -42,11 +42,10 @@ class Simulation:
     def _mark_resting(self) -> None:
         self.current_grain.is_resting = True
 
-    def _print_state(self, clear=True) -> None:
-        if not self.interactive:
-            return
+    def _print_state(self, clear: bool = True, partial: bool = True) -> None:
         current_y = self.current_grain.coords[1]
-        sys.stdout.write(f"{self.grid.partial_str(current_y)}\n\n")
+        grid = self.grid.partial_str(current_y) if partial else str(self.grid)
+        sys.stdout.write(f"{grid}\n\n")
         sys.stdout.write(f"Sand count: {self.sand_count}")
         sys.stdout.flush()
         time.sleep(0.1)
@@ -59,7 +58,8 @@ class Simulation:
             x, y = self.current_grain.coords
             logging.debug(f"Current grain coords: {x}, {y}")
 
-            self._print_state()
+            if self.interactive:
+                self._print_state()
 
             can_move_down = self.current_grain.can_move_to(self.grid.grid[y + 1][x])
             if can_move_down:
@@ -97,5 +97,5 @@ class Simulation:
             try:
                 self._pour_sand()
             except IndexError:
-                self._print_state(clear=False)
+                self._print_state(clear=False, partial=False)
                 break
