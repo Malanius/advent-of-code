@@ -59,8 +59,11 @@ class Grid:
         self, start: tuple[int, int], end: tuple[int, int]
     ) -> None:
         logging.debug(f"Drawing vertical line, start: {start}, end: {end}")
-        for y in range(start[1], end[1] + 1):
-            self.grid[y][start[0] - self.offset_x] = Rock()
+        start_x, start_y = start
+        _, end_y = end
+        direction = 1 if start_y < end_y else -1
+        for y in range(start_y, end_y + direction, direction):
+            self.grid[y][start_x - self.offset_x] = Rock()
 
     def _create_horizontal_rock(
         self, start: tuple[int, int], end: tuple[int, int]
