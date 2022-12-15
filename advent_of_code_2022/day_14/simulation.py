@@ -12,6 +12,7 @@ from advent_of_code_2022.day_14.grid import Grid
 @dataclass
 class Simulation:
     grid: Grid
+    bedrock: bool = False
     visited_airs: list[Air] = field(default_factory=list)
     interactive: bool = False
     sand_count: int = 0

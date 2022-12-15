@@ -8,6 +8,7 @@ from advent_of_code_2022.day_14.elements import Air, Element, Rock, Grain, SandG
 @dataclass
 class Grid:
     transparent_air: bool = False
+    bedrock: bool = False
     grid: list[list[Element]] = field(default_factory=list)
     generator_coords: tuple[int, int] = field(default_factory=lambda: (500, 0))
 
@@ -46,7 +47,7 @@ class Grid:
                 rock_line_coords.append(rock_line_coord)
             self.rock_lines.append(rock_line_coords)
         self.size_x = max_x - int(min_x)
-        self.size_y = max_y
+        self.size_y = max_y if not self.bedrock else max_y + 2
         self.offset_x = int(min_x)
 
     def _create_grid(self) -> None:
@@ -87,15 +88,24 @@ class Grid:
             for start, end in pairwise(rock_line):
                 self._create_rock(start, end)
 
+    def _create_bedrock(self) -> None:
+        for x in range(self.size_x + 1):
+            self.grid[self.size_y][x] = Rock()
+
     def _create_sand_generator(self) -> None:
         gen_x, gen_y = self.generator_coords
         self.grid[gen_y][gen_x - self.offset_x] = SandGenerator()
 
     @classmethod
-    def construct(cls, puzzle_input: str, interactive: bool = False) -> "Grid":
-        grid = Grid(transparent_air=interactive)
+    def construct(
+        cls, puzzle_input: str, interactive: bool = False, bedrock: bool = False
+    ) -> "Grid":
+        grid = Grid(transparent_air=interactive, bedrock=bedrock)
         grid._parse_data(puzzle_input)
         grid._create_grid()
         grid._create_rocks()
+        if bedrock:
+            print("Creating bedrock")
+            grid._create_bedrock()
         grid._create_sand_generator()
         return grid
