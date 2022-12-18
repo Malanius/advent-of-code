@@ -15,6 +15,7 @@ input_regex = re.compile(
 SENSOR = "S"
 BEACON = "B"
 SCANNED = "#"
+EMPTY = "."
 
 
 def parse(puzzle_input: str) -> dict[Coord, Coord]:
@@ -43,10 +44,10 @@ def grid_repr(grid: dict[Coord, str], boundaries: Boundaries):
     for y in range(min_y, max_y + 1):
         row = ""
         for x in range(min_x, max_x + 1):
-            row += grid.get(Coord(x, y), ".")
+            row += grid.get(Coord(x, y), EMPTY)
         repr += f"{y:>3d}: {row}\n"
 
-
+    return repr
 def get_scan_coverage_bounds(sensor_to_beacons: dict[Coord, Coord]) -> Boundaries:
     max_x = max(coord.x for coord in sensor_to_beacons.keys())
     max_y = max(coord.y for coord in sensor_to_beacons.keys())
