@@ -1,6 +1,7 @@
 import logging
 import pathlib
 import re
+from advent_of_code_2022.day_15.arguments import init_args
 
 from advent_of_code_2022.day_15.coord import Boundaries, Coord
 from advent_of_code_2022.util.perf import perf
@@ -115,19 +116,26 @@ def part1(data: dict[Coord, Coord], row: int = 10) -> int:
 
 
 @perf
-def part2(data):
+def part2(data: dict[Coord, Coord], search_area_size: int = 20) -> int:
     """Solve part 2"""
 
 
-def solve(puzzle_input):
+def solve(puzzle_input: str, row: int, search_area_size: int) -> tuple[int, int]:
     """Solve the puzzle for the given input"""
     data = parse(puzzle_input)
-    solution1 = part1(data, row=2_000_000)
-    solution2 = part2(data)
+    solution1 = part1(data, row)
+    solution2 = part2(data, search_area_size)
     return solution1, solution2
 
 
 if __name__ == "__main__":
-    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
-    solutions = solve(puzzle_input)
+    args = init_args()
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    data_file = "example.txt" if not args.data else "data.txt"
+    puzzle_input = (PUZZLE_DIR / data_file).read_text().strip()
+    row = 10 if not args.data else 2_000_000
+    search_area_size = 20 if not args.data else 4_000_000
+    solutions = solve(puzzle_input, row, search_area_size)
     print("\n".join(str(solution) for solution in solutions))
