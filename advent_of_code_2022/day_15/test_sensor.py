@@ -43,4 +43,4 @@ def sensor() -> Sensor:
     ],
 )
 def test_get_coverage_at_y(sensor: Sensor, y: int, expected: tuple[int, int]):
-    assert sensor.get_coverege_at_y(y) == expected
+    assert sensor.get_coverage_at_row(y) == expected

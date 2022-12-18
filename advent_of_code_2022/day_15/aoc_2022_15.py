@@ -1,9 +1,10 @@
 import logging
 import pathlib
 import re
-from advent_of_code_2022.day_15.arguments import init_args
 
+from advent_of_code_2022.day_15.arguments import init_args
 from advent_of_code_2022.day_15.coord import Boundaries, Coord
+from advent_of_code_2022.day_15.sensor import Sensor
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -48,72 +49,53 @@ def grid_repr(grid: dict[Coord, str], boundaries: Boundaries):
         repr += f"{y:>3d}: {row}\n"
 
     return repr
-def get_scan_coverage_bounds(sensor_to_beacons: dict[Coord, Coord]) -> Boundaries:
-    max_x = max(coord.x for coord in sensor_to_beacons.keys())
-    max_y = max(coord.y for coord in sensor_to_beacons.keys())
-    min_x = min(coord.x for coord in sensor_to_beacons.keys())
-    min_y = min(coord.y for coord in sensor_to_beacons.keys())
 
-    for sensor, beacon in sensor_to_beacons.items():
-        distance_to_beacon = sensor.distance(beacon)
 
-        sensor_max_x = sensor.x + distance_to_beacon
-        if sensor_max_x > max_x:
-            max_x = sensor_max_x
+def blend_coverage_ranges(ranges: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    """Blend the overlapping ranges together"""
+    ranges = sorted(ranges, key=lambda x: x[0])
+    blended_ranges = [ranges[0]]
+    for start, end in ranges:
+        logging.debug(f"Blended: {blended_ranges}")
+        logging.debug(f"Current: {start, end}")
 
-        sensor_max_y = sensor.y + distance_to_beacon
-        if sensor_max_y > max_y:
-            max_y = sensor_max_y
+        last_start, last_end = blended_ranges[-1]
+        if start <= last_end + 1 and end >= last_end:
+            blended_ranges[-1] = (last_start, end)
+        elif start <= last_end and end <= last_end:
+            continue
+        else:
+            blended_ranges.append((start, end))
 
-        sensor_min_x = sensor.x - distance_to_beacon
-        if sensor_min_x < min_x:
-            min_x = sensor_min_x
+    return blended_ranges
 
-        sensor_min_y = sensor.y - distance_to_beacon
-        if sensor_min_y < min_y:
-            min_y = sensor_min_y
 
-    return Boundaries(max_x, max_y, min_x, min_y)
+def get_sensors_coverage_at_row(sensors: set[Sensor], row: int):
+    """Get the coverage of the sensors at the given row"""
+    coverage_ranges = [
+        sensor.get_coverage_at_row(row)
+        for sensor in sensors
+        if sensor.get_coverage_at_row(row)
+    ]
+    logging.debug(f"Coverage ranges: {coverage_ranges}")
+    # not sure why, but mypy doesn't see the None check in the list comprehension
+    blended_ranges = blend_coverage_ranges(coverage_ranges)  # type: ignore[arg-type]
+    logging.debug(f"Blended ranges: {blended_ranges}")
+    return blended_ranges
 
 
 @perf
 def part1(data: dict[Coord, Coord], row: int = 10) -> int:
     """Solve part 1"""
-    boundaries = get_scan_coverage_bounds(data)
-    min_x = boundaries.min_x
-    max_x = boundaries.max_x
-    logging.debug(f"min_x: {min_x}, max_x: {max_x}")
+    sensors = set()
+    for sensor, beacon in data.items():
+        scan_range = sensor.distance(beacon)
+        sensors.add(Sensor(sensor, scan_range))
 
-    scanned_row = {}
-    for x in range(min_x, max_x + 1):
-        logging.debug(f"=== Scanning x: {x}, y: {row} ===")
-        coord = Coord(x, row)
-        for sensor, beacon in data.items():
-            if sensor.y == row:
-                scanned_row[sensor] = SENSOR
-
-            if beacon.y == row:
-                scanned_row[beacon] = BEACON
-
-            distance_to_sensor = coord.distance(sensor)
-            sensor_scan_distance = sensor.distance(beacon)
-            logging.debug(
-                f"coord: {coord}, sensor: {sensor}, beacon: {beacon}, "
-                f"distance_to_sensor: {distance_to_sensor}, "
-                f"sensor_scan_distance: {sensor_scan_distance}"
-            )
-
-            if distance_to_sensor <= sensor_scan_distance:
-                logging.debug(f"Scanned: {coord}")
-                scanned_row[coord] = SCANNED
-                break  # No need to check other sensors
-        logging.debug("")
-
-    logging.debug("Scanned row:")
-    print_bounds = Boundaries(max_x, row, min_x, row)
-    logging.debug(grid_repr(scanned_row, print_bounds))
-
-    return sum(1 for coord in scanned_row.values() if coord == SCANNED)
+    covered_at_row = get_sensors_coverage_at_row(sensors, row)
+    beacons_at_row = {beacon for beacon in data.values() if beacon.y == row}
+    covered = sum(end - start + 1 for start, end in covered_at_row)
+    return covered - len(beacons_at_row)
 
 
 @perf

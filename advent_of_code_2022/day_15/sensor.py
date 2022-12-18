@@ -16,9 +16,8 @@ class Sensor:
         max_y = self.coord.y + self.scan_range
 
         return Boundaries(max_x, max_y, min_x, min_y)
- 
 
-    def get_coverege_at_y(self,y: int) -> Optional[tuple[int, int]]:
+    def get_coverage_at_row(self, y: int) -> Optional[tuple[int, int]]:
         # Y is out of range
         if y < self.coord.y - self.scan_range or y > self.coord.y + self.scan_range:
             return None
@@ -27,3 +26,6 @@ class Sensor:
             self.coord.x - (self.scan_range - abs(self.coord.y - y)),
             self.coord.x + (self.scan_range - abs(self.coord.y - y)),
         )
+
+    def __hash__(self) -> int:
+        return hash(self.coord)
