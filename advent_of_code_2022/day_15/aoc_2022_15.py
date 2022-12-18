@@ -83,6 +83,24 @@ def get_sensors_coverage_at_row(sensors: set[Sensor], row: int):
     logging.debug(f"Blended ranges: {blended_ranges}")
     return blended_ranges
 
+def get_scan_coverage_bounds(sensors: set[Sensor]) -> Boundaries:
+    """Get the boundaries of the scan coverage"""
+    min_x = min(sensor.coord.x - sensor.scan_range for sensor in sensors)
+    max_x = max(sensor.coord.x + sensor.scan_range for sensor in sensors)
+    min_y = min(sensor.coord.y - sensor.scan_range for sensor in sensors)
+    max_y = max(sensor.coord.y + sensor.scan_range for sensor in sensors)
+    logging.debug(f"Scan bounds: {min_x, max_x, min_y, max_y}")
+    return Boundaries(min_x, max_x, min_y, max_y)
+    
+def data_to_grid(data: dict[Coord, Coord]) -> dict[Coord, str]:
+    """Convert the data to a grid"""
+    grid = {}
+    for sensor, beacon in data.items():
+        grid[sensor] = SENSOR
+        grid[beacon] = BEACON
+
+    logging.debug(grid)
+    return grid
 
 @perf
 def part1(data: dict[Coord, Coord], row: int = 10) -> int:
@@ -101,6 +119,38 @@ def part1(data: dict[Coord, Coord], row: int = 10) -> int:
 @perf
 def part2(data: dict[Coord, Coord], search_area_size: int = 20) -> int:
     """Solve part 2"""
+
+    sensors: set[Sensor] = set()
+    for sensor, beacon in data.items():
+        scan_range = sensor.distance(beacon)
+        sensors.add(Sensor(sensor, scan_range))
+
+    data_as_grid = data_to_grid(data)
+    scan_bounds = get_scan_coverage_bounds(sensors)
+    row_coverage = {}
+    row_candidates = []
+
+    for row in range(0, search_area_size + 1):
+        coverage = get_sensors_coverage_at_row(sensors, row)
+        if coverage:
+            row_coverage[row] = coverage
+            if len(coverage) > 1:
+                row_candidates.append(row)
+            for start, end in coverage:
+                for x in range(start, end + 1):
+                    if not data_as_grid.get(Coord(x, row)):
+                     data_as_grid[Coord(x, row)] = SCANNED
+    
+    print_bounds = Boundaries(
+        scan_bounds.min_x if scan_bounds.min_x < 0 else 0,
+        scan_bounds.max_x if scan_bounds.max_x < search_area_size  else search_area_size,
+        scan_bounds.min_y if scan_bounds.min_y > 0 else 0,
+        scan_bounds.max_y if scan_bounds.max_y < search_area_size else search_area_size,
+    )
+    logging.debug(grid_repr(data_as_grid, print_bounds))
+    
+    logging.debug(f"Row coverage: {row_coverage}")
+    logging.debug(f"Row candidates: {row_candidates}")
 
 
 def solve(puzzle_input: str, row: int, search_area_size: int) -> tuple[int, int]:
