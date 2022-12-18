@@ -1,6 +1,7 @@
 import logging
 import pathlib
 import re
+from itertools import pairwise
 
 from advent_of_code_2022.day_15.arguments import init_args
 from advent_of_code_2022.day_15.coord import Boundaries, Coord
@@ -83,6 +84,7 @@ def get_sensors_coverage_at_row(sensors: set[Sensor], row: int):
     logging.debug(f"Blended ranges: {blended_ranges}")
     return blended_ranges
 
+
 def get_scan_coverage_bounds(sensors: set[Sensor]) -> Boundaries:
     """Get the boundaries of the scan coverage"""
     min_x = min(sensor.coord.x - sensor.scan_range for sensor in sensors)
@@ -91,7 +93,8 @@ def get_scan_coverage_bounds(sensors: set[Sensor]) -> Boundaries:
     max_y = max(sensor.coord.y + sensor.scan_range for sensor in sensors)
     logging.debug(f"Scan bounds: {min_x, max_x, min_y, max_y}")
     return Boundaries(min_x, max_x, min_y, max_y)
-    
+
+
 def data_to_grid(data: dict[Coord, Coord]) -> dict[Coord, str]:
     """Convert the data to a grid"""
     grid = {}
@@ -101,6 +104,7 @@ def data_to_grid(data: dict[Coord, Coord]) -> dict[Coord, str]:
 
     logging.debug(grid)
     return grid
+
 
 @perf
 def part1(data: dict[Coord, Coord], row: int = 10) -> int:
@@ -125,9 +129,7 @@ def part2(data: dict[Coord, Coord], search_area_size: int = 20) -> int:
         scan_range = sensor.distance(beacon)
         sensors.add(Sensor(sensor, scan_range))
 
-    data_as_grid = data_to_grid(data)
-    scan_bounds = get_scan_coverage_bounds(sensors)
-    row_coverage = {}
+    row_coverage: dict[int, list[tuple[int, int]]] = {}
     row_candidates = []
 
     for row in range(0, search_area_size + 1):
@@ -136,21 +138,33 @@ def part2(data: dict[Coord, Coord], search_area_size: int = 20) -> int:
             row_coverage[row] = coverage
             if len(coverage) > 1:
                 row_candidates.append(row)
-            for start, end in coverage:
-                for x in range(start, end + 1):
-                    if not data_as_grid.get(Coord(x, row)):
-                     data_as_grid[Coord(x, row)] = SCANNED
-    
-    print_bounds = Boundaries(
-        scan_bounds.min_x if scan_bounds.min_x < 0 else 0,
-        scan_bounds.max_x if scan_bounds.max_x < search_area_size  else search_area_size,
-        scan_bounds.min_y if scan_bounds.min_y > 0 else 0,
-        scan_bounds.max_y if scan_bounds.max_y < search_area_size else search_area_size,
-    )
-    logging.debug(grid_repr(data_as_grid, print_bounds))
-    
-    logging.debug(f"Row coverage: {row_coverage}")
-    logging.debug(f"Row candidates: {row_candidates}")
+
+    for row in row_candidates:
+        coverage = row_coverage[row]
+        # find gap of len 1 in coverage
+        for left, right in pairwise(coverage):
+            if right[0] - left[1] == 2:
+                x = left[1] + 1
+                above_row_coverage = row_coverage.get(row - 1)
+                below_row_coverage = row_coverage.get(row + 1)
+                covered_above = (
+                    is_covered(above_row_coverage, x) if above_row_coverage else False
+                )
+                covered_below = (
+                    is_covered(below_row_coverage, x) if below_row_coverage else False
+                )
+                if covered_above and covered_below:
+                    return x * 4_000_000 + row
+
+    return -1
+
+
+def is_covered(coverage: list[tuple[int, int]], x: int) -> bool:
+    """Check if the given x coordinate is covered"""
+    for start, end in coverage:
+        if start <= x <= end:
+            return True
+    return False
 
 
 def solve(puzzle_input: str, row: int, search_area_size: int) -> tuple[int, int]:
