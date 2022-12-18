@@ -8,10 +8,12 @@ SCRIPT_DIR = pathlib.Path(__file__).parent
 SOLUTION_DIR = SCRIPT_DIR.parent
 TEMPATE_DIR = SOLUTION_DIR.joinpath("templates")
 SOLVER_TEMPLATE = "solver.py"
+ARGS_TEMPLATE = "arguments.py"
 TEST_TEMPLATE = "test_solver.py"
 EXAMPLE_FILE = "example.txt"
 DATA_FILE = "data.txt"
 SOLVER_PLACEHOLDER = "{{SOLVER}}"
+DAY_PLACEHOLDER = "{{DAY}}"
 
 
 def create_day_folder(day: str) -> pathlib.Path:
@@ -25,10 +27,16 @@ def copy_templates(year: str, day: str, day_dir: pathlib.Path) -> None:
     """Copies the template files into the day's folder"""
     solver_template = TEMPATE_DIR.joinpath(SOLVER_TEMPLATE)
     test_template = TEMPATE_DIR.joinpath(TEST_TEMPLATE)
+    args_template = TEMPATE_DIR.joinpath(ARGS_TEMPLATE)
     day_name = f"aoc_{year}_{day}"
+    day_short = f"day_{day}"
     solver_file = day_dir.joinpath(f"{day_name}.py")
     test_file = day_dir.joinpath(f"test_{day_name}.py")
-    solver_file.write_text(solver_template.read_text())
+    args_file = day_dir.joinpath(f"arguments.py")
+    args_file.write_text(args_template.read_text())
+    solver_file.write_text(
+        solver_template.read_text().replace(DAY_PLACEHOLDER, day_short)
+    )
     test_file.write_text(
         test_template.read_text().replace(SOLVER_PLACEHOLDER, day_name)
     )

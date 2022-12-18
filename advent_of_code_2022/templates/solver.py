@@ -1,8 +1,11 @@
+import logging
 import pathlib
 
+from advent_of_code_2022.{{DAY}}.arguments import init_args
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 def parse(puzzle_input):
@@ -28,6 +31,11 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":
-    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
+    args = init_args()
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    data_file = "example.txt" if not args.data else "data.txt"
+    puzzle_input = (PUZZLE_DIR / data_file).read_text().strip()
     solutions = solve(puzzle_input)
     print("\n".join(str(solution) for solution in solutions))
