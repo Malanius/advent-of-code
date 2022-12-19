@@ -1,5 +1,8 @@
 import logging
 import pathlib
+import re
+from dataclasses import dataclass
+from typing import Generator
 
 from advent_of_code_2022.day_19.arguments import init_args
 from advent_of_code_2022.util.perf import perf
@@ -7,18 +10,48 @@ from advent_of_code_2022.util.perf import perf
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
+BLUEPRINT_PATTERN = re.compile(
+    r"Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian."
+)
 
-def parse(puzzle_input):
+
+@dataclass
+class Blueprint:
+    id: int
+    ore_bot_cost_ores: int
+    clay_bot_cost_ores: int
+    obsidian_bot_cost_ores: int
+    obsidian_bot_cost_clay: int
+    geode_bot_cost_ores: int
+    geode_bot_cost_obsidian: int
+
+Blueprints = Generator[Blueprint, None, None]
+
+
+def parse(puzzle_input: str) -> Blueprints:
     """Parse input"""
+    for line in puzzle_input.splitlines():
+        match = BLUEPRINT_PATTERN.match(line)
+        if not match:
+            raise ValueError(f"Failed to parse line: {line}")
+        yield Blueprint(
+            id=int(match.group(1)),
+            ore_bot_cost_ores=int(match.group(2)),
+            clay_bot_cost_ores=int(match.group(3)),
+            obsidian_bot_cost_ores=int(match.group(4)),
+            obsidian_bot_cost_clay=int(match.group(5)),
+            geode_bot_cost_ores=int(match.group(6)),
+            geode_bot_cost_obsidian=int(match.group(7)),
+        )
 
 
 @perf
-def part1(data):
+def part1(data: Blueprints):
     """Solve part 1"""
 
 
 @perf
-def part2(data):
+def part2(data: Blueprints):
     """Solve part 2"""
 
 
