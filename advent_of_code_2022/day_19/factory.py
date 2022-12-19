@@ -105,7 +105,19 @@ class Factory:
                     f"""{robot_count} {material}-collecting robot(s) collects {robot_count} {material}; you now have {self.inventory[material]} {material}."""
                 )
 
+    def _finish_build(self):
+        """Finish building a robot"""
+        if not self.build_queue:
+            return
+        material = self.build_queue.popleft()
+        self.robots[material] += 1
+        count = self.robots[material]
+        logging.debug(
+            f"The new {material}-collecting robot is ready; you now have {count} of them."
+        )
+
     def play_round(self):
         """Play one round of the game"""
         self._queue_build()
         self._collect_materials()
+        self._finish_build()
