@@ -1,31 +1,18 @@
 import logging
 import pathlib
-import re
-from dataclasses import dataclass
-from typing import Generator
 
 from advent_of_code_2022.day_19.arguments import init_args
+from advent_of_code_2022.day_19.blueprint import (
+    BLUEPRINT_PATTERN,
+    Blueprint,
+    Blueprints,
+)
+from advent_of_code_2022.day_19.factory import Factory
+from advent_of_code_2022.day_19.material import Material
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
-
-BLUEPRINT_PATTERN = re.compile(
-    r"Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian."
-)
-
-
-@dataclass
-class Blueprint:
-    id: int
-    ore_bot_cost_ores: int
-    clay_bot_cost_ores: int
-    obsidian_bot_cost_ores: int
-    obsidian_bot_cost_clay: int
-    geode_bot_cost_ores: int
-    geode_bot_cost_obsidian: int
-
-Blueprints = Generator[Blueprint, None, None]
 
 
 def parse(puzzle_input: str) -> Blueprints:
@@ -48,6 +35,14 @@ def parse(puzzle_input: str) -> Blueprints:
 @perf
 def part1(data: Blueprints):
     """Solve part 1"""
+    blueprint_output: dict[int, int] = {}
+    for blueprint in data:
+        factory = Factory(blueprint)
+        for minute in range(1, 24 + 1):
+            logging.debug(f"== Minute {minute} ==")
+            factory.play_round()
+            logging.debug("")
+        blueprint_output[blueprint.id] = factory.inventory[Material.GEODE]
 
 
 @perf
