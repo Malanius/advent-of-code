@@ -8,8 +8,8 @@ class Inventory:
     obsidian: int = 0
     geode: int = 0
 
-    def __hash__(self) -> int:
-        return hash((self.ore, self.clay, self.obsidian, self.geode))
+    def __str__(self) -> str:
+        return f"{self.ore:2d}, {self.clay:2d}, {self.obsidian:2d}, {self.geode:2d}"
 
     def __add__(self, other: "Inventory") -> "Inventory":
         return Inventory(

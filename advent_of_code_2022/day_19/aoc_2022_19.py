@@ -12,7 +12,12 @@ from advent_of_code_2022.day_19.inventory import Inventory
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
-logging.basicConfig(level=logging.INFO, format="%(message)s")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",
+    # filename=PUZZLE_DIR / "log.csv",
+    # filemode="w",
+)
 
 
 def parse(puzzle_input: str) -> Blueprints:

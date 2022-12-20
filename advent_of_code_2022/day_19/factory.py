@@ -14,11 +14,11 @@ build_strategies: list[Optional[Material]] = [
     None,
 ]
 
-@cache
+
 def can_build_bot(
     blueprint: Blueprint, inventory: Inventory, robots: Inventory, material: Material
 ) -> bool:
-    """Check if we have enough resources to build a robot"""
+    """Check if we have enough resources to build a robot and enough robots to cover maximal costs"""
     match material:
         case Material.ORE:
             return (
@@ -42,6 +42,7 @@ def can_build_bot(
                 and inventory.obsidian >= blueprint.geode_bot_cost.obsidian
             )
 
+
 @cache
 def get_max_geodes(
     time_left: int,
@@ -52,7 +53,6 @@ def get_max_geodes(
     """Get the maximum number of geodes that can be collected"""
 
     if time_left == 0:
-        logging.debug(f"T: {time_left} I: {inventory} R: {robots}")
         return 0
 
     max_geodes = 0
@@ -94,13 +94,24 @@ def get_max_geodes(
                 else:
                     continue
 
-        max_geodes = current_inventory.geode + max(
-            max_geodes,
-            get_max_geodes(
-                time_left - 1,
-                blueprint,
-                current_inventory + robots,
-                robots + built_robots,
-            ),
+        # trim inventory to maximum prices, no need to keep more than that, limits cache search space
+        current_inventory += robots
+        trimmed_ore = min(current_inventory.ore, blueprint.max_ore_cost)
+        trimmed_clay = min(current_inventory.clay, blueprint.max_clay_cost)
+        trimmed_obsidian = min(current_inventory.obsidian, blueprint.max_obsidian_cost)
+        trimmed_inventory = Inventory(
+            trimmed_ore, trimmed_clay, trimmed_obsidian, current_inventory.geode
+        )
+
+        branch_score = current_inventory.geode + get_max_geodes(
+            time_left - 1,
+            blueprint,
+            trimmed_inventory,
+            robots + built_robots,
+        )
+
+        max_geodes = max(max_geodes, branch_score)
+        logging.debug(
+            f'"T: {time_left}", "I: {inventory}", "R: {robots}", "M: {max_geodes}"'
         )
     return max_geodes
