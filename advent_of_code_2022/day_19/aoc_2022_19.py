@@ -2,9 +2,12 @@ import logging
 import pathlib
 
 from advent_of_code_2022.day_19.arguments import init_args
-from advent_of_code_2022.day_19.blueprint import (BLUEPRINT_PATTERN, Blueprint,
-                                                  Blueprints)
-from advent_of_code_2022.day_19.factory import Factory
+from advent_of_code_2022.day_19.blueprint import (
+    BLUEPRINT_PATTERN,
+    Blueprint,
+    Blueprints,
+)
+from advent_of_code_2022.day_19.factory import get_max_geodes
 from advent_of_code_2022.day_19.inventory import Inventory
 from advent_of_code_2022.util.perf import perf
 
@@ -35,10 +38,11 @@ def parse(puzzle_input: str) -> Blueprints:
 def part1(data: Blueprints):
     """Solve part 1"""
     blueprint_output: dict[int, int] = {}
-    starter_robots = Inventory(1, 0, 0, 0)
     for blueprint in data:
-        factory = Factory(blueprint, 24, robots=starter_robots)
-        blueprint_output[blueprint.id] = factory.get_max_geodes()
+        blueprint_output[blueprint.id] = get_max_geodes(
+            time_left=24,
+            blueprint=blueprint,
+        )
         break
     print(blueprint_output)
 
