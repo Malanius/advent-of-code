@@ -3,56 +3,41 @@ from collections import deque
 from dataclasses import dataclass, field
 
 from advent_of_code_2022.day_19.blueprint import Blueprint
+from advent_of_code_2022.day_19.inventory import Inventory
 from advent_of_code_2022.day_19.material import Material
+from advent_of_code_2022.day_19.robots import Robots
+
+build_priorities: list[Material] = [
+    Material.GEODE,
+    Material.OBSIDIAN,
+    Material.CLAY,
+    Material.ORE,
+]
 
 
 @dataclass
 class Factory:
     blueprint: Blueprint
     build_queue: deque[Material] = field(default_factory=deque)
-    build_priority: list[Material] = field(
-        default_factory=lambda: [
-            Material.GEODE,
-            Material.OBSIDIAN,
-            Material.CLAY,
-            Material.ORE,
-        ]
-    )
-    inventory: dict[Material, int] = field(
-        default_factory=lambda: {
-            Material.ORE: 0,
-            Material.CLAY: 0,
-            Material.OBSIDIAN: 0,
-            Material.GEODE: 0,
-        }
-    )
-    robots: dict[Material, int] = field(
-        default_factory=lambda: {
-            Material.ORE: 1,  # Start with one ore robot
-            Material.CLAY: 0,
-            Material.OBSIDIAN: 0,
-            Material.GEODE: 0,
-        }
-    )
+    inventory: Inventory = field(default_factory=Inventory)
+    robots: Robots = field(default_factory=Robots)
 
     def _can_build_bot(self, material: Material) -> bool:
         """Check if we have enough resources to build a robot"""
         match material:
             case Material.ORE:
-                return self.inventory[Material.ORE] >= self.blueprint.ore_bot_cost_ores
+                return self.inventory.ore >= self.blueprint.ore_bot_cost_ores
             case Material.CLAY:
-                return self.inventory[Material.ORE] >= self.blueprint.clay_bot_cost_ores
+                return self.inventory.ore >= self.blueprint.clay_bot_cost_ores
             case Material.OBSIDIAN:
                 return (
-                    self.inventory[Material.ORE]
-                    >= self.blueprint.obsidian_bot_cost_ores
-                    and self.inventory[Material.CLAY]
-                    >= self.blueprint.obsidian_bot_cost_clay
+                    self.inventory.ore >= self.blueprint.obsidian_bot_cost_ores
+                    and self.inventory.clay >= self.blueprint.obsidian_bot_cost_clay
                 )
             case Material.GEODE:
                 return (
-                    self.inventory[Material.ORE] >= self.blueprint.geode_bot_cost_ores
-                    and self.inventory[Material.OBSIDIAN]
+                    self.inventory.ore >= self.blueprint.geode_bot_cost_ores
+                    and self.inventory.obsidian
                     >= self.blueprint.geode_bot_cost_obsidian
                 )
 
@@ -62,23 +47,23 @@ class Factory:
         match material:
             case Material.ORE:
                 cost = self.blueprint.ore_bot_cost_ores
-                self.inventory[Material.ORE] -= cost
+                self.inventory.ore -= cost
                 cost_str = f"{cost} ore"
             case Material.CLAY:
                 cost = self.blueprint.clay_bot_cost_ores
-                self.inventory[Material.ORE] -= cost
+                self.inventory.ore -= cost
                 cost_str = f"{cost} ore"
             case Material.OBSIDIAN:
                 cost_ores = self.blueprint.obsidian_bot_cost_ores
                 cost_clay = self.blueprint.obsidian_bot_cost_clay
-                self.inventory[Material.ORE] -= cost_ores
-                self.inventory[Material.CLAY] -= cost_clay
+                self.inventory.ore -= cost_ores
+                self.inventory.clay -= cost_clay
                 cost_str = f"{cost_ores} ore and {cost_clay} clay"
             case Material.GEODE:
                 cost_ores = self.blueprint.geode_bot_cost_ores
                 cost_obsidian = self.blueprint.geode_bot_cost_obsidian
-                self.inventory[Material.ORE] -= cost_ores
-                self.inventory[Material.OBSIDIAN] -= cost_obsidian
+                self.inventory.ore -= cost_ores
+                self.inventory.obsidian -= cost_obsidian
                 cost_str = f"{cost_ores} ore and {cost_obsidian} obsidian"
             case _:
                 raise ValueError(f"Unknown material {material}")
@@ -90,19 +75,18 @@ class Factory:
         self,
     ):
         """Queue a build affordable material collection robot"""
-        for material in self.build_priority:
+        for material in build_priorities:
             if self._can_build_bot(material):
                 self._spend_build_resources(material)
                 self.build_queue.append(material)
-                break
 
     def _collect_materials(self):
-        """Collect materials for the next robot"""
-        for material, robot_count in self.robots.items():
-            self.inventory[material] += robot_count
+        """Collect materials for all robots"""
+        for material, robot_count in self.robots.counts():
+            self.inventory.add_material(material, robot_count)
             if robot_count > 0:
                 logging.debug(
-                    f"""{robot_count} {material}-collecting robot(s) collects {robot_count} {material}; you now have {self.inventory[material]} {material}."""
+                    f"""{robot_count} {material}-collecting robot(s) collects {robot_count} {material}; you now have {self.inventory.get_material_stock(material)} {material}."""
                 )
 
     def _finish_build(self):
@@ -110,8 +94,8 @@ class Factory:
         if not self.build_queue:
             return
         material = self.build_queue.popleft()
-        self.robots[material] += 1
-        count = self.robots[material]
+        self.robots.add_robot(material)
+        count = self.robots.get_material_robots_stock(material)
         logging.debug(
             f"The new {material}-collecting robot is ready; you now have {count} of them."
         )
