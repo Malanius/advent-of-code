@@ -7,7 +7,7 @@ from advent_of_code_2022.day_19.blueprint import (
     Blueprint,
     Blueprints,
 )
-from advent_of_code_2022.day_19.factory import get_max_geodes
+from advent_of_code_2022.day_19.brute_force_factory import get_max_geodes
 from advent_of_code_2022.day_19.inventory import Inventory
 from advent_of_code_2022.util.perf import perf
 
@@ -20,27 +20,31 @@ logging.basicConfig(
 )
 
 
-def parse(puzzle_input: str) -> Blueprints:
+def parse(puzzle_input: str) -> list[Blueprint]:
     """Parse input"""
+    blueprints = []
     for line in puzzle_input.splitlines():
         match = BLUEPRINT_PATTERN.match(line)
         if not match:
             raise ValueError(f"Failed to parse line: {line}")
-        yield Blueprint(
-            id=int(match.group(1)),
-            ore_bot_cost=Inventory(ore=int(match.group(2))),
-            clay_bot_cost=Inventory(ore=int(match.group(3))),
-            obsidian_bot_cost=Inventory(
-                ore=int(match.group(4)), clay=int(match.group(5))
-            ),
-            geode_bot_cost=Inventory(
-                ore=int(match.group(6)), obsidian=int(match.group(7))
-            ),
+        blueprints.append(
+            Blueprint(
+                id=int(match.group(1)),
+                ore_bot_cost=Inventory(ore=int(match.group(2))),
+                clay_bot_cost=Inventory(ore=int(match.group(3))),
+                obsidian_bot_cost=Inventory(
+                    ore=int(match.group(4)), clay=int(match.group(5))
+                ),
+                geode_bot_cost=Inventory(
+                    ore=int(match.group(6)), obsidian=int(match.group(7))
+                ),
+            )
         )
+    return blueprints
 
 
 @perf
-def part1(data: Blueprints):
+def part1(data: list[Blueprint]):
     """Solve part 1"""
     blueprint_output: dict[int, int] = {}
     for blueprint in data:
@@ -48,12 +52,12 @@ def part1(data: Blueprints):
             time_left=24,
             blueprint=blueprint,
         )
-        break
     print(blueprint_output)
+    return sum([id * quality for id, quality in blueprint_output.items()])
 
 
 @perf
-def part2(data: Blueprints):
+def part2(data: list[Blueprint]):
     """Solve part 2"""
 
 
