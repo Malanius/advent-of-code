@@ -47,8 +47,13 @@ def can_build_bot(
 def get_max_geodes(
     time_left: int,
     blueprint: Blueprint,
-    inventory: Inventory = Inventory(),
-    robots: Inventory = Inventory(ore=1),
+    inv_ore: int = 0,
+    inv_clay: int = 0,
+    inv_obsidian: int = 0,
+    rob_ore: int = 1,
+    rob_clay: int = 0,
+    rob_obsidian: int = 0,
+    rob_geode: int = 0,
 ) -> int:
     """Get the maximum number of geodes that can be collected"""
 
@@ -60,7 +65,17 @@ def get_max_geodes(
         if time_left == 1 and strategy is not None:
             continue  # building on last turn is a waste
 
-        current_inventory = inventory.copy()
+        current_inventory = Inventory(
+            inv_ore,
+            inv_clay,
+            inv_obsidian,
+        )
+        robots = Inventory(
+            rob_ore,
+            rob_clay,
+            rob_obsidian,
+            rob_geode,
+        )
         built_robots = Inventory()
 
         match strategy:
@@ -94,24 +109,30 @@ def get_max_geodes(
                 else:
                     continue
 
-        # trim inventory to maximum prices, no need to keep more than that, limits cache search space
         current_inventory += robots
+        robots += built_robots
+        # trim inventory to maximum prices, no need to keep more than that, limits cache search space
         trimmed_ore = min(current_inventory.ore, blueprint.max_ore_cost)
         trimmed_clay = min(current_inventory.clay, blueprint.max_clay_cost)
         trimmed_obsidian = min(current_inventory.obsidian, blueprint.max_obsidian_cost)
-        trimmed_inventory = Inventory(
-            trimmed_ore, trimmed_clay, trimmed_obsidian, current_inventory.geode
-        )
 
         branch_score = current_inventory.geode + get_max_geodes(
             time_left - 1,
             blueprint,
-            trimmed_inventory,
-            robots + built_robots,
+            current_inventory.ore,
+            current_inventory.clay,
+            current_inventory.obsidian,
+            # trimmed_ore,
+            # trimmed_clay,
+            # trimmed_obsidian,
+            robots.ore,
+            robots.clay,
+            robots.obsidian,
+            robots.geode,
         )
 
         max_geodes = max(max_geodes, branch_score)
-        logging.debug(
-            f'"T: {time_left}", "I: {inventory}", "R: {robots}", "M: {max_geodes}"'
-        )
+        # logging.debug(
+        #     f'"T: {time_left}", "I: {current_inventory}", "R: {robots}", "M: {max_geodes}"'
+        # )
     return max_geodes
