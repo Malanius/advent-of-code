@@ -1,3 +1,4 @@
+from functools import cache
 import logging
 from typing import Optional
 
@@ -13,7 +14,7 @@ build_strategies: list[Optional[Material]] = [
     None,
 ]
 
-
+@cache
 def can_build_bot(
     blueprint: Blueprint, inventory: Inventory, robots: Inventory, material: Material
 ) -> bool:
@@ -41,7 +42,7 @@ def can_build_bot(
                 and inventory.obsidian >= blueprint.geode_bot_cost.obsidian
             )
 
-
+@cache
 def get_max_geodes(
     time_left: int,
     blueprint: Blueprint,
