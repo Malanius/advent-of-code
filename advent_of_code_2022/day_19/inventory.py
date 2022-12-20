@@ -1,33 +1,33 @@
-from attr import dataclass
-
-from advent_of_code_2022.day_19.material import Material
+from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(frozen=True)
 class Inventory:
     ore: int = 0
     clay: int = 0
     obsidian: int = 0
     geode: int = 0
 
-    def add_material(self, material: Material, count: int):
-        match material:
-            case Material.ORE:
-                self.ore += count
-            case Material.CLAY:
-                self.clay += count
-            case Material.OBSIDIAN:
-                self.obsidian += count
-            case Material.GEODE:
-                self.geode += count
+    def __hash__(self) -> int:
+        return hash((self.ore, self.clay, self.obsidian, self.geode))
 
-    def get_material_stock(self, material: Material) -> int:
-        match material:
-            case Material.ORE:
-                return self.ore
-            case Material.CLAY:
-                return self.clay
-            case Material.OBSIDIAN:
-                return self.obsidian
-            case Material.GEODE:
-                return self.geode
+    def __add__(self, other: "Inventory") -> "Inventory":
+        return Inventory(
+            self.ore + other.ore,
+            self.clay + other.clay,
+            self.obsidian + other.obsidian,
+            self.geode + other.geode,
+        )
+
+    def __sub__(self, other: "Inventory") -> "Inventory":
+        ore = self.ore - other.ore
+        clay = self.clay - other.clay
+        obsidian = self.obsidian - other.obsidian
+        geode = self.geode - other.geode
+        if ore < 0 or clay < 0 or obsidian < 0 or geode < 0:
+            raise ValueError("Cannot have negative inventory")
+
+        return Inventory(ore, clay, obsidian, geode)
+
+    def copy(self):
+        return Inventory(self.ore, self.clay, self.obsidian, self.geode)

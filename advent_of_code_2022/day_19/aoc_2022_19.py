@@ -2,14 +2,10 @@ import logging
 import pathlib
 
 from advent_of_code_2022.day_19.arguments import init_args
-from advent_of_code_2022.day_19.blueprint import (
-    BLUEPRINT_PATTERN,
-    Blueprint,
-    Blueprints,
-)
+from advent_of_code_2022.day_19.blueprint import (BLUEPRINT_PATTERN, Blueprint,
+                                                  Blueprints)
 from advent_of_code_2022.day_19.factory import Factory
-from advent_of_code_2022.day_19.factory2 import most_geodes_possible
-from advent_of_code_2022.day_19.material import Material
+from advent_of_code_2022.day_19.inventory import Inventory
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -24,12 +20,14 @@ def parse(puzzle_input: str) -> Blueprints:
             raise ValueError(f"Failed to parse line: {line}")
         yield Blueprint(
             id=int(match.group(1)),
-            ore_bot_cost_ores=int(match.group(2)),
-            clay_bot_cost_ores=int(match.group(3)),
-            obsidian_bot_cost_ores=int(match.group(4)),
-            obsidian_bot_cost_clay=int(match.group(5)),
-            geode_bot_cost_ores=int(match.group(6)),
-            geode_bot_cost_obsidian=int(match.group(7)),
+            ore_bot_cost=Inventory(ore=int(match.group(2))),
+            clay_bot_cost=Inventory(ore=int(match.group(3))),
+            obsidian_bot_cost=Inventory(
+                ore=int(match.group(4)), clay=int(match.group(5))
+            ),
+            geode_bot_cost=Inventory(
+                ore=int(match.group(6)), obsidian=int(match.group(7))
+            ),
         )
 
 
@@ -37,8 +35,9 @@ def parse(puzzle_input: str) -> Blueprints:
 def part1(data: Blueprints):
     """Solve part 1"""
     blueprint_output: dict[int, int] = {}
+    starter_robots = Inventory(1, 0, 0, 0)
     for blueprint in data:
-        factory = Factory(blueprint, 24)
+        factory = Factory(blueprint, 24, robots=starter_robots)
         blueprint_output[blueprint.id] = factory.get_max_geodes()
         break
     print(blueprint_output)
