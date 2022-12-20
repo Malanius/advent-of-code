@@ -1,23 +1,27 @@
 import logging
 from collections import deque
 from dataclasses import dataclass, field
+from typing import Optional
 
 from advent_of_code_2022.day_19.blueprint import Blueprint
 from advent_of_code_2022.day_19.inventory import Inventory
 from advent_of_code_2022.day_19.material import Material
 from advent_of_code_2022.day_19.robots import Robots
 
-build_priorities: list[Material] = [
+build_strategies: list[Optional[Material]] = [
     Material.GEODE,
     Material.OBSIDIAN,
     Material.CLAY,
     Material.ORE,
+    None,
 ]
 
 
 @dataclass
 class Factory:
     blueprint: Blueprint
+    time_left: int
+    build_strategy: Optional[Material] = None
     build_queue: deque[Material] = field(default_factory=deque)
     inventory: Inventory = field(default_factory=Inventory)
     robots: Robots = field(default_factory=Robots)
@@ -85,10 +89,12 @@ class Factory:
         self,
     ):
         """Queue a build affordable material collection robot"""
-        for material in build_priorities:
-            if self._can_build_bot(material):
-                self._spend_build_resources(material)
-                self.build_queue.append(material)
+        material = self.build_strategy
+        if material is None:
+            return
+        if self._can_build_bot(material):
+            self._spend_build_resources(material)
+            self.build_queue.append(material)
 
     def _collect_materials(self):
         """Collect materials for all robots"""
@@ -110,8 +116,29 @@ class Factory:
             f"The new {material}-collecting robot is ready; you now have {count} of them."
         )
 
-    def play_round(self):
+    def _play_round(self):
         """Play one round of the game"""
+        logging.debug(f"== T-{self.time_left} ==")
         self._queue_build()
         self._collect_materials()
         self._finish_build()
+        logging.debug(f"")
+
+    def get_max_geodes(self) -> int:
+        """Get the maximum number of geodes that can be collected"""
+
+        if self.time_left == 0:
+            return 0
+
+        geodes = 0
+        for strategy in build_strategies:
+            factory = Factory(
+                blueprint=self.blueprint,
+                time_left=self.time_left - 1,
+                build_strategy=strategy,
+                inventory=self.inventory.copy(),
+                robots=self.robots.copy(),
+            )
+            factory._play_round()
+            geodes = max(geodes, factory.get_max_geodes())
+        return geodes

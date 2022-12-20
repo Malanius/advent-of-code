@@ -8,6 +8,7 @@ from advent_of_code_2022.day_19.blueprint import (
     Blueprints,
 )
 from advent_of_code_2022.day_19.factory import Factory
+from advent_of_code_2022.day_19.factory2 import most_geodes_possible
 from advent_of_code_2022.day_19.material import Material
 from advent_of_code_2022.util.perf import perf
 
@@ -37,12 +38,10 @@ def part1(data: Blueprints):
     """Solve part 1"""
     blueprint_output: dict[int, int] = {}
     for blueprint in data:
-        factory = Factory(blueprint)
-        for minute in range(1, 24 + 1):
-            logging.debug(f"== Minute {minute} ==")
-            factory.play_round()
-            logging.debug("")
-        blueprint_output[blueprint.id] = factory.inventory[Material.GEODE]
+        factory = Factory(blueprint, 24)
+        blueprint_output[blueprint.id] = factory.get_max_geodes()
+        break
+    print(blueprint_output)
 
 
 @perf
