@@ -22,7 +22,10 @@ class Blueprint:
 
     def __post_init__(self):
         self.max_ore_cost = max(
-            self.ore_bot_cost.ore, self.clay_bot_cost.ore, self.obsidian_bot_cost.ore
+            self.ore_bot_cost.ore,
+            self.clay_bot_cost.ore,
+            self.obsidian_bot_cost.ore,
+            self.geode_bot_cost.ore,
         )
         self.max_clay_cost = self.obsidian_bot_cost.clay
         self.max_obsidian_cost = self.geode_bot_cost.obsidian
