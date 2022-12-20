@@ -17,5 +17,25 @@ class Blueprint:
     geode_bot_cost_ores: int
     geode_bot_cost_obsidian: int
 
+    def __hash__(self) -> int:
+        return hash(self.id)
+
+    @property
+    def max_ore_cost(self) -> int:
+        return max(
+            self.ore_bot_cost_ores,
+            self.clay_bot_cost_ores,
+            self.obsidian_bot_cost_ores,
+            self.geode_bot_cost_ores,
+        )
+
+    @property
+    def max_clay_cost(self) -> int:
+        return self.obsidian_bot_cost_clay
+
+    @property
+    def max_obsidian_cost(self) -> int:
+        return self.geode_bot_cost_obsidian
+
 
 Blueprints = Generator[Blueprint, None, None]

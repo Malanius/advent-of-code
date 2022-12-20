@@ -22,17 +22,27 @@ class Factory:
     inventory: Inventory = field(default_factory=Inventory)
     robots: Robots = field(default_factory=Robots)
 
+    def __post_init__(self):
+        logging.debug(f"Factory created: {self!r}")
+
     def _can_build_bot(self, material: Material) -> bool:
         """Check if we have enough resources to build a robot"""
         match material:
             case Material.ORE:
-                return self.inventory.ore >= self.blueprint.ore_bot_cost_ores
+                return (
+                    self.inventory.ore >= self.blueprint.ore_bot_cost_ores
+                    and self.robots.ore_bots < self.blueprint.max_ore_cost
+                )
             case Material.CLAY:
-                return self.inventory.ore >= self.blueprint.clay_bot_cost_ores
+                return (
+                    self.inventory.ore >= self.blueprint.clay_bot_cost_ores
+                    and self.robots.clay_bots < self.blueprint.max_clay_cost
+                )
             case Material.OBSIDIAN:
                 return (
                     self.inventory.ore >= self.blueprint.obsidian_bot_cost_ores
                     and self.inventory.clay >= self.blueprint.obsidian_bot_cost_clay
+                    and self.robots.obsidian_bots < self.blueprint.max_obsidian_cost
                 )
             case Material.GEODE:
                 return (
