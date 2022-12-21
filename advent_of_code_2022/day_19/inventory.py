@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from advent_of_code_2022.day_19.material import Material
+
 
 @dataclass(frozen=True)
 class Inventory:
@@ -31,3 +33,12 @@ class Inventory:
 
     def copy(self):
         return Inventory(self.ore, self.clay, self.obsidian, self.geode)
+
+    @property
+    def stock(self) -> dict[Material, int]:
+        return {
+            Material.ORE: self.ore,
+            Material.CLAY: self.clay,
+            Material.OBSIDIAN: self.obsidian,
+            Material.GEODE: self.geode,
+        }

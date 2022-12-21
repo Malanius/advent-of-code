@@ -39,6 +39,3 @@ class Blueprint:
             Material.OBSIDIAN: self.obsidian_bot_cost,
             Material.GEODE: self.geode_bot_cost,
         }
-
-
-Blueprints = Generator[Blueprint, None, None]
