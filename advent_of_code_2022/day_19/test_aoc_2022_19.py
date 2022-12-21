@@ -48,13 +48,12 @@ def test_part1_data(data):
     assert part1(data) == 1550
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_example(example):
     """Test part 2 on example input"""
-    assert part2(example) == ...
+    assert part2(example) == 3472
 
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_data(data):
     """Test part 2 on data input"""
-    assert part2(data) == ...
+    assert part2(data) == 18630

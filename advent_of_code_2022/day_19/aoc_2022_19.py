@@ -1,13 +1,9 @@
 import logging
+import math
 import pathlib
 
 from advent_of_code_2022.day_19.arguments import init_args
-from advent_of_code_2022.day_19.blueprint import (
-    BLUEPRINT_PATTERN,
-    Blueprint,
-    Blueprints,
-)
-from advent_of_code_2022.day_19.brute_force_factory import get_max_geodes
+from advent_of_code_2022.day_19.blueprint import BLUEPRINT_PATTERN, Blueprint
 from advent_of_code_2022.day_19.inventory import Inventory
 from advent_of_code_2022.day_19.optimized_factory import get_max_geodes_opt
 from advent_of_code_2022.util.perf import perf
@@ -16,7 +12,7 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(
     level=logging.INFO,
     format="%(message)s",
-    # filename=PUZZLE_DIR / "log.csv",
+    # filename=PUZZLE_DIR / "log.txt",
     # filemode="w",
 )
 
@@ -53,7 +49,6 @@ def part1(data: list[Blueprint]):
             time_left=24,
             blueprint=blueprint,
         )
-        break
     print(blueprint_output)
     return sum([id * quality for id, quality in blueprint_output.items()])
 
@@ -61,7 +56,15 @@ def part1(data: list[Blueprint]):
 @perf
 def part2(data: list[Blueprint]):
     """Solve part 2"""
-    return -2
+    blueprint_output: dict[int, int] = {}
+    # we have only 3 blueprints left
+    for blueprint in data[:3]:
+        blueprint_output[blueprint.id] = get_max_geodes_opt(
+            time_left=32,
+            blueprint=blueprint,
+        )
+    print(blueprint_output)
+    return math.prod([geodes for geodes in blueprint_output.values()])
 
 
 def solve(puzzle_input):
