@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field, replace
-from typing import Generator, Optional
+from functools import cached_property
+from typing import Generator
 import logging
 
 from advent_of_code_2022.day_19.blueprint import Blueprint
@@ -63,6 +64,15 @@ class FactoryState:
             geode=inventory.geode,
         )
 
+    @cached_property
+    def optimistic_estimate(self):
+        """Estimate of geodes we can collect in remaining time"""
+        return (
+            self.inventory.geode
+            + self.robots.geode * self.time_left
+            + (self.time_left + 1) * self.time_left // 2
+        )
+
     def next_states(self) -> Generator["FactoryState", None, None]:
         """Get all possible next states"""
         for material in build_strategies:
@@ -122,16 +132,24 @@ def get_max_geodes_opt(
     best_state = None
     while to_visit:
         state = to_visit.pop()
+
+        if state.optimistic_estimate < max_geodes:
+            logging.debug(f"Skipping state: {state}")
+            continue
+
         if state in visited:
             logging.debug(f"Already visited: {state}")
             continue
         visited.add(state)
+
         if state.inventory.geode > max_geodes:
             max_geodes = state.inventory.geode
             best_state = state
             logging.debug(f"New best state: {best_state}")
+
         for next_state in state.next_states():
             logging.debug(next_state)
             to_visit.append(next_state)
+
     logging.debug(f"Best state: {best_state}")
     return max_geodes
