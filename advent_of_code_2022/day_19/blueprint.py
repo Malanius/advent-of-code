@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Generator
 
 from advent_of_code_2022.day_19.inventory import Inventory
+from advent_of_code_2022.day_19.material import Material
 
 BLUEPRINT_PATTERN = re.compile(
     r"Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian."
@@ -29,6 +30,15 @@ class Blueprint:
         )
         self.max_clay_cost = self.obsidian_bot_cost.clay
         self.max_obsidian_cost = self.geode_bot_cost.obsidian
+
+    @property
+    def costs(self) -> dict[Material, Inventory]:
+        return {
+            Material.ORE: self.ore_bot_cost,
+            Material.CLAY: self.clay_bot_cost,
+            Material.OBSIDIAN: self.obsidian_bot_cost,
+            Material.GEODE: self.geode_bot_cost,
+        }
 
 
 Blueprints = Generator[Blueprint, None, None]
