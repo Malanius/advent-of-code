@@ -103,10 +103,15 @@ def get_max_geodes_opt(
     logging.debug(f"Initial state: {initial}")
 
     to_visit = [initial]
+    visited = set()
     max_geodes = -1
     best_state = None
     while to_visit:
         state = to_visit.pop()
+        if state in visited:
+            logging.debug(f"Already visited: {state}")
+            continue
+        visited.add(state)
         if state.inventory.geode > max_geodes:
             max_geodes = state.inventory.geode
             best_state = state
