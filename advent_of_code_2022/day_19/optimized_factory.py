@@ -49,6 +49,20 @@ class FactoryState:
     inventory: Inventory = Inventory()
     robots: Inventory = Inventory(ore=1)
 
+    def trim_invetory(self, inventory: Inventory, time_left: int) -> Inventory:
+        """Trim inventory to maximal costs"""
+        max_ore_cost = self.blueprint.max_ore_cost
+        max_clay_cost = self.blueprint.max_clay_cost
+        max_obsidian_cost = self.blueprint.max_obsidian_cost
+        return Inventory(
+            ore=min(inventory.ore, max_ore_cost + max_ore_cost * time_left),
+            clay=min(inventory.clay, max_clay_cost + max_clay_cost * time_left),
+            obsidian=min(
+                inventory.obsidian, max_obsidian_cost + max_obsidian_cost * time_left
+            ),
+            geode=inventory.geode,
+        )
+
     def next_states(self) -> Generator["FactoryState", None, None]:
         """Get all possible next states"""
         for material in build_strategies:
@@ -89,7 +103,7 @@ class FactoryState:
                 yield replace(
                     self,
                     time_left=time_left,
-                    inventory=inventory,
+                    inventory=self.trim_invetory(inventory, time_left),
                     robots=robots + gained_robots,
                 )
 
