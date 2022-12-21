@@ -9,6 +9,7 @@ from advent_of_code_2022.day_19.blueprint import (
 )
 from advent_of_code_2022.day_19.brute_force_factory import get_max_geodes
 from advent_of_code_2022.day_19.inventory import Inventory
+from advent_of_code_2022.day_19.optimized_factory import get_max_geodes_opt
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -48,10 +49,11 @@ def part1(data: list[Blueprint]):
     """Solve part 1"""
     blueprint_output: dict[int, int] = {}
     for blueprint in data:
-        blueprint_output[blueprint.id] = get_max_geodes(
+        blueprint_output[blueprint.id] = get_max_geodes_opt(
             time_left=24,
             blueprint=blueprint,
         )
+        break
     print(blueprint_output)
     return sum([id * quality for id, quality in blueprint_output.items()])
 
@@ -59,6 +61,7 @@ def part1(data: list[Blueprint]):
 @perf
 def part2(data: list[Blueprint]):
     """Solve part 2"""
+    return -2
 
 
 def solve(puzzle_input):
