@@ -2,6 +2,7 @@ import logging
 from dataclasses import dataclass, field
 from itertools import pairwise, zip_longest
 from typing import Optional
+from advent_of_code_2022.day_22.coord import Coord
 
 from advent_of_code_2022.day_22.elements import Air, Element, Rock, Void
 
@@ -9,7 +10,7 @@ from advent_of_code_2022.day_22.elements import Air, Element, Rock, Void
 @dataclass
 class Grid:
     grid: list[list[Element]] = field(default_factory=list)
-    start_coords: Optional[tuple[int, int]] = None
+    start_coords: Optional[Coord] = None
 
     def __str__(self) -> str:
         return "\n".join("".join(str(element) for element in row) for row in self.grid)
@@ -40,7 +41,7 @@ class Grid:
                         element = Rock()
                     case ".":
                         if not self.start_coords:
-                            self.start_coords = (x, y)
+                            self.start_coords = Coord(y, x)
                         element = Air()
                 self.grid[y].append(element)
 
