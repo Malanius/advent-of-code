@@ -3,7 +3,7 @@ from typing import Literal
 
 from advent_of_code_2022.day_22.coord import Coord
 from advent_of_code_2022.day_22.direction import Direction
-from advent_of_code_2022.day_22.elements import Air, Element, Void
+from advent_of_code_2022.day_22.elements import Tile, Element, Void
 
 
 @dataclass
@@ -24,7 +24,7 @@ class Player(Element):
                 return "\u2192"
 
     def can_move_to(self, element: Element) -> bool:
-        if isinstance(element, Air) or isinstance(element, Void):
+        if isinstance(element, Tile) or isinstance(element, Void):
             return True
         return False
 

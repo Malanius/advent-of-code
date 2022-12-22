@@ -5,14 +5,14 @@ from typing import Optional
 from advent_of_code_2022.day_22.coord import Coord
 from advent_of_code_2022.day_22.direction import Direction
 
-from advent_of_code_2022.day_22.elements import Air, Element, Rock, Void
+from advent_of_code_2022.day_22.elements import Tile, Element, Rock, Void
 
 
 @dataclass
 class Grid:
     grid: list[list[Element]] = field(default_factory=list)
     start_coords: Optional[Coord] = None
-    edge_points: list[Coord] = field(default_factory=list)
+    edge_points: set[Coord] = field(default_factory=set)
 
     def __str__(self) -> str:
         return "\n".join("".join(str(element) for element in row) for row in self.grid)
@@ -59,13 +59,19 @@ class Grid:
                         if not self.start_coords:
                             logging.debug(f"Found start at {y}, {x}.")
                             self.start_coords = Coord(y, x)
-                        element = Air()
+                        element = Tile()
                 self.grid[y].append(element)
+
+    def _mark_edge(self, tile: Tile, direction: Direction, coord: Coord) -> None:
+        y, x = coord()
+        logging.debug(f"Found {direction} edge at {y}, {x}.")
+        tile.edges.append(direction)
+        self.edge_points.add(coord)
 
     def _mark_edges(self) -> None:
         for y, row in enumerate(self.grid):
             for x, element in enumerate(row):
-                if not isinstance(element, Air):
+                if not isinstance(element, Tile):
                     logging.debug(f"Skipping {y}, {x} as it's not air")
                     continue
 
@@ -73,26 +79,24 @@ class Grid:
                     current_coord = Coord(y, x)
                     new_coord = current_coord + Coord(*direction.value)
 
+                    out_of_bounds = False
                     # check vertical bounds
                     if new_coord.y < 0 or new_coord.y >= len(self.grid):
-                        logging.debug(f"Found edge at {y}, {x}.")
-                        element.is_edge = True
-                        self.edge_points.append(Coord(y, x))
-                        break
+                        self._mark_edge(element, direction, Coord(y, x))
+                        out_of_bounds = True
 
                     # check horizontal bounds
-                    if new_coord.x < 0 or new_coord.x >= len(self.grid[new_coord.y]):
-                        logging.debug(f"Found edge at {y}, {x}.")
-                        element.is_edge = True
-                        self.edge_points.append(Coord(y, x))
-                        break
+                    if new_coord.x < 0 or new_coord.x >= len(self.grid[0]):
+                        self._mark_edge(element, direction, Coord(y, x))
+                        out_of_bounds = True
+
+                    if out_of_bounds:
+                        continue
 
                     # check void bounds
                     if isinstance(self.grid[new_coord.y][new_coord.x], Void):
-                        logging.debug(f"Found edge at {y}, {x}.")
-                        element.is_edge = True
-                        self.edge_points.append(Coord(y, x))
-                        break
+                        self._mark_edge(element, direction, Coord(y, x))
+
         logging.debug(f"Found {len(self.edge_points)} edge points.")
 
     def _row_bounds(self, coord: Coord) -> tuple[Coord, Coord]:
@@ -100,9 +104,9 @@ class Grid:
         row = self.grid[y]
         row_str = "".join(str(element) for element in row)
         # we can wrap to rocks as well
-        row_str = row_str.replace(str(Rock()), str(Air()))
-        left = row_str.index(str(Air()))
-        right = row_str.rindex(str(Air()))
+        row_str = row_str.replace(str(Rock()), str(Tile()))
+        left = row_str.index(str(Tile()))
+        right = row_str.rindex(str(Tile()))
         return Coord(y, left), Coord(y, right)
 
     def _col_bounds(self, coord: Coord) -> tuple[Coord, Coord]:
@@ -110,39 +114,34 @@ class Grid:
         col = [row[x] for row in self.grid]
         col_str = "".join(str(element) for element in col)
         # we can wrap to rocks as well
-        col_str = col_str.replace(str(Rock()), str(Air()))
-        top = col_str.index(str(Air()))
-        bottom = col_str.rindex(str(Air()))
+        col_str = col_str.replace(str(Rock()), str(Tile()))
+        top = col_str.index(str(Tile()))
+        bottom = col_str.rindex(str(Tile()))
         return Coord(top, x), Coord(bottom, x)
 
     def wraps_to(self, coord: Coord, incoming_direction: Direction) -> Coord:
         element = self.grid[coord.y][coord.x]
-        if not isinstance(element, Air):
+        if not isinstance(element, Tile):
             raise ValueError(f"Cannot wrap from {coord} as it's not air!")
 
-        if not element.is_edge:
+        if not element.edges:
             raise ValueError(f"Cannot wrap from {coord} as it's not an edge!")
+
+        if incoming_direction not in element.edges:
+            return coord + Coord(*incoming_direction.value)
 
         match incoming_direction:
             case Direction.UP:
                 _, bottom = self._col_bounds(coord)
-                if coord.y == bottom.y:
-                    return coord
                 return Coord(bottom.y, coord.x)
             case Direction.DOWN:
                 top, _ = self._col_bounds(coord)
-                if coord.y == top.y:
-                    return coord
                 return Coord(top.y, coord.x)
             case Direction.LEFT:
                 _, right = self._row_bounds(coord)
-                if coord.x == right.x:
-                    return coord
                 return Coord(coord.y, right.x)
             case Direction.RIGHT:
                 left, _ = self._row_bounds(coord)
-                if coord.x == left.x:
-                    return coord
                 return Coord(coord.y, left.x)
 
     @classmethod

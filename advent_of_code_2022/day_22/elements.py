@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from advent_of_code_2022.day_22.direction import Direction
 
@@ -19,10 +19,10 @@ class Rock(Element):
 
 
 @dataclass
-class Air(Element):
+class Tile(Element):
     passed: bool = False
     passed_direction: Direction = Direction.UP
-    is_edge: bool = False
+    edges: list[Direction] = field(default_factory=list)
 
     def __str__(self) -> str:
         if not self.passed:
