@@ -5,6 +5,16 @@ def init_args() -> argparse.Namespace:
     """Parse command line arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "-i",
+        "--interactive",
+        required=False,
+        default=None,
+        choices=[1, 2],
+        help="Show visualization for part #",
+        action="store",
+        type=int,
+    )
+    parser.add_argument(
         "-d",
         "--data",
         required=False,
