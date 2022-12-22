@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Literal
 
 from advent_of_code_2022.day_22.direction import Direction
 
@@ -23,6 +22,7 @@ class Rock(Element):
 class Air(Element):
     passed: bool = False
     passed_direction: Direction = Direction.UP
+    is_edge: bool = False
 
     def __str__(self) -> str:
         if not self.passed:

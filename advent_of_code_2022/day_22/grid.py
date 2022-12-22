@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from itertools import pairwise, zip_longest
 from typing import Optional
 from advent_of_code_2022.day_22.coord import Coord
+from advent_of_code_2022.day_22.direction import Direction
 
 from advent_of_code_2022.day_22.elements import Air, Element, Rock, Void
 
@@ -11,6 +12,7 @@ from advent_of_code_2022.day_22.elements import Air, Element, Rock, Void
 class Grid:
     grid: list[list[Element]] = field(default_factory=list)
     start_coords: Optional[Coord] = None
+    edge_points: list[Coord] = field(default_factory=list)
 
     def __str__(self) -> str:
         return "\n".join("".join(str(element) for element in row) for row in self.grid)
@@ -45,8 +47,42 @@ class Grid:
                         element = Air()
                 self.grid[y].append(element)
 
+    def _mark_edges(self) -> None:
+        for y, row in enumerate(self.grid):
+            for x, element in enumerate(row):
+                if not isinstance(element, Air):
+                    logging.debug(f"Skipping {y}, {x} as it's not air")
+                    continue
+
+                for direction in Direction:
+                    current_coord = Coord(y, x)
+                    new_coord = current_coord + Coord(*direction.value)
+
+                    # check vertical bounds
+                    if new_coord.y < 0 or new_coord.y >= len(self.grid):
+                        logging.debug(f"Found edge at {y}, {x}.")
+                        element.is_edge = True
+                        self.edge_points.append(Coord(y, x))
+                        break
+
+                    # check horizontal bounds
+                    if new_coord.x < 0 or new_coord.x >= len(self.grid[new_coord.y]):
+                        logging.debug(f"Found edge at {y}, {x}.")
+                        element.is_edge = True
+                        self.edge_points.append(Coord(y, x))
+                        break
+
+                    # check void bounds
+                    if isinstance(self.grid[new_coord.y][new_coord.x], Void):
+                        logging.debug(f"Found edge at {y}, {x}.")
+                        element.is_edge = True
+                        self.edge_points.append(Coord(y, x))
+                        break
+        logging.debug(f"Found {len(self.edge_points)} edge points.")
+
     @classmethod
     def construct(cls, puzzle_input: str) -> "Grid":
         grid = Grid()
         grid._parse_data(puzzle_input)
+        grid._mark_edges()
         return grid
