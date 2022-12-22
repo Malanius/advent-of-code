@@ -19,7 +19,7 @@ class Coord:
         return self.y == other.y and self.x == other.x
 
     def __repr__(self):
-        return f"Coord({self.x}, {self.y})"
+        return f"Coord({self.y}, {self.x})"
 
     def __str__(self) -> str:
-        return f"({self.x}, {self.y})"
+        return f"({self.y}, {self.x})"

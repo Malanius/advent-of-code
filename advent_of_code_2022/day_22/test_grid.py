@@ -3,6 +3,7 @@ import textwrap
 
 import pytest
 from advent_of_code_2022.day_22.coord import Coord
+from advent_of_code_2022.day_22.direction import Direction
 
 from advent_of_code_2022.day_22.grid import Grid
 
@@ -77,3 +78,31 @@ def test_col_bounds(example_grid: Grid) -> None:
     assert example_grid._col_bounds(Coord(0, 13)) == (Coord(8, 13), Coord(11, 13))
     assert example_grid._col_bounds(Coord(0, 14)) == (Coord(8, 14), Coord(11, 14))
     assert example_grid._col_bounds(Coord(0, 15)) == (Coord(8, 15), Coord(11, 15))
+
+
+def test_wraps_to_up(example_grid: Grid) -> None:
+    direction = Direction.UP
+    assert example_grid.wraps_to(Coord(0, 8), direction) == Coord(11, 8)
+    assert example_grid.wraps_to(Coord(4, 2), direction) == Coord(7, 2)
+    assert example_grid.wraps_to(Coord(8, 14), direction) == Coord(11, 14)
+
+
+def test_wraps_to_down(example_grid: Grid) -> None:
+    direction = Direction.DOWN
+    assert example_grid.wraps_to(Coord(7, 0), direction) == Coord(4, 0)
+    assert example_grid.wraps_to(Coord(11, 11), direction) == Coord(0, 11)
+    assert example_grid.wraps_to(Coord(11, 13), direction) == Coord(8, 13)
+
+
+def test_wraps_to_left(example_grid: Grid) -> None:
+    direction = Direction.LEFT
+    assert example_grid.wraps_to(Coord(0, 8), direction) == Coord(0, 11)
+    assert example_grid.wraps_to(Coord(4, 0), direction) == Coord(4, 11)
+    assert example_grid.wraps_to(Coord(11, 8), direction) == Coord(11, 15)
+
+
+def test_wraps_to_right(example_grid: Grid) -> None:
+    direction = Direction.RIGHT
+    assert example_grid.wraps_to(Coord(1, 11), direction) == Coord(1, 8)
+    assert example_grid.wraps_to(Coord(5, 11), direction) == Coord(5, 0)
+    assert example_grid.wraps_to(Coord(11, 15), direction) == Coord(11, 8)

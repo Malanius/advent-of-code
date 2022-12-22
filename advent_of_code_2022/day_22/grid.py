@@ -100,13 +100,27 @@ class Grid:
         bottom = col_str.rindex(str(Air()))
         return Coord(top, x), Coord(bottom, x)
 
-    def wraps_to(self, coord: Coord, direction: Direction):
+    def wraps_to(self, coord: Coord, incoming_direction: Direction) -> Coord:
         element = self.grid[coord.y][coord.x]
         if not isinstance(element, Air):
             raise ValueError(f"Cannot wrap from {coord} as it's not air!")
 
         if not element.is_edge:
             raise ValueError(f"Cannot wrap from {coord} as it's not an edge!")
+
+        match incoming_direction:
+            case Direction.UP:
+                _, bottom = self._col_bounds(coord)
+                return Coord(bottom.y, coord.x)
+            case Direction.DOWN:
+                top, _ = self._col_bounds(coord)
+                return Coord(top.y, coord.x)
+            case Direction.LEFT:
+                _, right = self._row_bounds(coord)
+                return Coord(coord.y, right.x)
+            case Direction.RIGHT:
+                left, _ = self._row_bounds(coord)
+                return Coord(coord.y, left.x)
 
     @classmethod
     def construct(cls, puzzle_input: str) -> "Grid":
