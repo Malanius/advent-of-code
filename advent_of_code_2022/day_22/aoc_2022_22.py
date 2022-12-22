@@ -28,7 +28,7 @@ def part1(data: Data, interactive: bool = False):
     """Solve part 1"""
     simulation = Simulation(data[0], data[1], interactive=interactive)
     simulation.run()
-    player_x, player_y = simulation.player.coords()
+    player_y, player_x = simulation.player.coords()
     player_direction = simulation.player.facing
     return 1_000 * (player_y + 1) + 4 * (player_x + 1) + player_direction.score
 

@@ -7,7 +7,7 @@ class Coord:
     x: int
 
     def __call__(self) -> tuple[int, int]:
-        return self.x, self.y
+        return self.y, self.x
 
     def __add__(self, other):
         return Coord(self.y + other.y, self.x + other.x)

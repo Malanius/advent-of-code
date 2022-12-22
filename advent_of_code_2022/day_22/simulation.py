@@ -28,7 +28,7 @@ class Simulation:
         self.grid.grid[self.player.coords.y][self.player.coords.x] = self.player
 
     def _mark_passed(self) -> None:
-        x, y = self.player.coords()
+        y, x = self.player.coords()
         logging.debug(f"Marking {x}, {y} as visited")
         passed_air = Air(passed=True, passed_direction=self.player.facing)
         self.grid.grid[y][x] = passed_air
