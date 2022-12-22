@@ -1,7 +1,7 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Literal
-from advent_of_code_2022.day_22.coord import Coord
 
+from advent_of_code_2022.day_22.coord import Coord
 from advent_of_code_2022.day_22.direction import Direction
 from advent_of_code_2022.day_22.elements import Air, Element, Void
 
@@ -10,6 +10,7 @@ from advent_of_code_2022.day_22.elements import Air, Element, Void
 class Player(Element):
     coords: Coord
     facing: Direction = Direction.RIGHT
+    standing_on: Element = field(init=False)
 
     def __str__(self) -> str:
         match self.facing:

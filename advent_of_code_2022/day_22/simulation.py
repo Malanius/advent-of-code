@@ -19,8 +19,12 @@ class Simulation:
     interactive: bool = False
 
     def __post_init__(self) -> None:
-        assert self.grid.start_coords is not None
+        if not self.grid.start_coords:
+            raise ValueError("No start coords found in grid!")
         self.player = Player(self.grid.start_coords)
+        self.player.standing_on = self.grid.grid[self.player.coords.y][
+            self.player.coords.x
+        ]
         self.grid.grid[self.player.coords.y][self.player.coords.x] = self.player
 
     def _mark_passed(self) -> None:
@@ -37,7 +41,7 @@ class Simulation:
         grid = self.grid.partial_str(current_y) if partial else str(self.grid)
         sys.stdout.write(f"{grid}\n\n")
         sys.stdout.flush()
-        time.sleep(1.0)
+        time.sleep(0.25)
         if clear:
             os.system("clear")
 
@@ -52,12 +56,26 @@ class Simulation:
         for _ in range(steps):
             if self.interactive:
                 new_coords = self.player.coords + Coord(*self.player.facing.value)
-                print(f"Moving to {new_coords}")
+
+                current_element = self.player.standing_on
+                if not isinstance(current_element, Air):
+                    raise ValueError(f"Player is not on air! {current_element!r}")
+
+                if current_element.is_edge:
+                    current_coords = self.player.coords
+                    self.grid.grid[current_coords.y][
+                        current_coords.x
+                    ] = self.player.standing_on
+                    new_coords = self.grid.wraps_to(current_coords, self.player.facing)
+                    logging.debug(f"Wrapping to {new_coords}")
+
                 element = self.grid.grid[new_coords.y][new_coords.x]
                 if not self.player.can_move_to(element):
-                    logging.debug(f"Can't move to '{element!r}' at {new_coords}")
+                    logging.debug(f"Can't move to '{element}' at {new_coords}")
                     return
+
                 self._mark_passed()
+                self.player.standing_on = self.grid.grid[new_coords.y][new_coords.x]
                 self.grid.grid[new_coords.y][new_coords.x] = self.player
                 self.player.move_to(new_coords)
                 self._print_state()
