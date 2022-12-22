@@ -12,7 +12,15 @@ class Player(Element):
     facing: Direction = Direction.RIGHT
 
     def __str__(self) -> str:
-        return "*"
+        match self.facing:
+            case Direction.UP:
+                return "\u2191"
+            case Direction.DOWN:
+                return "\u2193"
+            case Direction.LEFT:
+                return "\u2190"
+            case Direction.RIGHT:
+                return "\u2192"
 
     def can_move_to(self, element: Element) -> bool:
         if isinstance(element, Air) or isinstance(element, Void):
