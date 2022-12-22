@@ -91,7 +91,14 @@ class Grid:
         return Coord(y, left), Coord(y, right)
 
     def _col_bounds(self, coord: Coord) -> tuple[Coord, Coord]:
-        pass
+        x = coord.x
+        col = [row[x] for row in self.grid]
+        col_str = "".join(str(element) for element in col)
+        # we can wrap to rocks as well
+        col_str = col_str.replace(str(Rock()), str(Air()))
+        top = col_str.index(str(Air()))
+        bottom = col_str.rindex(str(Air()))
+        return Coord(top, x), Coord(bottom, x)
 
     def wraps_to(self, coord: Coord, direction: Direction):
         element = self.grid[coord.y][coord.x]
