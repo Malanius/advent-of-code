@@ -111,15 +111,23 @@ class Grid:
         match incoming_direction:
             case Direction.UP:
                 _, bottom = self._col_bounds(coord)
+                if coord.y == bottom.y:
+                    return coord
                 return Coord(bottom.y, coord.x)
             case Direction.DOWN:
                 top, _ = self._col_bounds(coord)
+                if coord.y == top.y:
+                    return coord
                 return Coord(top.y, coord.x)
             case Direction.LEFT:
                 _, right = self._row_bounds(coord)
+                if coord.x == right.x:
+                    return coord
                 return Coord(coord.y, right.x)
             case Direction.RIGHT:
                 left, _ = self._row_bounds(coord)
+                if coord.x == left.x:
+                    return coord
                 return Coord(coord.y, left.x)
 
     @classmethod
