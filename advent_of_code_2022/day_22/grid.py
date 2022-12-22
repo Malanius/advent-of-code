@@ -80,6 +80,27 @@ class Grid:
                         break
         logging.debug(f"Found {len(self.edge_points)} edge points.")
 
+    def _row_bounds(self, coord: Coord) -> tuple[Coord, Coord]:
+        y = coord.y
+        row = self.grid[y]
+        row_str = "".join(str(element) for element in row)
+        # we can wrap to rocks as well
+        row_str = row_str.replace(str(Rock()), str(Air()))
+        left = row_str.index(str(Air()))
+        right = row_str.rindex(str(Air()))
+        return Coord(y, left), Coord(y, right)
+
+    def _col_bounds(self, coord: Coord) -> tuple[Coord, Coord]:
+        pass
+
+    def wraps_to(self, coord: Coord, direction: Direction):
+        element = self.grid[coord.y][coord.x]
+        if not isinstance(element, Air):
+            raise ValueError(f"Cannot wrap from {coord} as it's not air!")
+
+        if not element.is_edge:
+            raise ValueError(f"Cannot wrap from {coord} as it's not an edge!")
+
     @classmethod
     def construct(cls, puzzle_input: str) -> "Grid":
         grid = Grid()
