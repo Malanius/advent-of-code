@@ -37,8 +37,8 @@ class Simulation:
         if not self.interactive:
             return
 
-        current_y = self.player.coords.y
-        grid = self.grid.partial_str(current_y) if partial else str(self.grid)
+        current_coords = self.player.coords
+        grid = self.grid.partial_str(current_coords) if partial else str(self.grid)
         sys.stdout.write(f"{grid}\n\n")
         sys.stdout.flush()
         time.sleep(0.25)
@@ -78,6 +78,7 @@ class Simulation:
                 self.player.standing_on = self.grid.grid[new_coords.y][new_coords.x]
                 self.grid.grid[new_coords.y][new_coords.x] = self.player
                 self.player.move_to(new_coords)
+                logging.debug(f"Player at: {self.player.coords}")
                 self._print_state()
 
     def run(self) -> None:
@@ -86,5 +87,4 @@ class Simulation:
         for steps, turn in self.instructions:
             self._move_player(steps)
             self._rotate_player(turn)
-            logging.debug(f"Player at: {self.player.coords}")
         self._print_state(clear=False, partial=False)

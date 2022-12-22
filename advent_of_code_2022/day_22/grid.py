@@ -17,18 +17,32 @@ class Grid:
     def __str__(self) -> str:
         return "\n".join("".join(str(element) for element in row) for row in self.grid)
 
-    def partial_str(self, actual_y: int, height: int = 35) -> str:
-        half = height // 2
-        start = actual_y - half
-        end = actual_y + half
-        if start < 0:
-            start = 0
-            end = height
-        if end > len(self.grid):
-            end = len(self.grid)
-            start = end - height
+    def partial_str(self, actual_coord: Coord, height: int = 25, width=130) -> str:
+        actual_y, actual_x = actual_coord()
+
+        half_height = height // 2
+        start_height = actual_y - half_height
+        end_height = actual_y + half_height
+        if start_height < 0:
+            start_height = 0
+            end_height = height
+        if end_height > len(self.grid):
+            end_height = len(self.grid)
+            start_height = end_height - height
+
+        half_width = width // 2
+        start_width = actual_x - half_width
+        end_width = actual_x + half_width
+        if start_width < 0:
+            start_width = 0
+            end_width = width
+        if end_width > len(self.grid[0]):
+            end_width = len(self.grid[0])
+            start_width = end_width - width
+
         return "\n".join(
-            "".join(str(element) for element in row) for row in self.grid[start:end]
+            "".join(str(element) for element in row[start_width:end_width])
+            for row in self.grid[start_height:end_height]
         )
 
     def _parse_data(self, puzzle_input: str) -> None:
@@ -43,6 +57,7 @@ class Grid:
                         element = Rock()
                     case ".":
                         if not self.start_coords:
+                            logging.debug(f"Found start at {y}, {x}.")
                             self.start_coords = Coord(y, x)
                         element = Air()
                 self.grid[y].append(element)
