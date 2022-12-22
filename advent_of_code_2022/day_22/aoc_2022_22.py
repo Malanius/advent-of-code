@@ -3,8 +3,10 @@ import pathlib
 from typing import Optional
 
 from advent_of_code_2022.day_22.arguments import init_args
+from advent_of_code_2022.day_22.direction import Direction
 from advent_of_code_2022.day_22.grid import Grid
 from advent_of_code_2022.day_22.instructions import Instruction, parse_instructions
+from advent_of_code_2022.day_22.simulation import Simulation
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -24,11 +26,17 @@ def parse(puzzle_input: str) -> Data:
 @perf
 def part1(data: Data, interactive: bool = False):
     """Solve part 1"""
+    simulation = Simulation(data[0], data[1], interactive=interactive)
+    simulation.run()
+    player_x, player_y = simulation.player.coords()
+    player_direction = simulation.player.facing
+    return 1_000 * (player_y + 1) + 4 * (player_x + 1) + player_direction.score
 
 
 @perf
 def part2(data: Data, interactive: bool = False):
     """Solve part 2"""
+    return -2
 
 
 def solve(puzzle_input, interactive_part: Optional[int]) -> tuple[int, int]:
