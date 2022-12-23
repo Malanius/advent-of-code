@@ -42,7 +42,7 @@ class Simulation:
 
         current_coords = self.player.coords
         grid = self.grid.partial_str(current_coords) if partial else str(self.grid)
-        sys.stdout.write(f"{grid}\n\n")
+        sys.stdout.write(f"{grid}")
         sys.stdout.flush()
         time.sleep(0.25)
         if clear:

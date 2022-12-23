@@ -1,4 +1,5 @@
 import logging
+import os
 from dataclasses import dataclass, field
 from itertools import zip_longest
 from typing import Optional
@@ -17,8 +18,9 @@ class Grid:
     def __str__(self) -> str:
         return "\n".join("".join(str(element) for element in row) for row in self.grid)
 
-    def partial_str(self, actual_coord: Coord, height: int = 25, width=130) -> str:
+    def partial_str(self, actual_coord: Coord) -> str:
         actual_y, actual_x = actual_coord()
+        width, height = os.get_terminal_size()
 
         half_height = height // 2
         start_height = actual_y - half_height
