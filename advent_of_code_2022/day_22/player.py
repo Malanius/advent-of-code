@@ -11,8 +11,11 @@ class Player(Element):
     coords: Coord
     facing: Direction = Direction.RIGHT
     standing_on: Element = field(init=False)
+    crashed: bool = False
 
     def __str__(self) -> str:
+        if self.crashed:
+            return "💥"
         match self.facing:
             case Direction.UP:
                 return "👆"

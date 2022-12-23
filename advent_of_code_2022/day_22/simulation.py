@@ -81,6 +81,9 @@ class Simulation:
 
             element = self.grid.grid[new_coords.y][new_coords.x]
             if not self.player.can_move_to(element):
+                self.player.crashed = True
+                self._print_state()
+                self.player.crashed = False
                 logging.debug(f"Can't move to '{element}' at {new_coords}")
                 return
 
