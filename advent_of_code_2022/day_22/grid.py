@@ -34,7 +34,7 @@ class Grid:
             start_height = end_height - height
 
         half_width = width // 4
-        start_width = actual_x - half_width
+        start_width = actual_x - half_width - 1
         end_width = actual_x + half_width
         if start_width < 0:
             start_width = 0
