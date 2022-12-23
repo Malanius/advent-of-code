@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from typing import Literal
 from advent_of_code_2022.day_22.coord import Coord
 
-from advent_of_code_2022.day_22.elements import Tile
+from advent_of_code_2022.day_22.elements import Star, Tile
 from advent_of_code_2022.day_22.grid import Grid
 from advent_of_code_2022.day_22.instructions import Instruction
 from advent_of_code_2022.day_22.player import Player
@@ -52,6 +52,8 @@ class Simulation:
 
     def _rotate_player(self, turn: Literal["R", "L", "-"]) -> None:
         if turn == "-":
+            logging.debug("Reached final coordinates {self.player.coords}")
+            self.grid.grid[self.player.coords.y][self.player.coords.x] = Star()
             return
         self.player.turn(turn)
         logging.debug(f"Rotated player to {self.player.facing}")

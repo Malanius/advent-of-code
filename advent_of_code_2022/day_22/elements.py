@@ -17,6 +17,11 @@ class Rock(Element):
         return "🪨"
 
 
+class Star(Element):
+    def __str__(self) -> str:
+        return "🌟"
+
+
 @dataclass
 class Tile(Element):
     passed: bool = False
