@@ -21,6 +21,7 @@ class Grid:
     def partial_str(self, actual_coord: Coord) -> str:
         actual_y, actual_x = actual_coord()
         width, height = os.get_terminal_size()
+        logging.debug(f"Terminal size: {width}x{height}")
 
         half_height = height // 2
         start_height = actual_y - half_height
@@ -32,15 +33,15 @@ class Grid:
             end_height = len(self.grid)
             start_height = end_height - height
 
-        half_width = width // 2
+        half_width = width // 4
         start_width = actual_x - half_width
         end_width = actual_x + half_width
         if start_width < 0:
             start_width = 0
-            end_width = width
+            end_width = width // 2
         if end_width > len(self.grid[0]):
             end_width = len(self.grid[0])
-            start_width = end_width - width
+            start_width = end_width - width // 2
 
         return "\n".join(
             "".join(str(element) for element in row[start_width:end_width])

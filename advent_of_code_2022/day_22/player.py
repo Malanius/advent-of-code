@@ -15,13 +15,13 @@ class Player(Element):
     def __str__(self) -> str:
         match self.facing:
             case Direction.UP:
-                return "\u2191"
+                return "👆"
             case Direction.DOWN:
-                return "\u2193"
+                return "👇"
             case Direction.LEFT:
-                return "\u2190"
+                return "👈"
             case Direction.RIGHT:
-                return "\u2192"
+                return "👉"
 
     def can_move_to(self, element: Element) -> bool:
         if isinstance(element, Tile) or isinstance(element, Void):

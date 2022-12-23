@@ -9,12 +9,12 @@ class Element:
 
 class Void(Element):
     def __str__(self) -> str:
-        return "~"
+        return "⬜"
 
 
 class Rock(Element):
     def __str__(self) -> str:
-        return "#"
+        return "🪨"
 
 
 @dataclass
@@ -25,13 +25,13 @@ class Tile(Element):
 
     def __str__(self) -> str:
         if not self.passed:
-            return "."
+            return "⬛"
         match self.passed_direction:
             case Direction.UP:
-                return "^"
+                return "⬆️ "
             case Direction.DOWN:
-                return "v"
+                return "⬇️ "
             case Direction.LEFT:
-                return "<"
+                return "⬅️ "
             case Direction.RIGHT:
-                return ">"
+                return "➡️ "

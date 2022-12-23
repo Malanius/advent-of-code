@@ -47,6 +47,8 @@ class Simulation:
         time.sleep(0.25)
         if clear:
             os.system("clear")
+        else:
+            print()
 
     def _rotate_player(self, turn: Literal["R", "L", "-"]) -> None:
         if turn == "-":
