@@ -100,21 +100,35 @@ class Grid:
     def _row_bounds(self, coord: Coord) -> tuple[Coord, Coord]:
         y = coord.y
         row = self.grid[y]
-        row_str = "".join(str(element) for element in row)
-        # we can wrap to rocks as well
-        row_str = row_str.replace(str(Rock()), str(Tile()))
-        left = row_str.index(str(Tile()))
-        right = row_str.rindex(str(Tile()))
+        left, right = -1, -1
+
+        for x, element in enumerate(row):
+            if isinstance(element, Tile) or isinstance(element, Rock):
+                left = x
+                break
+
+        for x, element in enumerate(reversed(row)):
+            if isinstance(element, Tile) or isinstance(element, Rock):
+                right = len(row) - x - 1
+                break
+
         return Coord(y, left), Coord(y, right)
 
     def _col_bounds(self, coord: Coord) -> tuple[Coord, Coord]:
         x = coord.x
         col = [row[x] for row in self.grid]
-        col_str = "".join(str(element) for element in col)
-        # we can wrap to rocks as well
-        col_str = col_str.replace(str(Rock()), str(Tile()))
-        top = col_str.index(str(Tile()))
-        bottom = col_str.rindex(str(Tile()))
+        top, bottom = -1, -1
+
+        for y, element in enumerate(col):
+            if isinstance(element, Tile) or isinstance(element, Rock):
+                top = y
+                break
+
+        for y, element in enumerate(reversed(col)):
+            if isinstance(element, Tile) or isinstance(element, Rock):
+                bottom = len(col) - y - 1
+                break
+
         return Coord(top, x), Coord(bottom, x)
 
     def wraps_to(self, coord: Coord, incoming_direction: Direction) -> Coord:
