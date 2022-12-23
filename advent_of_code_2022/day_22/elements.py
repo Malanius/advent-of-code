@@ -9,8 +9,7 @@ class Element:
 
 class Void(Element):
     def __str__(self) -> str:
-        return " "
-        return "\u2588"  # Full block for debugging
+        return "~"
 
 
 class Rock(Element):

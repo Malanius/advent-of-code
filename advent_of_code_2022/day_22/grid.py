@@ -1,11 +1,11 @@
 import logging
 from dataclasses import dataclass, field
-from itertools import pairwise, zip_longest
+from itertools import zip_longest
 from typing import Optional
+
 from advent_of_code_2022.day_22.coord import Coord
 from advent_of_code_2022.day_22.direction import Direction
-
-from advent_of_code_2022.day_22.elements import Tile, Element, Rock, Void
+from advent_of_code_2022.day_22.elements import Element, Rock, Tile, Void
 
 
 @dataclass
@@ -45,11 +45,16 @@ class Grid:
             for row in self.grid[start_height:end_height]
         )
 
+    def _add_vertical_boundary_void(self, width: int) -> None:
+        self.grid.append([Void() for _ in range(width + 2)])
+
     def _parse_data(self, puzzle_input: str) -> None:
         lines = puzzle_input.splitlines()
         max_width = max(len(line) for line in lines)
-        for y, line in enumerate(lines):
+        self._add_vertical_boundary_void(max_width)
+        for y, line in enumerate(lines, start=1):
             self.grid.append([])
+            self.grid[y].append(Void())
             for x, char in zip_longest(range(max_width), line):
                 element: Element = Void()
                 match char:
@@ -57,10 +62,13 @@ class Grid:
                         element = Rock()
                     case ".":
                         if not self.start_coords:
+                            self.start_coords = Coord(y, x + 1)
                             logging.debug(f"Found start at {y}, {x}.")
-                            self.start_coords = Coord(y, x)
                         element = Tile()
                 self.grid[y].append(element)
+            self.grid[y].append(Void())
+        self._add_vertical_boundary_void(max_width)
+        logging.debug(self)
 
     def _mark_edge(self, tile: Tile, direction: Direction, coord: Coord) -> None:
         y, x = coord()
@@ -70,6 +78,9 @@ class Grid:
 
     def _mark_edges(self) -> None:
         for y, row in enumerate(self.grid):
+            if y == 0 or y == len(self.grid) - 1:
+                continue  # no need to check boundary Voids
+
             for x, element in enumerate(row):
                 if not isinstance(element, Tile):
                     logging.debug(f"Skipping {y}, {x} as it's not air")
@@ -79,21 +90,6 @@ class Grid:
                     current_coord = Coord(y, x)
                     new_coord = current_coord + Coord(*direction.value)
 
-                    out_of_bounds = False
-                    # check vertical bounds
-                    if new_coord.y < 0 or new_coord.y >= len(self.grid):
-                        self._mark_edge(element, direction, Coord(y, x))
-                        out_of_bounds = True
-
-                    # check horizontal bounds
-                    if new_coord.x < 0 or new_coord.x >= len(self.grid[0]):
-                        self._mark_edge(element, direction, Coord(y, x))
-                        out_of_bounds = True
-
-                    if out_of_bounds:
-                        continue
-
-                    # check void bounds
                     if isinstance(self.grid[new_coord.y][new_coord.x], Void):
                         self._mark_edge(element, direction, Coord(y, x))
 

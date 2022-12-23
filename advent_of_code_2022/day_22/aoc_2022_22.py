@@ -30,7 +30,7 @@ def part1(data: Data, interactive: bool = False):
     simulation.run()
     player_y, player_x = simulation.player.coords()
     player_direction = simulation.player.facing
-    return 1_000 * (player_y + 1) + 4 * (player_x + 1) + player_direction.score
+    return 1_000 * (player_y) + 4 * (player_x) + player_direction.score
 
 
 @perf
