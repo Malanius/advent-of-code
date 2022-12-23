@@ -25,7 +25,7 @@ class Grid:
 
         half_height = height // 2
         start_height = actual_y - half_height
-        end_height = actual_y + half_height
+        end_height = actual_y + half_height + 1
         if start_height < 0:
             start_height = 0
             end_height = height
