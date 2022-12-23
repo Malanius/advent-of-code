@@ -32,6 +32,8 @@ class Tile(Element):
         if not self.passed:
             return "⬛"
         match self.passed_direction:
+            # the arrows emojis are weird, they seem as two characters, but behaves as one?
+            # can be compensated by adding a space after the emoji
             case Direction.UP:
                 return "⬆️ "
             case Direction.DOWN:

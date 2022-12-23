@@ -23,6 +23,7 @@ class Grid:
         width, height = os.get_terminal_size()
         logging.debug(f"Terminal size: {width}x{height}")
 
+        # emojis take 1 space vertically
         half_height = height // 2
         start_height = actual_y - half_height
         end_height = actual_y + half_height + 1
@@ -33,7 +34,8 @@ class Grid:
             end_height = len(self.grid)
             start_height = end_height - height
 
-        half_width = width // 4
+        # emojis take 2 spaces horizontally
+        half_width = width // (2 * 2)
         start_width = actual_x - half_width - 1
         end_width = actual_x + half_width
         if start_width < 0:
