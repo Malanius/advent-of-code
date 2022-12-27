@@ -2,7 +2,7 @@ import logging
 import pathlib
 
 from advent_of_code_2022.day_25.arguments import init_args
-from advent_of_code_2022.day_25.converter import snafu_to_dec
+from advent_of_code_2022.day_25.converter import dec_to_snafu, snafu_to_dec
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -15,7 +15,7 @@ def parse(puzzle_input: str) -> list[str]:
 
 
 @perf
-def part1(data: list[str]):
+def part1(data: list[str]) -> str:
     """Solve part 1"""
     fuel_amounts = []
     for line in data:
@@ -23,7 +23,7 @@ def part1(data: list[str]):
         fuel_amounts.append(converted)
 
     total_fuel = sum(fuel_amounts)
-    return sum(fuel_amounts)
+    return dec_to_snafu(total_fuel)
 
 
 @perf

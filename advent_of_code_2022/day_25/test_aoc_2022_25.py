@@ -17,16 +17,14 @@ def data():
     return solver.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_example(example):
     """Test part 1 on example input"""
-    assert solver.part1(example) == ...
+    assert solver.part1(example) == "2=-1=0"
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_data(data):
     """Test part 1 on data input"""
-    assert solver.part1(data) == ...
+    assert solver.part1(data) == "2-21=02=1-121-2-11-0"
 
 
 @pytest.mark.skip(reason="Not implemented")
