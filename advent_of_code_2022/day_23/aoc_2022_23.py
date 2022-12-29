@@ -2,14 +2,16 @@ import logging
 import pathlib
 
 from advent_of_code_2022.day_23.arguments import init_args
+from advent_of_code_2022.day_23.grid import Grid
 from advent_of_code_2022.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> Grid:
     """Parse input"""
+    return Grid.construct(puzzle_input)
 
 
 @perf
