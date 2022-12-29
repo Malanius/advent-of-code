@@ -51,6 +51,9 @@ class Grid:
     def elves_count(self) -> int:
         return len(self.elves)
 
+    def is_empty(self, coord: Coord) -> bool:
+        return isinstance(self.elements[coord], Tile)
+
     @classmethod
     def construct(cls, puzzle_input: str) -> "Grid":
         grid = Grid()
