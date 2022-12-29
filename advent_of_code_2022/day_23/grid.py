@@ -16,6 +16,14 @@ class Grid:
     # keep track of all elves in the grid, so we can iterate over them
     elves: set[Coord] = field(default_factory=set)
 
+    def __str__(self) -> str:
+        grid = ""
+        for row in range(self.min_row, self.max_row + 1):
+            for col in range(self.min_col, self.max_col + 1):
+                grid += str(self.elements[Coord(row, col)])
+            grid += "\n"
+        return grid
+
     def _parse_data(self, puzzle_input: str) -> None:
         for row, line in enumerate(puzzle_input.splitlines()):
             for col, char in enumerate(line):

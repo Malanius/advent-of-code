@@ -15,8 +15,9 @@ def parse(puzzle_input: str) -> Grid:
 
 
 @perf
-def part1(data):
+def part1(data: Grid) -> int:
     """Solve part 1"""
+    print(data)
 
 
 @perf
