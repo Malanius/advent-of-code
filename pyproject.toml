@@ -24,3 +24,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 daystrap = "advent_of_code_2022.util.daystrapper:main"
+
+[tool.pytest.ini_options]
+addopts = "--ignore=advent_of_code/templates/test_solver.py"

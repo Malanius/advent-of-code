@@ -2,11 +2,9 @@ import pathlib
 import textwrap
 
 import pytest
-from advent_of_code.day_22.coord import Coord
-from advent_of_code.day_22.direction import Direction
-
-from advent_of_code.day_22.grid import Grid
-
+from coord import Coord
+from direction import Direction
+from grid import Grid
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 

@@ -2,14 +2,14 @@ import logging
 import os
 import sys
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Literal
-from advent_of_code.day_22.coord import Coord
 
-from advent_of_code.day_22.elements import Star, Tile
-from advent_of_code.day_22.grid import Grid
-from advent_of_code.day_22.instructions import Instruction
-from advent_of_code.day_22.player import Player
+from coord import Coord
+from elements import Star, Tile
+from grid import Grid
+from instructions import Instruction
+from player import Player
 
 
 @dataclass

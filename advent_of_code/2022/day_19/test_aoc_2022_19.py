@@ -2,9 +2,9 @@ import pathlib
 
 import pytest
 
-from advent_of_code.day_19.aoc_2022_19 import parse, part1, part2
-from advent_of_code.day_19.blueprint import Blueprint, Blueprints
-from advent_of_code.day_19.inventory import Inventory
+from aoc_2022_19 import parse, part1, part2
+from blueprint import Blueprint
+from inventory import Inventory
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 

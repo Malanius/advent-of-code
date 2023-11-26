@@ -1,6 +1,7 @@
 import pathlib
+
+import aoc_2022_01
 import pytest
-from advent_of_code.2022_.
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -8,8 +9,7 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 @pytest.fixture
 def example():
     puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
-    return parse(puzzle_input)
-
+    return aoc_2022_01.parse(puzzle_input)
 
 
 def test_parse_example1(example):

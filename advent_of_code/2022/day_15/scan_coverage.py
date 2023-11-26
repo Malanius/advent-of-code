@@ -1,7 +1,7 @@
 import logging
 
-from advent_of_code.day_15.coord import Boundaries
-from advent_of_code.day_15.sensor import Sensor
+from coord import Boundaries
+from sensor import Sensor
 
 ScanCoverage = list[tuple[int, int]]
 

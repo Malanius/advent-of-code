@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from advent_of_code.day_19.material import Material
+from material import Material
 
 
 @dataclass(frozen=True)

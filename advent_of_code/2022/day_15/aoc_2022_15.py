@@ -3,14 +3,15 @@ import pathlib
 import re
 from itertools import pairwise
 
-from advent_of_code.day_15.arguments import init_args
-from advent_of_code.day_15.coord import Boundaries, Coord
-from advent_of_code.day_15.grid import print_grid
-from advent_of_code.day_15.scan_coverage import (
+from arguments import init_args
+from coord import Boundaries, Coord
+from grid15 import print_grid
+from scan_coverage import (
     get_sensors_coverage_at_row,
     is_covered,
 )
-from advent_of_code.day_15.sensor import Sensor
+from sensor import Sensor
+
 from advent_of_code.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -56,7 +57,6 @@ def part2(data: dict[Coord, Coord], search_area_size: int = 20) -> int:
     """Solve part 2"""
     if search_area_size == 20:
         print_grid(data, Boundaries(0, 20, 0, 20))
-
 
     sensors: set[Sensor] = set()
     for sensor, beacon in data.items():

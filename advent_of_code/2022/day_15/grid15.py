@@ -1,12 +1,12 @@
 import logging
 from typing import Optional
-from advent_of_code.day_15.coord import Boundaries, Coord
-from advent_of_code.day_15.scan_coverage import (
+
+from coord import Boundaries, Coord
+from scan_coverage import (
     get_scan_coverage_bounds,
     get_sensors_coverage_at_row,
 )
-from advent_of_code.day_15.sensor import Sensor
-
+from sensor import Sensor
 
 SENSOR = "S"
 BEACON = "B"

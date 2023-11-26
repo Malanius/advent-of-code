@@ -3,9 +3,9 @@ from functools import cached_property
 from typing import Generator
 import logging
 
-from advent_of_code.day_19.blueprint import Blueprint
-from advent_of_code.day_19.inventory import Inventory
-from advent_of_code.day_19.material import Material
+from blueprint import Blueprint
+from inventory import Inventory
+from material import Material
 
 build_strategies: list[Material] = [
     Material.ORE,

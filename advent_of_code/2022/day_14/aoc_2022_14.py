@@ -1,10 +1,10 @@
 import logging
 import pathlib
-from copy import deepcopy
 
-from advent_of_code.day_14.arguments import init_args
-from advent_of_code.day_14.grid import Grid
-from advent_of_code.day_14.simulation import Simulation
+from arguments import init_args
+from grid import Grid
+from simulation import Simulation
+
 from advent_of_code.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent

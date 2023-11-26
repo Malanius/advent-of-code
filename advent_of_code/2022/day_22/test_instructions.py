@@ -1,8 +1,7 @@
 import pathlib
 
 import pytest
-
-from advent_of_code.day_22.instructions import Instruction, parse_instructions
+from instructions import Instruction, parse_instructions
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 

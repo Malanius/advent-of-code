@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from typing import Literal
 
-from advent_of_code.day_22.coord import Coord
-from advent_of_code.day_22.direction import Direction
-from advent_of_code.day_22.elements import Tile, Element, Void
+from coord import Coord
+from direction import Direction
+from elements import Tile, Element, Void
 
 
 @dataclass

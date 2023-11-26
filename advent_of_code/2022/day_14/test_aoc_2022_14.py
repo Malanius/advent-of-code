@@ -2,8 +2,7 @@ import pathlib
 
 import aoc_2022_14 as solver
 import pytest
-
-from advent_of_code.day_14.grid import Grid
+from grid import Grid
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -45,6 +44,7 @@ def test_part1_data(data_grid):
 def test_part2_example(sample_grid_bedrock):
     """Test part 1 on example input"""
     assert solver.part1(sample_grid_bedrock) == 93
+
 
 @pytest.mark.skip(reason="Way too slow")
 def test_part2_data(data_grid_bedrock):

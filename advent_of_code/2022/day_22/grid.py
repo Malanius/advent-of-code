@@ -4,9 +4,9 @@ from dataclasses import dataclass, field
 from itertools import zip_longest
 from typing import Optional
 
-from advent_of_code.day_22.coord import Coord
-from advent_of_code.day_22.direction import Direction
-from advent_of_code.day_22.elements import Element, Rock, Tile, Void
+from coord import Coord
+from direction import Direction
+from elements import Element, Rock, Tile, Void
 
 
 @dataclass

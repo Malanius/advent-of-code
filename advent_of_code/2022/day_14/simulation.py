@@ -4,9 +4,9 @@ import os
 import sys
 import time
 
-from advent_of_code.day_14.direction import Direction
-from advent_of_code.day_14.elements import Air, Grain
-from advent_of_code.day_14.grid import Grid
+from direction import Direction
+from elements import Air, Grain
+from grid import Grid
 
 
 @dataclass

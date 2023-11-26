@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass, field
 from itertools import pairwise
 
-from advent_of_code.day_14.elements import Air, Element, Rock, Grain, SandGenerator
+from elements import Air, Element, Rock, SandGenerator
 
 
 @dataclass
@@ -51,7 +51,7 @@ class Grid:
         self.offset_x = int(min_x)
         if self.bedrock:
             self.size_y += 2
-            self.size_x = self.size_y * 2 + 2 # 1 at each side
+            self.size_x = self.size_y * 2 + 2  # 1 at each side
             self.offset_x = self.offset_x - self.size_y // 2 - 1
             logging.debug(f"Size with bedrock: {self.size_x}x{self.size_y}")
 
