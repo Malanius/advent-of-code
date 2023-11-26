@@ -28,8 +28,9 @@ class Grid:
         for row, line in enumerate(puzzle_input.splitlines()):
             for col, char in enumerate(line):
                 if char == "#":
-                    self.elements[Coord(row, col)] = Elf()
-                    self.elves.add(Coord(row, col))
+                    coord = Coord(row, col)
+                    self.elements[coord] = Elf(coord)
+                    self.elves.add(coord)
 
     @property
     def min_row(self) -> int:

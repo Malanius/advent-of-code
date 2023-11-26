@@ -1,11 +1,18 @@
-from advent_of_code_2022.day_23.coords import Coord
+from dataclasses import dataclass
+from typing import Optional
+
+from advent_of_code_2022.day_23.coords import Coord, Direction
 
 
 class Element:
     pass
 
 
+@dataclass
 class Elf(Element):
+    coord: Coord
+    proposed_coord: Optional[Coord] = None
+
     def __str__(self) -> str:
         return "#"
 
