@@ -16,10 +16,21 @@ SOLVER_PLACEHOLDER = "{{SOLVER}}"
 DAY_PLACEHOLDER = "{{DAY}}"
 
 
-def create_day_folder(day: str) -> pathlib.Path:
+def create_year_folder(year: str) -> pathlib.Path:
+    """Creates a folder for the year if not already created"""
+    year_dir = SOLUTION_DIR.joinpath(f"{year}")
+    year_dir.mkdir(exist_ok=True)
+    return year_dir
+
+
+def create_day_folder(year_dir: pathlib.Path, day: str) -> pathlib.Path:
     """Creates a folder for the day's code"""
-    day_dir = SOLUTION_DIR.joinpath(f"day_{day}")
-    day_dir.mkdir(exist_ok=False)
+    day_dir = SOLUTION_DIR.joinpath(year_dir, f"day_{day}")
+    try:
+        day_dir.mkdir(exist_ok=False)
+    except FileExistsError:
+        print(f"Day {day} folder already exist, refusing to overwrite!")
+        exit(1)
     return day_dir
 
 
@@ -32,7 +43,7 @@ def copy_templates(year: str, day: str, day_dir: pathlib.Path) -> None:
     day_short = f"day_{day}"
     solver_file = day_dir.joinpath(f"{day_name}.py")
     test_file = day_dir.joinpath(f"test_{day_name}.py")
-    args_file = day_dir.joinpath(f"arguments.py")
+    args_file = day_dir.joinpath("arguments.py")
     args_file.write_text(args_template.read_text())
     solver_file.write_text(
         solver_template.read_text().replace(DAY_PLACEHOLDER, day_short)
@@ -72,7 +83,8 @@ def init_args() -> argparse.Namespace:
 
 def main():
     args = init_args()
-    day_dir = create_day_folder(args.day)
+    year_dir = create_year_folder(args.year)
+    day_dir = create_day_folder(year_dir, args.day)
     copy_templates(args.year, args.day, day_dir)
     create_example_file(day_dir)
     get_day_data(args.year, args.day, day_dir)
