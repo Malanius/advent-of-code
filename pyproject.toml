@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "advent-of-code-2022"
+name = "advent-of-code"
 version = "0.1.0"
 description = ""
 authors = ["Malanius Privierre <malaniusprivierre@gmail.com>"]
 readme = "README.md"
-packages = [{include = "advent_of_code_2022"}]
+packages = [{ include = "advent_of_code" }]
 
 [tool.poetry.dependencies]
 python = "^3.12"
