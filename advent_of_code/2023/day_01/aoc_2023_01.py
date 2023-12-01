@@ -2,19 +2,31 @@ import logging
 import pathlib
 
 from arguments import init_args
+
 from advent_of_code.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
+    return puzzle_input.splitlines()
+
+
+def get_digits(input: str) -> list[str]:
+    return [num for num in input if num.isdigit()]
 
 
 @perf
-def part1(data):
+def part1(data: list[str]):
     """Solve part 1"""
+    first_and_last_nums = []
+    for line in data:
+        numbers = get_digits(line)
+        first_and_last_nums.append(int(numbers[0] + numbers[-1]))
+
+    return sum(first_and_last_nums)
 
 
 @perf
