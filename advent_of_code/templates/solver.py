@@ -1,7 +1,8 @@
 import logging
 import pathlib
 
-from advent_of_code.{{DAY}}.arguments import init_args
+from arguments import init_args
+
 from advent_of_code.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
