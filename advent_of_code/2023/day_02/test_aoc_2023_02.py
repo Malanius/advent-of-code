@@ -17,10 +17,49 @@ def data():
     return solver.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_parse_example(example):
     """Test that input is parsed properly"""
-    assert example == ...
+    assert example == [
+        {
+            "id": 1,
+            "draws": [
+                {"blue": 3, "red": 4},
+                {"red": 1, "green": 2, "blue": 6},
+                {"green": 2},
+            ],
+        },
+        {
+            "id": 2,
+            "draws": [
+                {"blue": 1, "green": 2},
+                {"green": 3, "blue": 4, "red": 1},
+                {"green": 1, "blue": 1},
+            ],
+        },
+        {
+            "id": 3,
+            "draws": [
+                {"green": 8, "blue": 6, "red": 20},
+                {"blue": 5, "red": 4, "green": 13},
+                {"green": 5, "red": 1},
+            ],
+        },
+        {
+            "id": 4,
+            "draws": [
+                {"green": 1, "red": 3, "blue": 6},
+                {"green": 3, "red": 6},
+                {"green": 3, "blue": 15, "red": 14},
+            ],
+        },
+        {
+            "id": 5,
+            "draws": [
+                {"red": 6, "blue": 1, "green": 3},
+                {"blue": 2, "red": 1, "green": 2},
+            ],
+        },
+    ]
 
 
 @pytest.mark.skip(reason="Not implemented")
@@ -33,6 +72,7 @@ def test_part1_example(example):
 def test_part1_data(data):
     """Test part 1 on data input"""
     assert solver.part1(data) == ...
+
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_example(example):
