@@ -2,7 +2,7 @@ import logging
 import pathlib
 
 from arguments import init_args
-from game import DrawSet, ParsedGame
+from game import DrawSet, Game, ParsedGame
 
 from advent_of_code.util.perf import perf
 
@@ -29,17 +29,32 @@ def parse(puzzle_input: str) -> list[ParsedGame]:
             "id": int(game_name.split(" ")[1]),
             "draws": [],
         }
+
         for draw in draws:
             game["draws"].append(parse_draw(draw))
 
-        logging.debug(f"Game: {game}")
         parsed_games.append(game)
+
     return parsed_games
 
 
 @perf
-def part1(data):
+def part1(data: list[ParsedGame]):
     """Solve part 1"""
+    playable_games: list[Game] = []
+    for parsed_game in data:
+        game = Game(
+            id=parsed_game["id"],
+            max_counts={"red": 12, "green": 13, "blue": 14},
+        )
+
+        for draw in parsed_game["draws"]:
+            game.add_draw(draw)
+
+        if game.is_playable:
+            playable_games.append(game)
+    
+    return sum(game.id for game in playable_games)
 
 
 @perf
