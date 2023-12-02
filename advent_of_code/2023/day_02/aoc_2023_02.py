@@ -14,8 +14,8 @@ def parse_draw(draw: str) -> DrawSet:
     cube_counts = draw.split(", ")
     draw_set: DrawSet = {}
     for count in cube_counts:
-        count = count.split(" ")
-        draw_set[count[1]] = int(count[0])
+        count, color = count.split(" ")
+        draw_set[color] = int(count)
     return draw_set
 
 
@@ -53,13 +53,26 @@ def part1(data: list[ParsedGame]):
 
         if game.is_playable:
             playable_games.append(game)
-    
+
     return sum(game.id for game in playable_games)
 
 
 @perf
 def part2(data):
     """Solve part 2"""
+    games: list[Game] = []
+    for parsed_game in data:
+        game = Game(
+            id=parsed_game["id"],
+            max_counts={"red": 12, "green": 13, "blue": 14},
+        )
+
+        for draw in parsed_game["draws"]:
+            game.add_draw(draw)
+
+        games.append(game)
+
+    return sum(game.power for game in games)
 
 
 def solve(puzzle_input):
