@@ -1,4 +1,5 @@
 import logging
+import math
 import pathlib
 from collections import deque
 from typing import DefaultDict
@@ -13,6 +14,8 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 type EngineSchematic = DefaultDict[Coord, str]
+
+GEAR_SYMBOL = "*"
 
 
 def parse(puzzle_input: str) -> EngineSchematic:
@@ -76,7 +79,7 @@ def scan_whole_number(grid: EngineSchematic, coord: Coord) -> dict[Coord, int]:
         coord += right
 
     number = int("".join(str(digit) for digit in number_dq))
-    logging.debug(f"==> Found part number {number} at {number_start_coord}")
+    logging.debug(f"Found part number {number} at {number_start_coord}")
     return {number_start_coord: number}
 
 
@@ -97,9 +100,37 @@ def part1(data: EngineSchematic) -> int:
     return sum(part_numbers.values())
 
 
+def find_possible_gears(grid: EngineSchematic) -> list[Coord]:
+    """Find all coordinates of all symbols"""
+    coords = []
+    for coord, char in grid.items():
+        if char == GEAR_SYMBOL:
+            coords.append(coord)
+    logging.debug("Found possible gears coordinates:")
+    logging.debug(coords)
+    return coords
+
+
 @perf
-def part2(data):
+def part2(data: EngineSchematic) -> int:
     """Solve part 2"""
+    possible_gears = find_possible_gears(data)
+    gears: dict[Coord, int] = {}
+
+    for gear in possible_gears:
+        near_numbers = find_neighbour_number(data, gear)
+        near_part_numbers: dict[Coord, int] = {}
+        for near_number in near_numbers:
+            found_part_nr = scan_whole_number(data, near_number)
+            near_part_numbers.update(found_part_nr)
+        logging.debug(f"Found {len(near_part_numbers)} part numbers near gear {gear}")
+        if len(near_part_numbers) == 2:
+            gears[gear] = math.prod(near_part_numbers.values())
+
+    logging.debug("Found gears:")
+    logging.debug(gears)
+
+    return sum(gears.values())
 
 
 def solve(puzzle_input):
