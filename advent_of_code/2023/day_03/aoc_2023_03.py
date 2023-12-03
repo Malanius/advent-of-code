@@ -1,5 +1,8 @@
 import logging
 import pathlib
+from typing import DefaultDict
+
+from advent_of_code.common.two_d.coord import Coord
 
 from arguments import init_args
 
@@ -9,8 +12,16 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> DefaultDict[Coord, str]:
     """Parse input"""
+    grid = DefaultDict[Coord, str](lambda: ".")
+    for y, line in enumerate(puzzle_input.splitlines()):
+        for x, char in enumerate(line):
+            if not char == ".":
+                grid[Coord(x, y)] = char
+
+    logging.debug(grid)
+    return grid
 
 
 @perf
