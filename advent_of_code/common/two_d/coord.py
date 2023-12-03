@@ -10,13 +10,13 @@ class Coord:
         """Calculates Manhattan distance between two coordinates"""
         return abs(self.x - other.x) + abs(self.y - other.y)
 
-    def __add__(self, other):
+    def __add__(self, other: "Coord"):
         return Coord(self.x + other.x, self.y + other.y)
 
-    def __sub__(self, other):
+    def __sub__(self, other: "Coord"):
         return Coord(self.x - other.x, self.y - other.y)
 
-    def __eq__(self, other):
+    def __eq__(self, other: "Coord"):
         return self.x == other.x and self.y == other.y
 
     def __hash__(self):

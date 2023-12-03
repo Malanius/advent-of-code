@@ -1,13 +1,15 @@
 import pathlib
-import pytest
-from advent_of_code.common.two_d.coord import Coord
+
 import aoc_2023_03 as solver
+import pytest
+
+from advent_of_code.common.two_d.coord import Coord
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example():
+def example() -> solver.EngineSchematic:
     puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
@@ -18,7 +20,7 @@ def data():
     return solver.parse(puzzle_input)
 
 
-def test_parse_example(example):
+def test_parse_example(example: solver.EngineSchematic):
     """Test that input is parsed properly"""
     assert example == {
         Coord(0, 0): "4",
@@ -58,16 +60,25 @@ def test_parse_example(example):
     }
 
 
-@pytest.mark.skip(reason="Not implemented")
+def test_find_symbols_example(example: solver.EngineSchematic):
+    assert solver.find_symbols(example) == [
+        Coord(3, 1),
+        Coord(6, 3),
+        Coord(3, 4),
+        Coord(5, 5),
+        Coord(3, 8),
+        Coord(5, 8),
+    ]
+
+
 def test_part1_example(example):
     """Test part 1 on example input"""
-    assert solver.part1(example) == ...
+    assert solver.part1(example) == 4361
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_data(data):
     """Test part 1 on data input"""
-    assert solver.part1(data) == ...
+    assert solver.part1(data) == 551094
 
 
 @pytest.mark.skip(reason="Not implemented")
