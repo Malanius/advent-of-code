@@ -30,11 +30,28 @@ def parse(puzzle_input: str) -> list[LotteryCard]:
     
     return cards
 
+def calculate_card_points(card: LotteryCard) -> int:
+    """Calculate points for a single card"""
+    matching_numbers = 0
+    for number in card["card_numbers"]:
+        if number in card["winning_numbers"]:
+            matching_numbers += 1
+    
+    if matching_numbers == 0:
+        return 0
+    
+    return 2 ** (matching_numbers - 1)
 
 @perf
-def part1(data):
+def part1(data: list[LotteryCard]):
     """Solve part 1"""
+    total_points = 0
+    for card in data:
+        card_points = calculate_card_points(card)
+        logging.debug(f"Card {card['id']} has {card_points} points")
+        total_points += card_points
 
+    return total_points
 
 @perf
 def part2(data):
