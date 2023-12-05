@@ -2,7 +2,7 @@ import logging
 import pathlib
 from pprint import pformat
 
-from almanac import Almanac
+from almanac import Almanac, SeedInfo
 from arguments import init_args
 
 from advent_of_code.util.perf import perf
@@ -58,26 +58,34 @@ def find_in_map(mapping: dict[range, range], value: int) -> int:
     return value
 
 
+def map_seed(seed: int, almanac: Almanac) -> SeedInfo:
+    soil = find_in_map(almanac["seedToSoilMap"], seed)
+    fertilizer = find_in_map(almanac["soilToFertilizerMap"], soil)
+    water = find_in_map(almanac["fertilizerToWaterMap"], fertilizer)
+    light = find_in_map(almanac["waterToLightMap"], water)
+    temperature = find_in_map(almanac["lightToTemperatureMap"], light)
+    humidity = find_in_map(almanac["temparatureToHumidityMap"], temperature)
+    location = find_in_map(almanac["humidityToLocationMap"], humidity)
+    return {
+        "seed": seed,
+        "soil": soil,
+        "fertilizer": fertilizer,
+        "water": water,
+        "light": light,
+        "temperature": temperature,
+        "humidity": humidity,
+        "location": location,
+    }
+
+
 @perf
-def part1(data: Almanac):
+def part1(almanac: Almanac):
     """Solve part 1"""
     locations = set()
-    for seed in data["seeds"]:
-        soil = find_in_map(data["seedToSoilMap"], seed)
-        fertilizer = find_in_map(data["soilToFertilizerMap"], soil)
-        water = find_in_map(data["fertilizerToWaterMap"], fertilizer)
-        light = find_in_map(data["waterToLightMap"], water)
-        temperature = find_in_map(data["lightToTemperatureMap"], light)
-        humidity = find_in_map(data["temparatureToHumidityMap"], temperature)
-        location = find_in_map(data["humidityToLocationMap"], humidity)
-        logging.debug(
-            (
-                f"Seed {seed}, soil {soil}, fertilizer {fertilizer}, "
-                f"water {water}, light {light}, temperature {temperature}, "
-                f"humidity {humidity}, location {location}."
-            )
-        )
-        locations.add(location)
+    for seed in almanac["seeds"]:
+        seed_info = map_seed(seed, almanac)
+        logging.debug(pformat(seed_info))
+        locations.add(seed_info["location"])
 
     return min(locations)
 
