@@ -3,7 +3,6 @@ import pathlib
 from pprint import pformat
 
 from almanac import Almanac
-
 from arguments import init_args
 
 from advent_of_code.util.perf import perf
@@ -33,9 +32,6 @@ def parse_map(lines: list[str]) -> dict[range, range]:
     return mapping
 
 
-
-
-
 def parse(puzzle_input: str) -> Almanac:
     """Parse input"""
     parts = puzzle_input.split("\n\n")
@@ -54,10 +50,36 @@ def parse(puzzle_input: str) -> Almanac:
     return almanac
 
 
-@perf
-def part1(data):
-    """Solve part 1"""
+def find_in_map(mapping: dict[range, range], value: int) -> int:
+    for source_range, dest_range in mapping.items():
+        if value in source_range:
+            return value - source_range.start + dest_range.start
 
+    return value
+
+
+@perf
+def part1(data: Almanac):
+    """Solve part 1"""
+    locations = set()
+    for seed in data["seeds"]:
+        soil = find_in_map(data["seedToSoilMap"], seed)
+        fertilizer = find_in_map(data["soilToFertilizerMap"], soil)
+        water = find_in_map(data["fertilizerToWaterMap"], fertilizer)
+        light = find_in_map(data["waterToLightMap"], water)
+        temperature = find_in_map(data["lightToTemperatureMap"], light)
+        humidity = find_in_map(data["temparatureToHumidityMap"], temperature)
+        location = find_in_map(data["humidityToLocationMap"], humidity)
+        logging.debug(
+            (
+                f"Seed {seed}, soil {soil}, fertilizer {fertilizer}, "
+                f"water {water}, light {light}, temperature {temperature}, "
+                f"humidity {humidity}, location {location}."
+            )
+        )
+        locations.add(location)
+
+    return min(locations)
 
 @perf
 def part2(data):

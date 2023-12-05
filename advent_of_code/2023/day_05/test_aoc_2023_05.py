@@ -14,7 +14,7 @@ def example() -> Almanac:
 
 
 @pytest.fixture
-def data():
+def data() -> Almanac:
     puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
@@ -52,16 +52,14 @@ def test_parse_example(example):
     }
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_example(example):
     """Test part 1 on example input"""
-    assert solver.part1(example) == ...
+    assert solver.part1(example) == 35
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_data(data):
     """Test part 1 on data input"""
-    assert solver.part1(data) == ...
+    assert solver.part1(data) == 226172555
 
 
 @pytest.mark.skip(reason="Not implemented")
