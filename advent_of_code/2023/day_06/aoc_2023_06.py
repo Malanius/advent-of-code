@@ -1,5 +1,6 @@
 import logging
 import pathlib
+from typing import TypedDict
 
 from arguments import init_args
 
@@ -9,8 +10,22 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input):
+class Race(TypedDict):
+    time_limit: int
+    record_distance: int
+
+
+def parse(puzzle_input: str) -> list[Race]:
     """Parse input"""
+    lines = puzzle_input.splitlines()
+    time_line = [int(t) for t in lines[0].split()[1:]]
+    distance_line = [int(d) for d in lines[1].split()[1:]]
+
+    races = []
+    for time, distance in zip(time_line, distance_line):
+        races.append({"time_limit": time, "record_distance": distance})
+
+    return races
 
 
 @perf
