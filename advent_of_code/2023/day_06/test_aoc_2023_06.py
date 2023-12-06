@@ -6,24 +6,30 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example() -> list[solver.Race]:
-    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
-    return solver.parse(puzzle_input)
+def example() -> str:
+    return (PUZZLE_DIR / "example.txt").read_text().strip()
 
 
 @pytest.fixture
 def data():
-    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
-    return solver.parse(puzzle_input)
+    return (PUZZLE_DIR / "data.txt").read_text().strip()
 
 
-def test_parse_example(example):
+def test_parse_example_pt1(example):
     """Test that input is parsed properly"""
-    assert example == [
+    assert solver.parse_part1(example) == [
         {"record_distance": 9, "time_limit": 7},
         {"record_distance": 40, "time_limit": 15},
         {"record_distance": 200, "time_limit": 30},
     ]
+
+
+def test_parse_example_pt2(example):
+    """Test that input is parsed properly"""
+    assert solver.parse_part2(example) == {
+        "record_distance": 940200,
+        "time_limit": 71530,
+    }
 
 
 def test_part1_example(example):
@@ -36,13 +42,11 @@ def test_part1_data(data):
     assert solver.part1(data) == 4403592
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_example(example):
     """Test part 2 on example input"""
-    assert solver.part2(example) == ...
+    assert solver.part2(example) == 71503
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_data(data):
     """Test part 2 on data input"""
-    assert solver.part2(data) == ...
+    assert solver.part2(data) == 38017587

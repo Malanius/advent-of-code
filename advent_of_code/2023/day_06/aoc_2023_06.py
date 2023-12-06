@@ -16,7 +16,7 @@ class Race(TypedDict):
     record_distance: int
 
 
-def parse(puzzle_input: str) -> list[Race]:
+def parse_part1(puzzle_input: str) -> list[Race]:
     """Parse input"""
     lines = puzzle_input.splitlines()
     time_line = [int(t) for t in lines[0].split()[1:]]
@@ -27,6 +27,19 @@ def parse(puzzle_input: str) -> list[Race]:
         races.append({"time_limit": time, "record_distance": distance})
 
     return races
+
+
+def parse_part2(puzzle_input: str) -> Race:
+    """Parse input"""
+    lines = puzzle_input.splitlines()
+    time_line = lines[0].split()[1:]
+    distance_line = lines[1].split()[1:]
+    time_limit = int(str.join("", time_line))
+    record_distance = int(str.join("", distance_line))
+    return {
+        "time_limit": time_limit,
+        "record_distance": record_distance,
+    }
 
 
 def count_ways_to_win(race: Race) -> int:
@@ -46,10 +59,11 @@ def count_ways_to_win(race: Race) -> int:
 
 
 @perf
-def part1(data: list[Race]) -> int:
+def part1(input: str) -> int:
     """Solve part 1"""
+    races = parse_part1(input)
     ways_to_win = []
-    for race_num, race in enumerate(data, start=1):
+    for race_num, race in enumerate(races, start=1):
         ways = count_ways_to_win(race)
         logging.debug(f"Race {race_num}: {ways} ways to win")
         ways_to_win.append(ways)
@@ -58,15 +72,16 @@ def part1(data: list[Race]) -> int:
 
 
 @perf
-def part2(data):
+def part2(data: str) -> int:
     """Solve part 2"""
+    race = parse_part2(data)
+    return count_ways_to_win(race)
 
 
-def solve(puzzle_input):
+def solve(puzzle_input: str) -> tuple[int, int]:
     """Solve the puzzle for the given input"""
-    data = parse(puzzle_input)
-    solution1 = part1(data)
-    solution2 = part2(data)
+    solution1 = part1(puzzle_input)
+    solution2 = part2(puzzle_input)
     return solution1, solution2
 
 
