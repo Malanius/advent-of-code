@@ -1,4 +1,5 @@
 import logging
+import math
 import pathlib
 from typing import TypedDict
 
@@ -28,9 +29,32 @@ def parse(puzzle_input: str) -> list[Race]:
     return races
 
 
+def count_ways_to_win(race: Race) -> int:
+    """Counts how many ways are there to win the race"""
+    time_limit = race["time_limit"]
+    time_range = range(1, time_limit)
+    current_record = race["record_distance"]
+    ways_to_win = 0
+
+    for acceleration in time_range:
+        remaining_time = time_limit - acceleration
+        traveled_distance = acceleration * remaining_time
+        if traveled_distance > current_record:
+            ways_to_win += 1
+
+    return ways_to_win
+
+
 @perf
-def part1(data):
+def part1(data: list[Race]) -> int:
     """Solve part 1"""
+    ways_to_win = []
+    for race_num, race in enumerate(data, start=1):
+        ways = count_ways_to_win(race)
+        logging.debug(f"Race {race_num}: {ways} ways to win")
+        ways_to_win.append(ways)
+
+    return math.prod(ways_to_win)
 
 
 @perf
