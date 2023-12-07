@@ -24,8 +24,19 @@ def parse(puzzle_input: str) -> list[Hand]:
 
 
 @perf
-def part1(data):
+def part1(data: list[Hand]) -> int:
     """Solve part 1"""
+    hands_by_strenght = sorted(
+        data, key=lambda hand: (hand.kind.value, hand.sortable_cards), reverse=True
+    )
+    hands_by_rank = list(reversed(hands_by_strenght))
+
+    winings = 0
+    for rank, hand in enumerate(hands_by_rank, start=1):
+        logging.debug(f"{hand.cards} {hand.bid} {rank}")
+        winings += rank * hand.bid
+
+    return winings
 
 
 @perf
