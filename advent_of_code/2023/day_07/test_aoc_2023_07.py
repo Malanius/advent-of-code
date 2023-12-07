@@ -8,20 +8,24 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example() -> list[Hand]:
-    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
-    return solver.parse(puzzle_input)
+def example1() -> str:
+    return (PUZZLE_DIR / "example1.txt").read_text().strip()
+
+
+@pytest.fixture
+def example2() -> str:
+    return (PUZZLE_DIR / "example2.txt").read_text().strip()
 
 
 @pytest.fixture
 def data():
-    puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
-    return solver.parse(puzzle_input)
+    return (PUZZLE_DIR / "data.txt").read_text().strip()
 
 
-def test_parse_example(example):
+def test_parse_example1(example1):
     """Test that input is parsed properly"""
-    assert example == [
+    data = solver.parse_part1(example1)
+    assert data == [
         Hand(cards="32T3K", bid=765, sortable_cards="32V3Y", kind=Kind.ONE_PAIR),
         Hand(cards="T55J5", bid=684, sortable_cards="V55W5", kind=Kind.THREE_OF_A_KIND),
         Hand(cards="KK677", bid=28, sortable_cards="YY677", kind=Kind.TWO_PAIRS),
@@ -30,9 +34,9 @@ def test_parse_example(example):
     ]
 
 
-def test_part1_example(example):
+def test_part1_example(example1):
     """Test part 1 on example input"""
-    assert solver.part1(example) == 6440
+    assert solver.part1(example1) == 6440
 
 
 def test_part1_data(data):
@@ -41,9 +45,9 @@ def test_part1_data(data):
 
 
 @pytest.mark.skip(reason="Not implemented")
-def test_part2_example(example):
+def test_part2_example(example2):
     """Test part 2 on example input"""
-    assert solver.part2(example) == ...
+    assert solver.part2(example2) == ...
 
 
 @pytest.mark.skip(reason="Not implemented")

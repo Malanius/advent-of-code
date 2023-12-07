@@ -1,7 +1,6 @@
 from collections import Counter
 from dataclasses import dataclass
 from enum import Enum
-import logging
 
 
 class Kind(Enum):
