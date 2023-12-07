@@ -1,8 +1,9 @@
 import logging
 import pathlib
+from typing import Sequence
 
 from arguments import init_args
-from hand import Hand
+from hand import Hand, NormalHand
 from joker_hand import JokerHand
 
 from advent_of_code.util.perf import perf
@@ -11,12 +12,12 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse_part1(puzzle_input: str) -> list[Hand]:
+def parse_part1(puzzle_input: str) -> list[NormalHand]:
     """Parse input"""
     hands = []
     for line in puzzle_input.splitlines():
         hand, bid = line.split()
-        converted_hand = Hand(hand, int(bid))
+        converted_hand = NormalHand(hand, int(bid))
         hands.append(converted_hand)
 
     logging.debug(hands)
@@ -35,10 +36,8 @@ def parse_part2(puzzle_input: str) -> list[JokerHand]:
     return hands
 
 
-@perf
-def part1(puzzle_input: str) -> int:
-    """Solve part 1"""
-    hands = parse_part1(puzzle_input)
+def calculate_winnings(hands: Sequence[Hand]) -> int:
+    """Calculate winnings"""
     hands_by_strenght = sorted(
         hands, key=lambda hand: (hand.kind.value, hand.sortable_cards), reverse=True
     )
@@ -53,20 +52,17 @@ def part1(puzzle_input: str) -> int:
 
 
 @perf
+def part1(puzzle_input: str) -> int:
+    """Solve part 1"""
+    hands = parse_part1(puzzle_input)
+    return calculate_winnings(hands)
+
+
+@perf
 def part2(puzzle_input: str) -> int:
     """Solve part 2"""
     hands = parse_part2(puzzle_input)
-    hands_by_strenght = sorted(
-        hands, key=lambda hand: (hand.kind.value, hand.sortable_cards), reverse=True
-    )
-    hands_by_rank = list(reversed(hands_by_strenght))
-
-    winings = 0
-    for rank, hand in enumerate(hands_by_rank, start=1):
-        # logging.debug(f"{hand.sortable_cards} {hand.cards} {hand.bid} {rank}")
-        winings += rank * hand.bid
-
-    return winings
+    return calculate_winnings(hands)
 
 
 def solve(puzzle_input: str):

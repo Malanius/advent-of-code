@@ -2,7 +2,7 @@ import pathlib
 
 import aoc_2023_07 as solver
 import pytest
-from hand import Hand, Kind
+from hand import NormalHand, Kind
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -26,11 +26,15 @@ def test_parse_example1(example1):
     """Test that input is parsed properly"""
     data = solver.parse_part1(example1)
     assert data == [
-        Hand(cards="32T3K", bid=765, sortable_cards="32V3Y", kind=Kind.ONE_PAIR),
-        Hand(cards="T55J5", bid=684, sortable_cards="V55W5", kind=Kind.THREE_OF_A_KIND),
-        Hand(cards="KK677", bid=28, sortable_cards="YY677", kind=Kind.TWO_PAIRS),
-        Hand(cards="KTJJT", bid=220, sortable_cards="YVWWV", kind=Kind.TWO_PAIRS),
-        Hand(cards="QQQJA", bid=483, sortable_cards="XXXWZ", kind=Kind.THREE_OF_A_KIND),
+        NormalHand(cards="32T3K", bid=765, sortable_cards="32V3Y", kind=Kind.ONE_PAIR),
+        NormalHand(
+            cards="T55J5", bid=684, sortable_cards="V55W5", kind=Kind.THREE_OF_A_KIND
+        ),
+        NormalHand(cards="KK677", bid=28, sortable_cards="YY677", kind=Kind.TWO_PAIRS),
+        NormalHand(cards="KTJJT", bid=220, sortable_cards="YVWWV", kind=Kind.TWO_PAIRS),
+        NormalHand(
+            cards="QQQJA", bid=483, sortable_cards="XXXWZ", kind=Kind.THREE_OF_A_KIND
+        ),
     ]
 
 

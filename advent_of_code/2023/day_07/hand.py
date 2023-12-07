@@ -20,6 +20,41 @@ class Hand:
     sortable_cards: str = ""
     kind: Kind = Kind.HIGH_CARD
 
+    def _get_kind(self):
+        card_counts = Counter(self.cards)
+
+        # Check for High Card
+        if len(card_counts) == 5:
+            self.kind = Kind.HIGH_CARD
+            return
+
+        # Check for One Pair
+        if len(card_counts) == 4:
+            self.kind = Kind.ONE_PAIR
+            return
+
+        # Check for Two Pairs or Three of a Kind
+        if len(card_counts) == 3:
+            if 2 in card_counts.values():
+                self.kind = Kind.TWO_PAIRS
+            else:
+                self.kind = Kind.THREE_OF_A_KIND
+            return
+
+        # Check for Full House or Four of a Kind
+        if len(card_counts) == 2:
+            if 2 in card_counts.values():
+                self.kind = Kind.FULL_HOUSE
+            else:
+                self.kind = Kind.FOUR_OF_A_KIND
+            return
+
+        # Check for Five of a Kind
+        self.kind = Kind.FIVE_OF_A_KIND
+
+
+@dataclass
+class NormalHand(Hand):
     def __post_init__(self):
         self._get_kind()
         self._make_sortable()
@@ -32,32 +67,3 @@ class Hand:
         cards = cards.replace("J", "W")
         cards = cards.replace("T", "V")
         self.sortable_cards = cards
-
-    def _get_kind(self):
-        counts = Counter(self.cards)
-        # High card
-        if len(counts) == 5:
-            self.kind = Kind.HIGH_CARD
-            return
-        # One pair
-        if len(counts) == 4:
-            self.kind = Kind.ONE_PAIR
-            return
-        # Two pairs
-        if len(counts) == 3:
-            if 2 in counts.values():
-                self.kind = Kind.TWO_PAIRS
-                return
-        # Three of a kind
-            self.kind = Kind.THREE_OF_A_KIND
-            return
-        # Full house
-        if len(counts) == 2:
-            if 2 in counts.values():
-                self.kind = Kind.FULL_HOUSE
-                return
-        # Four of a kind
-            self.kind = Kind.FOUR_OF_A_KIND
-            return
-        # Five of a kind
-        self.kind = Kind.FIVE_OF_A_KIND
