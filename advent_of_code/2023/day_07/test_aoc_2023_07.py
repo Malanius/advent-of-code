@@ -44,13 +44,24 @@ def test_part1_data(data):
     assert solver.part1(data) == 248453531
 
 
-@pytest.mark.skip(reason="Not implemented")
+def test_parse_example2(example2):
+    """Test that input is parsed properly"""
+    data = solver.parse_part2(example2)
+    updated_hands = [card.cards for card in data]
+    assert updated_hands == [
+        "32T3K",
+        "T5555",
+        "KK677",
+        "KTTTT",
+        "QQQQA",
+    ]
+
+
 def test_part2_example(example2):
     """Test part 2 on example input"""
-    assert solver.part2(example2) == ...
+    assert solver.part2(example2) == 5905
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_data(data):
     """Test part 2 on data input"""
-    assert solver.part2(data) == ...
+    assert solver.part2(data) == 248781813
