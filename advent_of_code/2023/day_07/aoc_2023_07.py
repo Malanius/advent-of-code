@@ -1,6 +1,8 @@
 import logging
 import pathlib
 
+from hand import Hand
+
 from arguments import init_args
 
 from advent_of_code.util.perf import perf
@@ -9,8 +11,16 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> list[Hand]:
     """Parse input"""
+    hands = []
+    for line in puzzle_input.splitlines():
+        hand, bid = line.split()
+        converted_hand = Hand(hand, int(bid))
+        hands.append(converted_hand)
+
+    logging.debug(hands)
+    return hands
 
 
 @perf
