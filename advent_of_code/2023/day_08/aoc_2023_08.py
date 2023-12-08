@@ -1,5 +1,6 @@
 import logging
 import pathlib
+import re
 
 from arguments import init_args
 
@@ -8,9 +9,26 @@ from advent_of_code.util.perf import perf
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
+MAP_PATTENR = re.compile(r"^(\w+) = \((\w+), (\w+)\)$")
 
-def parse(puzzle_input):
+
+def parse(puzzle_input: str) -> dict[str, str]:
     """Parse input"""
+    lines = puzzle_input.splitlines()
+    instructions = lines.pop(0)
+    lines.pop(0)
+
+    map = {
+        "instructions": instructions,
+    }
+
+    for line in lines:
+        matches = MAP_PATTENR.match(line)
+        if matches:
+            map[matches.group(1)] = (matches.group(2), matches.group(3))  # type: ignore
+
+    logging.debug(pformat(map))
+    return map
 
 
 @perf

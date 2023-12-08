@@ -6,8 +6,26 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example():
-    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
+def example1() -> dict[str, str]:
+    puzzle_input = """RL
+
+AAA = (BBB, CCC)
+BBB = (DDD, EEE)
+CCC = (ZZZ, GGG)
+DDD = (DDD, DDD)
+EEE = (EEE, EEE)
+GGG = (GGG, GGG)
+ZZZ = (ZZZ, ZZZ)"""
+    return solver.parse(puzzle_input)
+
+
+@pytest.fixture
+def example2() -> dict[str, str]:
+    puzzle_input = """LLR
+
+AAA = (BBB, BBB)
+BBB = (AAA, ZZZ)
+ZZZ = (ZZZ, ZZZ)"""
     return solver.parse(puzzle_input)
 
 
@@ -17,10 +35,28 @@ def data():
     return solver.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_parse_example(example):
+def test_parse_example1(example1):
     """Test that input is parsed properly"""
-    assert example == ...
+    assert example1 == {
+        "AAA": ("BBB", "CCC"),
+        "BBB": ("DDD", "EEE"),
+        "CCC": ("ZZZ", "GGG"),
+        "DDD": ("DDD", "DDD"),
+        "EEE": ("EEE", "EEE"),
+        "GGG": ("GGG", "GGG"),
+        "ZZZ": ("ZZZ", "ZZZ"),
+        "instructions": "RL",
+    }
+
+
+def test_parse_example2(example2):
+    """Test that input is parsed properly"""
+    assert example2 == {
+        "AAA": ("BBB", "BBB"),
+        "BBB": ("AAA", "ZZZ"),
+        "ZZZ": ("ZZZ", "ZZZ"),
+        "instructions": "LLR",
+    }
 
 
 @pytest.mark.skip(reason="Not implemented")
