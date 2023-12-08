@@ -1,6 +1,8 @@
 import logging
 import pathlib
 import re
+from itertools import cycle
+from pprint import pformat
 
 from arguments import init_args
 
@@ -32,8 +34,25 @@ def parse(puzzle_input: str) -> dict[str, str]:
 
 
 @perf
-def part1(data):
+def part1(map: dict[str, str]):
     """Solve part 1"""
+    instructions = cycle(map["instructions"])
+    current_location = "AAA"
+    target_location = "ZZZ"
+
+    steps = 0
+    while current_location != target_location:
+        direction = next(instructions)
+        if direction == "L":
+            next_location = map[current_location][0]
+        elif direction == "R":
+            next_location = map[current_location][1]
+        else:
+            raise ValueError(f"Unknown direction: {direction}")
+        steps += 1
+        current_location = next_location
+
+    return steps
 
 
 @perf
