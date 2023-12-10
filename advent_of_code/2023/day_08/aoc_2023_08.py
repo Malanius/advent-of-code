@@ -34,15 +34,13 @@ def parse(puzzle_input: str) -> dict[str, str]:
     return map
 
 
-@perf
-def part1(map: dict[str, str]) -> int:
-    """Solve part 1"""
+def count_path_steps(
+    map: dict[str, str], current_location: str, target_location_pattern: re.Pattern
+) -> int:
     instructions = cycle(map["instructions"])
-    current_location = "AAA"
-    target_location = "ZZZ"
 
     steps = 0
-    while current_location != target_location:
+    while not target_location_pattern.match(current_location):
         direction = next(instructions)
         if direction == "L":
             current_location = map[current_location][0]
@@ -56,24 +54,22 @@ def part1(map: dict[str, str]) -> int:
 
 
 @perf
+def part1(map: dict[str, str]) -> int:
+    """Solve part 1"""
+    current_location = "AAA"
+    target_location = re.compile(r"ZZZ")
+    return count_path_steps(map, current_location, target_location)
+
+
+@perf
 def part2(map: dict[str, str]) -> int:
     """Solve part 2"""
-    instructions = cycle(map["instructions"])
     current_locations = [node for node in map if node.endswith("A")]
+    target_location = re.compile(r"^\w{2}Z")
     paths = []
 
     for current_location in current_locations:
-        path_steps = 0
-        while not current_location.endswith("Z"):
-            direction = next(instructions)
-            if direction == "L":
-                current_location = map[current_location][0]
-            elif direction == "R":
-                current_location = map[current_location][1]
-            else:
-                raise ValueError(f"Unknown direction: {direction}")
-            path_steps += 1
-        paths.append(path_steps)
+        paths.append(count_path_steps(map, current_location, target_location))
 
     return math.lcm(*paths)
 
