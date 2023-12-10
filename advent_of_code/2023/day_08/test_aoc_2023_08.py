@@ -28,6 +28,19 @@ BBB = (AAA, ZZZ)
 ZZZ = (ZZZ, ZZZ)"""
     return solver.parse(puzzle_input)
 
+@pytest.fixture
+def example3() -> dict[str, str]:
+    puzzle_input = """LR
+
+11A = (11B, XXX)
+11B = (XXX, 11Z)
+11Z = (11B, XXX)
+22A = (22B, XXX)
+22B = (22C, 22C)
+22C = (22Z, 22Z)
+22Z = (22B, 22B)
+XXX = (XXX, XXX)"""
+    return solver.parse(puzzle_input)
 
 @pytest.fixture
 def data():
@@ -72,13 +85,11 @@ def test_part1_data(data):
     assert solver.part1(data) == 12643
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example(example1):
+def test_part2_example3(example3):
     """Test part 2 on example input"""
-    assert solver.part2(example1) == ...
+    assert solver.part2(example3) == 6
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_data(data):
     """Test part 2 on data input"""
-    assert solver.part2(data) == ...
+    assert solver.part2(data) == 13133452426987

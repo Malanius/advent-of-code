@@ -1,4 +1,5 @@
 import logging
+import math
 import pathlib
 import re
 from itertools import cycle
@@ -34,7 +35,7 @@ def parse(puzzle_input: str) -> dict[str, str]:
 
 
 @perf
-def part1(map: dict[str, str]):
+def part1(map: dict[str, str]) -> int:
     """Solve part 1"""
     instructions = cycle(map["instructions"])
     current_location = "AAA"
@@ -44,20 +45,37 @@ def part1(map: dict[str, str]):
     while current_location != target_location:
         direction = next(instructions)
         if direction == "L":
-            next_location = map[current_location][0]
+            current_location = map[current_location][0]
         elif direction == "R":
-            next_location = map[current_location][1]
+            current_location = map[current_location][1]
         else:
             raise ValueError(f"Unknown direction: {direction}")
         steps += 1
-        current_location = next_location
 
     return steps
 
 
 @perf
-def part2(data):
+def part2(map: dict[str, str]) -> int:
     """Solve part 2"""
+    instructions = cycle(map["instructions"])
+    current_locations = [node for node in map if node.endswith("A")]
+    paths = []
+
+    for current_location in current_locations:
+        path_steps = 0
+        while not current_location.endswith("Z"):
+            direction = next(instructions)
+            if direction == "L":
+                current_location = map[current_location][0]
+            elif direction == "R":
+                current_location = map[current_location][1]
+            else:
+                raise ValueError(f"Unknown direction: {direction}")
+            path_steps += 1
+        paths.append(path_steps)
+
+    return math.lcm(*paths)
 
 
 def solve(puzzle_input):
