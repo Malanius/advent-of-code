@@ -8,18 +8,23 @@ from advent_of_code.util.perf import perf
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
+type Sequences = list[list[int]]
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> Sequences:
     """Parse input"""
+    sequences = []
+    for line in puzzle_input.splitlines():
+        sequences.append([int(number) for number in line.split()])
+    return sequences
 
 
 @perf
-def part1(data):
+def part1(data: Sequences):
     """Solve part 1"""
 
 
 @perf
-def part2(data):
+def part2(data: Sequences):
     """Solve part 2"""
 
 
