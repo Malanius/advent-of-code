@@ -1,5 +1,6 @@
 import logging
 import pathlib
+from itertools import pairwise
 
 from arguments import init_args
 
@@ -10,6 +11,7 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 type Sequences = list[list[int]]
 
+
 def parse(puzzle_input: str) -> Sequences:
     """Parse input"""
     sequences = []
@@ -18,9 +20,28 @@ def parse(puzzle_input: str) -> Sequences:
     return sequences
 
 
+def find_next_sequence_number(sequence: list[int]) -> int:
+    """Find the next number in the sequence"""
+    if all(number == 0 for number in sequence):
+        return 0
+    sequence_diffs = [pair[1] - pair[0] for pair in pairwise(sequence)]
+    next = find_next_sequence_number(sequence_diffs)
+    print(sequence_diffs, next)
+    return sequence[-1] + next
+
+
 @perf
 def part1(data: Sequences):
     """Solve part 1"""
+    predictions = []
+    for sequence in data:
+        next = find_next_sequence_number(sequence)
+        print(sequence, next)
+        predictions.append(next)
+        print()
+    print(predictions)
+
+    return sum(predictions)
 
 
 @perf

@@ -28,15 +28,13 @@ def test_parse_example(example: solver.Sequences):
 
 
 def test_part1_example(example: solver.Sequences):
-def test_part1_example(example):
     """Test part 1 on example input"""
-    assert solver.part1(example) == ...
+    assert solver.part1(example) == 114
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_data(data: solver.Sequences):
     """Test part 1 on data input"""
-    assert solver.part1(data) == ...
+    assert solver.part1(data) == 1708206096
 
 
 @pytest.mark.skip(reason="Not implemented")
