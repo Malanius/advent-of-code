@@ -7,7 +7,7 @@ from typing import DefaultDict
 from arguments import init_args
 
 from advent_of_code.common.two_d.coord import Coord
-from advent_of_code.common.two_d.direction import Direction
+from advent_of_code.common.two_d.direction8 import Direction8
 from advent_of_code.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -44,7 +44,7 @@ def find_symbols(grid: EngineSchematic) -> list[Coord]:
 def find_neighbour_number(grid: EngineSchematic, coord: Coord) -> list[Coord]:
     """Find all neighbours of a given coordinate"""
     neighbours = []
-    for direction in Direction:
+    for direction in Direction8:
         neighbour = coord + direction.value
         if grid[neighbour].isdigit():
             neighbours.append(neighbour)
@@ -61,7 +61,7 @@ def scan_whole_number(grid: EngineSchematic, coord: Coord) -> dict[Coord, int]:
 
     logging.debug(f"Scanning left from number at {coord}")
     # scan for digits to the left, stop on non-digit
-    left = Direction.LEFT.value
+    left = Direction8.LEFT.value
     while grid[coord + left].isdigit():
         logging.debug(f"Found digit at {coord + left}")
         number_dq.appendleft(int(grid[coord + left]))
@@ -72,7 +72,7 @@ def scan_whole_number(grid: EngineSchematic, coord: Coord) -> dict[Coord, int]:
 
     logging.debug(f"Scanning right from number at {coord}")
     # scan for digits to the right, stop on non-digit
-    right = Direction.RIGHT.value
+    right = Direction8.RIGHT.value
     while grid[coord + right].isdigit():
         logging.debug(f"Found digit at {coord + right}")
         number_dq.append(int(grid[coord + right]))
