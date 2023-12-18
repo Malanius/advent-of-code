@@ -1,16 +1,45 @@
 import logging
 import pathlib
+from collections import defaultdict
+from copy import deepcopy
+from pprint import pformat
 
 from arguments import init_args
+from pipe import Pipe, PipeMap, PipeType, determine_start_pipe_type
 
+from advent_of_code.common.two_d.coord import Coord
 from advent_of_code.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> tuple[Coord, PipeMap]:
     """Parse input"""
+    lines = puzzle_input.splitlines()
+    pipe_map = defaultdict[Coord, Pipe](lambda: Pipe(PipeType.GROUND))
+    start_coord = Coord(-1, -1)
+
+    for y, line in enumerate(lines):
+        for x, char in enumerate(line):
+            if char == ".":
+                continue
+            coord = Coord(x, y)
+            if char == "S":
+                start_coord = coord
+                continue
+            pipe_map[coord] = Pipe(PipeType(char))
+
+    # using deepcopy to avoid mutating the original pipe_map defaultdict in determine_start_pipe_type
+    # as each get method call will add a new key to the defaultdict
+    start_pipe_type = determine_start_pipe_type(deepcopy(pipe_map), start_coord)
+    pipe_map[start_coord] = Pipe(PipeType(start_pipe_type), start=True)
+
+    logging.debug(f"start: {start_coord}")
+    logging.debug(f"start pipe type: {start_pipe_type}")
+    logging.debug(pformat(pipe_map))
+
+    return start_coord, pipe_map
 
 
 @perf
