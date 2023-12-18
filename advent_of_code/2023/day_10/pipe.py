@@ -33,6 +33,24 @@ class Pipe:
     type: PipeType
     start: bool = False
 
+    def get_connecting_directions(self) -> tuple[Direction4, Direction4]:
+        """Get directions that the pipe is connected to"""
+        match self.type:
+            case PipeType.VERTICAL:
+                return Direction4.UP, Direction4.DOWN
+            case PipeType.HORIZONTAL:
+                return Direction4.RIGHT, Direction4.LEFT
+            case PipeType.L_BEND:
+                return Direction4.UP, Direction4.RIGHT
+            case PipeType.J_BEND:
+                return Direction4.UP, Direction4.LEFT
+            case PipeType.F_BEND:
+                return Direction4.DOWN, Direction4.RIGHT
+            case PipeType.BEND_7:
+                return Direction4.DOWN, Direction4.LEFT
+            case _:
+                raise ValueError(f"Invalid pipe type {self.type}")
+
     def get_next_direction(self, moving_direction: Direction4) -> Direction4:
         match (self.type, moving_direction):
             # | Vertical pipes

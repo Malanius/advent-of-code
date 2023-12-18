@@ -97,24 +97,21 @@ def test_parse_example2(example2):
     }
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input"""
     input = solver.parse(example1)
     assert solver.part1(input) == 4
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_example2(example2):
     """Test part 1 on example input"""
     input = solver.parse(example2)
     assert solver.part1(input) == 8
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_data(data):
     """Test part 1 on data input"""
-    assert solver.part1(data) == ...
+    assert solver.part1(data) == 6860
 
 
 @pytest.mark.skip(reason="Not implemented")

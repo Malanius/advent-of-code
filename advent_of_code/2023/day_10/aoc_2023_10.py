@@ -3,6 +3,7 @@ import pathlib
 from collections import defaultdict
 from copy import deepcopy
 from pprint import pformat
+from advent_of_code.common.two_d.direction4 import Direction4
 
 from arguments import init_args
 from pipe import Pipe, PipeMap, PipeType, determine_start_pipe_type
@@ -43,8 +44,27 @@ def parse(puzzle_input: str) -> tuple[Coord, PipeMap]:
 
 
 @perf
-def part1(data):
+def part1(data: tuple[Coord, PipeMap]) -> int:
     """Solve part 1"""
+    start_coord, pipe_map = data
+    loop_pipes = []
+    current_pipe = pipe_map[start_coord]
+    current_coord = start_coord
+    moving_direction = current_pipe.get_connecting_directions()[0]
+
+    logging.debug(f"start moving direction: {moving_direction}")
+
+    current_coord = current_coord + moving_direction.value
+    current_pipe = pipe_map[current_coord]
+
+    while not current_pipe.start:
+        current_pipe = pipe_map[current_coord]
+        moving_direction = current_pipe.get_next_direction(moving_direction)
+        current_coord = current_coord + moving_direction.value
+        loop_pipes.append(current_pipe)
+
+    logging.debug(f"loop_pipes: {loop_pipes}")
+    return int(len(loop_pipes) / 2)
 
 
 @perf
