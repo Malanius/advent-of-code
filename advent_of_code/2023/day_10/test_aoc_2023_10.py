@@ -28,6 +28,33 @@ LJ.LJ"""
 
 
 @pytest.fixture
+def example3():
+    return """..........
+.S------7.
+.|F----7|.
+.||....||.
+.||....||.
+.|L-7F-J|.
+.|..||..|.
+.L--JL--J.
+.........."""
+
+
+@pytest.fixture
+def example4():
+    return """FF7FSF7F7F7F7F7F---7
+L|LJ||||||||||||F--J
+FL-7LJLJ||||||LJL-77
+F--JF--7||LJLJ7F7FJ-
+L---JF-JLJ.||-FJLJJ7
+|F|F-JF---7F7-L7L|7|
+|FFJF7L7F-JF7|JL---7
+7-L-JL7||F7|L7F-7F7|
+L.L7LFJ|||||FJL7||LJ
+L7JLJL-JLJLJL--JLJ.L"""
+
+
+@pytest.fixture
 def data():
     puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return solver.parse(puzzle_input)
@@ -116,13 +143,18 @@ def test_part1_data(data):
     assert solver.part1(data) == 6860
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example(example):
+def test_part2_example3(example3):
     """Test part 2 on example input"""
-    assert solver.part2(example) == ...
+    input = solver.parse(example3)
+    assert solver.part2(input) == 4
 
 
-@pytest.mark.skip(reason="Not implemented")
+def test_part2_example4(example4):
+    """Test part 2 on example input"""
+    input = solver.parse(example4)
+    assert solver.part2(input) == 10
+
+
 def test_part2_data(data):
     """Test part 2 on data input"""
-    assert solver.part2(data) == ...
+    assert solver.part2(data) == 343

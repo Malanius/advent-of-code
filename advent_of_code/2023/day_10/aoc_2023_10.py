@@ -1,13 +1,12 @@
 import logging
 import pathlib
-from collections import defaultdict
-from copy import deepcopy
 from pprint import pformat
 
 from arguments import init_args
 from pipe import Pipe, PipeMap, PipeType, determine_start_pipe_type
 
 from advent_of_code.common.two_d.coord import Coord
+from advent_of_code.common.two_d.direction4 import Direction4
 from advent_of_code.util.perf import perf
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -67,9 +66,50 @@ def part1(data: tuple[Coord, PipeMap]) -> int:
     return int(len(loop_pipes) / 2)
 
 
+EDGES: set[PipeType] = {
+    # WHY???
+    # PipeType.L_BEND,
+    # PipeType.J_BEND,
+    PipeType.F_BEND,
+    PipeType.BEND_7,
+    PipeType.VERTICAL,
+}
+
+
+def count_edges(
+    coord: Coord, direction, pipe_map: PipeMap, loop_pipes: set[Coord]
+) -> int:
+    curent_coord = coord + direction.value
+    edges: set[Coord] = set()
+    while True:
+        current_pipe = pipe_map.get(curent_coord, Pipe(PipeType.GROUND))
+        if curent_coord in loop_pipes and current_pipe.type in EDGES:
+            edges.add(curent_coord)
+        curent_coord = curent_coord + direction.value
+        if curent_coord not in pipe_map:
+            break
+    logging.debug(f"count_edges: {coord} {direction} = {len(edges)}")
+    return len(edges)
+
+
 @perf
-def part2(data):
+def part2(data: tuple[Coord, PipeMap]) -> int:
     """Solve part 2"""
+    _, pipe_map = data
+    loop_pipes = get_pipe_loop(data)
+    enclosed: set[Coord] = set()
+
+    for coord in pipe_map.keys():
+        logging.debug(f"checking {coord}")
+        if coord in loop_pipes:
+            continue  # skip loop pipes
+        loop_edges_right = count_edges(coord, Direction4.RIGHT, pipe_map, loop_pipes)
+        loop_edges_left = count_edges(coord, Direction4.LEFT, pipe_map, loop_pipes)
+        if loop_edges_right % 2 != 0 and loop_edges_left % 2 != 0:
+            logging.debug(f"enclosed: {coord}")
+            enclosed.add(coord)
+
+    return len(enclosed)
 
 
 def solve(puzzle_input):
