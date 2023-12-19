@@ -38,10 +38,10 @@ def parse(puzzle_input: str) -> tuple[Coord, PipeMap]:
     return start_coord, pipe_map
 
 
-def get_pipe_loop(data: tuple[Coord, PipeMap]) -> list[Pipe]:
+def get_pipe_loop(data: tuple[Coord, PipeMap]) -> set[Coord]:
     start_coord, pipe_map = data
     current_pipe = pipe_map[start_coord]
-    loop_pipes = [current_pipe]
+    loop_pipes: set[Coord] = {start_coord}
     current_coord = start_coord
     moving_direction = current_pipe.get_connecting_directions()[0]
 
@@ -54,7 +54,7 @@ def get_pipe_loop(data: tuple[Coord, PipeMap]) -> list[Pipe]:
         current_pipe = pipe_map[current_coord]
         moving_direction = current_pipe.get_next_direction(moving_direction)
         current_coord = current_coord + moving_direction.value
-        loop_pipes.append(current_pipe)
+        loop_pipes.add(current_coord)
 
     logging.debug(f"loop_pipes: {loop_pipes}")
     return loop_pipes
