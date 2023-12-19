@@ -62,8 +62,7 @@ def data():
 
 def test_parse_example1(example1):
     """Test that input is parsed properly"""
-    start_coord, pipe_map = solver.parse(example1)
-    assert start_coord == Coord(1, 1)
+    pipe_map, _ = solver.parse(example1)
     assert pipe_map == {
         Coord(1, 0): Pipe(type=PipeType.L_BEND, start=False),
         Coord(0, 0): Pipe(type=PipeType.HORIZONTAL, start=False),
@@ -95,8 +94,7 @@ def test_parse_example1(example1):
 
 def test_parse_example2(example2):
     """Test that input is parsed properly"""
-    start_coord, pipe_map = solver.parse(example2)
-    assert start_coord == Coord(0, 2)
+    pipe_map, _ = solver.parse(example2)
     assert pipe_map == {
         Coord(1, 2): Pipe(type=PipeType.J_BEND, start=False),
         Coord(0, 0): Pipe(type=PipeType.BEND_7, start=False),

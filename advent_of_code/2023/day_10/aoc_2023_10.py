@@ -13,30 +13,6 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input: str) -> tuple[Coord, PipeMap]:
-    """Parse input"""
-    lines = puzzle_input.splitlines()
-    pipe_map = {}
-    start_coord = Coord(-1, -1)
-
-    for y, line in enumerate(lines):
-        for x, char in enumerate(line):
-            coord = Coord(x, y)
-            if char == "S":
-                start_coord = coord
-                continue
-            pipe_map[coord] = Pipe(PipeType(char))
-
-    start_pipe_type = determine_start_pipe_type(pipe_map, start_coord)
-    pipe_map[start_coord] = Pipe(PipeType(start_pipe_type), start=True)
-
-    logging.debug(f"start: {start_coord}")
-    logging.debug(f"start pipe type: {start_pipe_type}")
-    logging.debug(pformat(pipe_map))
-
-    return start_coord, pipe_map
-
-
 def get_pipe_loop(data: tuple[Coord, PipeMap]) -> set[Coord]:
     start_coord, pipe_map = data
     current_pipe = pipe_map[start_coord]
@@ -58,11 +34,37 @@ def get_pipe_loop(data: tuple[Coord, PipeMap]) -> set[Coord]:
     logging.debug(f"loop_pipes: {loop_pipes}")
     return loop_pipes
 
+type Data = tuple[PipeMap, set[Coord]]
+
+def parse(puzzle_input: str) -> Data:
+    """Parse input"""
+    lines = puzzle_input.splitlines()
+    pipe_map = {}
+    start_coord = Coord(-1, -1)
+
+    for y, line in enumerate(lines):
+        for x, char in enumerate(line):
+            coord = Coord(x, y)
+            if char == "S":
+                start_coord = coord
+                continue
+            pipe_map[coord] = Pipe(PipeType(char))
+
+    start_pipe_type = determine_start_pipe_type(pipe_map, start_coord)
+    pipe_map[start_coord] = Pipe(PipeType(start_pipe_type), start=True)
+    loop_pipes = get_pipe_loop((start_coord, pipe_map))
+
+    logging.debug(f"start: {start_coord}")
+    logging.debug(f"start pipe type: {start_pipe_type}")
+    logging.debug(pformat(pipe_map))
+
+    return pipe_map, loop_pipes
+
 
 @perf
-def part1(data: tuple[Coord, PipeMap]) -> int:
+def part1(data: Data) -> int:
     """Solve part 1"""
-    loop_pipes = get_pipe_loop(data)
+    _, loop_pipes = data
     return int(len(loop_pipes) / 2)
 
 
@@ -93,10 +95,9 @@ def count_edges(
 
 
 @perf
-def part2(data: tuple[Coord, PipeMap]) -> int:
+def part2(data: Data) -> int:
     """Solve part 2"""
-    _, pipe_map = data
-    loop_pipes = get_pipe_loop(data)
+    pipe_map, loop_pipes = data
     enclosed: set[Coord] = set()
 
     for coord in pipe_map.keys():
