@@ -3,8 +3,8 @@ from enum import Enum
 from advent_of_code.common.two_d.coord import Coord
 
 
-class Direction(Enum):
-    """Directions for 2D grid.
+class Direction8(Enum):
+    """Directions for 2D grid for 8 way movement.
 
     X axis is horizontal from left to right.
     Y axis is vertical from top to bottom.
