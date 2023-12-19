@@ -1,12 +1,11 @@
 import logging
-from collections import defaultdict
 from dataclasses import dataclass
 from enum import StrEnum
 
 from advent_of_code.common.two_d.coord import Coord
 from advent_of_code.common.two_d.direction4 import Direction4
 
-type PipeMap = defaultdict[Coord, Pipe]
+type PipeMap = dict[Coord, Pipe]
 
 
 class PipeType(StrEnum):
@@ -102,7 +101,7 @@ def determine_start_pipe_type(pipe_map: PipeMap, start_coord: Coord) -> PipeType
     connects = []
     for moving_direction in Direction4:
         coord = start_coord + moving_direction.value
-        possilbe_pipe = pipe_map[coord]
+        possilbe_pipe = pipe_map.get(coord, Pipe(type=PipeType.GROUND))
         try:
             logging.debug(f"Trying {possilbe_pipe} at {coord} with {moving_direction}")
             possilbe_pipe.get_next_direction(moving_direction)

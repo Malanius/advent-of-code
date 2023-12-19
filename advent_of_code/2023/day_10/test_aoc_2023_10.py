@@ -38,6 +38,20 @@ def test_parse_example1(example1):
     start_coord, pipe_map = solver.parse(example1)
     assert start_coord == Coord(1, 1)
     assert pipe_map == {
+        Coord(1, 0): Pipe(type=PipeType.L_BEND, start=False),
+        Coord(0, 0): Pipe(type=PipeType.HORIZONTAL, start=False),
+        Coord(2, 1): Pipe(type=PipeType.HORIZONTAL, start=False),
+        Coord(4, 0): Pipe(type=PipeType.BEND_7, start=False),
+        Coord(2, 0): Pipe(type=PipeType.VERTICAL, start=False),
+        Coord(3, 0): Pipe(type=PipeType.F_BEND, start=False),
+        Coord(0, 1): Pipe(type=PipeType.BEND_7, start=False),
+        Coord(1, 1): Pipe(type=PipeType.F_BEND, start=True),
+        Coord(3, 1): Pipe(type=PipeType.BEND_7, start=False),
+        Coord(4, 1): Pipe(type=PipeType.VERTICAL, start=False),
+        Coord(0, 2): Pipe(type=PipeType.L_BEND, start=False),
+        Coord(1, 2): Pipe(type=PipeType.VERTICAL, start=False),
+        Coord(2, 2): Pipe(type=PipeType.BEND_7, start=False),
+        Coord(3, 2): Pipe(type=PipeType.VERTICAL, start=False),
         Coord(4, 2): Pipe(type=PipeType.VERTICAL, start=False),
         Coord(0, 3): Pipe(type=PipeType.HORIZONTAL, start=False),
         Coord(1, 3): Pipe(type=PipeType.L_BEND, start=False),
@@ -49,20 +63,6 @@ def test_parse_example1(example1):
         Coord(2, 4): Pipe(type=PipeType.HORIZONTAL, start=False),
         Coord(3, 4): Pipe(type=PipeType.J_BEND, start=False),
         Coord(4, 4): Pipe(type=PipeType.F_BEND, start=False),
-        Coord(2, 1): Pipe(type=PipeType.HORIZONTAL, start=False),
-        Coord(0, 1): Pipe(type=PipeType.BEND_7, start=False),
-        Coord(1, 0): Pipe(type=PipeType.L_BEND, start=False),
-        Coord(0, 0): Pipe(type=PipeType.HORIZONTAL, start=False),
-        Coord(2, 0): Pipe(type=PipeType.VERTICAL, start=False),
-        Coord(3, 0): Pipe(type=PipeType.F_BEND, start=False),
-        Coord(4, 0): Pipe(type=PipeType.BEND_7, start=False),
-        Coord(1, 1): Pipe(type=PipeType.F_BEND, start=True),
-        Coord(3, 1): Pipe(type=PipeType.BEND_7, start=False),
-        Coord(4, 1): Pipe(type=PipeType.VERTICAL, start=False),
-        Coord(0, 2): Pipe(type=PipeType.L_BEND, start=False),
-        Coord(1, 2): Pipe(type=PipeType.VERTICAL, start=False),
-        Coord(2, 2): Pipe(type=PipeType.BEND_7, start=False),
-        Coord(3, 2): Pipe(type=PipeType.VERTICAL, start=False),
     }
 
 
@@ -72,12 +72,13 @@ def test_parse_example2(example2):
     assert start_coord == Coord(0, 2)
     assert pipe_map == {
         Coord(1, 2): Pipe(type=PipeType.J_BEND, start=False),
-        Coord(2, 0): Pipe(type=PipeType.F_BEND, start=False),
-        Coord(1, 0): Pipe(type=PipeType.HORIZONTAL, start=False),
         Coord(0, 0): Pipe(type=PipeType.BEND_7, start=False),
-        Coord(1, 1): Pipe(type=PipeType.F_BEND, start=False),
-        Coord(3, 0): Pipe(type=PipeType.BEND_7, start=False),
+        Coord(1, 0): Pipe(type=PipeType.HORIZONTAL, start=False),
         Coord(4, 0): Pipe(type=PipeType.HORIZONTAL, start=False),
+        Coord(3, 0): Pipe(type=PipeType.BEND_7, start=False),
+        Coord(2, 0): Pipe(type=PipeType.F_BEND, start=False),
+        Coord(0, 1): Pipe(type=PipeType.GROUND, start=False),
+        Coord(1, 1): Pipe(type=PipeType.F_BEND, start=False),
         Coord(2, 1): Pipe(type=PipeType.J_BEND, start=False),
         Coord(3, 1): Pipe(type=PipeType.VERTICAL, start=False),
         Coord(4, 1): Pipe(type=PipeType.BEND_7, start=False),
@@ -92,6 +93,7 @@ def test_parse_example2(example2):
         Coord(4, 3): Pipe(type=PipeType.J_BEND, start=False),
         Coord(0, 4): Pipe(type=PipeType.L_BEND, start=False),
         Coord(1, 4): Pipe(type=PipeType.J_BEND, start=False),
+        Coord(2, 4): Pipe(type=PipeType.GROUND, start=False),
         Coord(3, 4): Pipe(type=PipeType.L_BEND, start=False),
         Coord(4, 4): Pipe(type=PipeType.J_BEND, start=False),
     }

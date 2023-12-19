@@ -17,22 +17,18 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 def parse(puzzle_input: str) -> tuple[Coord, PipeMap]:
     """Parse input"""
     lines = puzzle_input.splitlines()
-    pipe_map = defaultdict[Coord, Pipe](lambda: Pipe(PipeType.GROUND))
+    pipe_map = {}
     start_coord = Coord(-1, -1)
 
     for y, line in enumerate(lines):
         for x, char in enumerate(line):
-            if char == ".":
-                continue
             coord = Coord(x, y)
             if char == "S":
                 start_coord = coord
                 continue
             pipe_map[coord] = Pipe(PipeType(char))
 
-    # using deepcopy to avoid mutating the original pipe_map defaultdict in determine_start_pipe_type
-    # as each get method call will add a new key to the defaultdict
-    start_pipe_type = determine_start_pipe_type(deepcopy(pipe_map), start_coord)
+    start_pipe_type = determine_start_pipe_type(pipe_map, start_coord)
     pipe_map[start_coord] = Pipe(PipeType(start_pipe_type), start=True)
 
     logging.debug(f"start: {start_coord}")
