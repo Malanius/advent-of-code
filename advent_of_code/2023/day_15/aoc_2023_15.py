@@ -9,13 +9,15 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
+    return puzzle_input.split(",")
 
 
 @perf
-def part1(data):
+def part1(data: list[str]):
     """Solve part 1"""
+    logging.debug(data)
 
 
 @perf
