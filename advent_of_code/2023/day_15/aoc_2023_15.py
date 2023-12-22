@@ -2,6 +2,7 @@ import logging
 import pathlib
 
 from arguments import init_args
+from lens_box import LensBox
 
 from advent_of_code.util.perf import perf
 
@@ -13,7 +14,8 @@ def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
     return puzzle_input.split(",")
 
-def hash_str(string: str) -> int:
+
+def hash(string: str) -> int:
     """Hash a string"""
     hash_value = 0
     for char in string:
@@ -22,16 +24,46 @@ def hash_str(string: str) -> int:
         hash_value %= 256
     return hash_value
 
+
 @perf
-def part1(data: list[str]):
+def part1(data: list[str]) -> int:
     """Solve part 1"""
-    hashes = [hash_str(string) for string in data]
+    logging.debug("=== Part 1 ===")
+    hashes = [hash(instruction) for instruction in data]
     logging.debug(hashes)
     return sum(hashes)
 
+
 @perf
-def part2(data):
+def part2(data: list[str]) -> int:
     """Solve part 2"""
+    logging.debug("=== Part 2 ===")
+    boxes: dict[int, LensBox] = {}
+    for instruction in data:
+        if "=" in instruction:
+            lens_type, focal_lenght = instruction.split("=")
+            box_id = hash(lens_type)
+            if box_id not in boxes:
+                boxes[box_id] = LensBox(box_id)
+            boxes[box_id].add_lens(lens_type, int(focal_lenght))
+
+        elif "-" in instruction:
+            lens_type, _ = instruction.split("-")
+            box_id = hash(lens_type)
+            if box_id not in boxes:
+                boxes[box_id] = LensBox(box_id)
+            boxes[box_id].remove_lens(lens_type)
+
+        else:
+            raise ValueError(f"Invalid instruction: {instruction}")
+
+        logging.debug(f'After "{instruction}":')
+        for box in boxes.values():
+            if not box.is_empty:
+                logging.debug(box)
+        logging.debug("")
+
+    return sum(box.focusing_power for box in boxes.values())
 
 
 def solve(puzzle_input):

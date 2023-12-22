@@ -1,6 +1,7 @@
 import pathlib
-import pytest
+
 import aoc_2023_15 as solver
+import pytest
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -34,9 +35,9 @@ def test_parse_example(example):
     ]
 
 
-def test_hash_str():
+def test_hash():
     """Test hash_str"""
-    assert solver.hash_str("HASH") == 52
+    assert solver.hash("HASH") == 52
 
 
 def test_part1_example(example):
@@ -49,13 +50,11 @@ def test_part1_data(data):
     assert solver.part1(data) == 510801
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_example(example):
     """Test part 2 on example input"""
-    assert solver.part2(example) == ...
+    assert solver.part2(example) == 145
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_data(data):
     """Test part 2 on data input"""
-    assert solver.part2(data) == ...
+    assert solver.part2(data) == 212763
