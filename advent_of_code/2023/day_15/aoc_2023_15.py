@@ -13,12 +13,21 @@ def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
     return puzzle_input.split(",")
 
+def hash_str(string: str) -> int:
+    """Hash a string"""
+    hash_value = 0
+    for char in string:
+        hash_value += ord(char)
+        hash_value *= 17
+        hash_value %= 256
+    return hash_value
 
 @perf
 def part1(data: list[str]):
     """Solve part 1"""
-    logging.debug(data)
-
+    hashes = [hash_str(string) for string in data]
+    logging.debug(hashes)
+    return sum(hashes)
 
 @perf
 def part2(data):
