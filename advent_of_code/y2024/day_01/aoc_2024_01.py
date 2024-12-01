@@ -35,8 +35,14 @@ def part1(data: ParsedInput) -> int:
 
 
 @perf
-def part2(data):
+def part2(data: ParsedInput) -> int:
     """Solve part 2"""
+    left_list, right_list = data
+    simmilarity_score = 0
+    for num in left_list:
+        occurences = right_list.count(num)
+        simmilarity_score += occurences * num
+    return simmilarity_score
 
 
 def solve(puzzle_input):
