@@ -1,6 +1,6 @@
 import pathlib
 import pytest
-from . import aoc_2024_01 as solver
+from advent_of_code.y2024.day_01 import aoc_2024_01 as solver
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -25,16 +25,14 @@ def test_parse_example(example):
     )
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_example(example):
     """Test part 1 on example input"""
     assert solver.part1(example) == 11
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_data(data):
     """Test part 1 on data input"""
-    assert solver.part1(data) == ...
+    assert solver.part1(data) == 2164381
 
 
 @pytest.mark.skip(reason="Not implemented")

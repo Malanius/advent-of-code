@@ -1,15 +1,18 @@
 import logging
 import pathlib
 
-from .arguments import init_args
 
+# from .arguments import init_args
 from advent_of_code.util.perf import perf
+from advent_of_code.y2024.day_01.arguments import init_args
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
+ParsedInput = tuple[list[int], list[int]]
 
-def parse(puzzle_input: str) -> tuple[list[int], list[int]]:
+
+def parse(puzzle_input: str) -> ParsedInput:
     """Parse input"""
     lines = puzzle_input.splitlines()
     left_list = []
@@ -22,8 +25,13 @@ def parse(puzzle_input: str) -> tuple[list[int], list[int]]:
 
 
 @perf
-def part1(data):
+def part1(data: ParsedInput) -> int:
     """Solve part 1"""
+    left_list, right_list = data
+    total_diff = 0
+    for left, right in zip(sorted(left_list), sorted(right_list)):
+        total_diff += abs(left - right)
+    return total_diff
 
 
 @perf
