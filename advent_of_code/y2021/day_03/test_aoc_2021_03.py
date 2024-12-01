@@ -1,6 +1,6 @@
 import pathlib
 import pytest
-import aoc_2021_03 as solver
+import advent_of_code.y2021.day_03.aoc_2021_03 as solver
 
 import pandas as pd
 
