@@ -1,7 +1,7 @@
 import logging
 import pathlib
 
-from arguments import init_args
+from advent_of_code.y{{YEAR}}.{{DAY}}.arguments import init_args
 
 from advent_of_code.util.perf import perf
 

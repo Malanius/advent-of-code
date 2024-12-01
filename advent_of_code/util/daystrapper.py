@@ -14,11 +14,12 @@ EXAMPLE_FILE = "example.txt"
 DATA_FILE = "data.txt"
 SOLVER_PLACEHOLDER = "{{SOLVER}}"
 DAY_PLACEHOLDER = "{{DAY}}"
+YEAR_PLACEHOLDER = "{{YEAR}}"
 
 
 def create_year_folder(year: str) -> pathlib.Path:
     """Creates a folder for the year if not already created"""
-    year_dir = SOLUTION_DIR.joinpath(f"{year}")
+    year_dir = SOLUTION_DIR.joinpath(f"y{year}")
     year_dir.mkdir(exist_ok=True)
     return year_dir
 
@@ -44,12 +45,19 @@ def copy_templates(year: str, day: str, day_dir: pathlib.Path) -> None:
     solver_file = day_dir.joinpath(f"{day_name}.py")
     test_file = day_dir.joinpath(f"test_{day_name}.py")
     args_file = day_dir.joinpath("arguments.py")
+    init_file = day_dir.joinpath("__init__.py")
+    init_file.touch()
     args_file.write_text(args_template.read_text())
     solver_file.write_text(
-        solver_template.read_text().replace(DAY_PLACEHOLDER, day_short)
+        solver_template.read_text()
+        .replace(DAY_PLACEHOLDER, day_short)
+        .replace(YEAR_PLACEHOLDER, year)
     )
     test_file.write_text(
-        test_template.read_text().replace(SOLVER_PLACEHOLDER, day_name)
+        test_template.read_text()
+        .replace(DAY_PLACEHOLDER, day_short)
+        .replace(YEAR_PLACEHOLDER, year)
+        .replace(SOLVER_PLACEHOLDER, day_name)
     )
 
 
