@@ -6,7 +6,7 @@ authors = [
     { name = "Malanius Privierre", email = "malaniusprivierre@gmail.com" },
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
     "advent-of-code-data>=2.0.4",
     "bpython>=0.24",
