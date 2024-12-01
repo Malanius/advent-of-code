@@ -17,22 +17,25 @@ def data():
     return solver.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_parse_example(example):
     """Test that input is parsed properly"""
-    assert example == ...
+    assert example == (
+        [3, 4, 2, 1, 3, 3],
+        [4, 3, 5, 3, 9, 3],
+    )
 
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example(example):
     """Test part 1 on example input"""
-    assert solver.part1(example) == ...
+    assert solver.part1(example) == 11
 
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_data(data):
     """Test part 1 on data input"""
     assert solver.part1(data) == ...
+
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_example(example):

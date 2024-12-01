@@ -9,8 +9,16 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> tuple[list[int], list[int]]:
     """Parse input"""
+    lines = puzzle_input.splitlines()
+    left_list = []
+    right_list = []
+    for line in lines:
+        left, right = line.split()
+        left_list.append(int(left))
+        right_list.append(int(right))
+    return left_list, right_list
 
 
 @perf
