@@ -1,4 +1,3 @@
-from collections import namedtuple
 import pathlib
 
 from advent_of_code.util.perf import perf
@@ -16,11 +15,13 @@ def parse(puzzle_input: str) -> list[tuple[range, range]]:
         data.append((range(int(start1), int(end1)), range(int(start2), int(end2))))
     return data
 
+
 def convert_to_sets(plan1: range, plan2: range) -> tuple[set, set]:
     """Convert data to set"""
     plan1_set = set(range(plan1.start, plan1.stop + 1))
     plan2_set = set(range(plan2.start, plan2.stop + 1))
     return plan1_set, plan2_set
+
 
 def is_fully_overlapping(plan1: range, plan2: range) -> bool:
     """Check if two plans are fully overlapping"""

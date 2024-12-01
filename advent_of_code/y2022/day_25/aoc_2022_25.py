@@ -1,9 +1,9 @@
 import logging
 import pathlib
 
-from arguments import init_args
-from converter import dec_to_snafu, snafu_to_dec
 from advent_of_code.util.perf import perf
+from advent_of_code.y2022.day_25.arguments import init_args
+from advent_of_code.y2022.day_25.converter import dec_to_snafu, snafu_to_dec
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")

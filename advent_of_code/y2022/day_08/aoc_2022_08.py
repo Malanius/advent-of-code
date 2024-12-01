@@ -1,4 +1,3 @@
-import itertools
 import math
 import pathlib
 from dataclasses import dataclass, field
@@ -132,7 +131,7 @@ def calculate_visible_trees(trees: list[Tree], direction: VisibilityDirection) -
         trees_left = reversed(trees[:index])
         seen = 0
         for tree_left in trees_left:
-            seen += 1 # we always see at least one tree, if not at edge
+            seen += 1  # we always see at least one tree, if not at edge
             # if the tree is same height or higher, we can't see anything behind it
             if tree_left.height >= tree.height:
                 break

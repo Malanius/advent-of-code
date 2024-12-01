@@ -1,9 +1,10 @@
 import pathlib
 import textwrap
 
-import aoc_2022_10 as solver
 import pytest
-from aoc_2022_10 import Cpu, Screen
+
+import advent_of_code.y2022.day_10.aoc_2022_10 as solver
+from advent_of_code.y2022.day_10.aoc_2022_10 import Cpu, Screen
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 

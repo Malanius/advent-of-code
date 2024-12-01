@@ -5,11 +5,11 @@ import time
 from dataclasses import dataclass
 from typing import Literal
 
-from coord import Coord
-from elements import Star, Tile
-from grid import Grid
-from instructions import Instruction
-from player import Player
+from advent_of_code.y2022.day_22.coord import Coord
+from advent_of_code.y2022.day_22.elements import Star, Tile
+from advent_of_code.y2022.day_22.grid import Grid
+from advent_of_code.y2022.day_22.instructions import Instruction
+from advent_of_code.y2022.day_22.player import Player
 
 
 @dataclass
@@ -72,9 +72,9 @@ class Simulation:
 
             if current_element.edges:
                 current_coords = self.player.coords
-                self.grid.grid[current_coords.y][
-                    current_coords.x
-                ] = self.player.standing_on
+                self.grid.grid[current_coords.y][current_coords.x] = (
+                    self.player.standing_on
+                )
                 new_coords = self.grid.wraps_to(current_coords, self.player.facing)
                 self.grid.grid[current_coords.y][current_coords.x] = self.player
                 logging.debug(f"Wrapping to {new_coords}")
@@ -87,9 +87,9 @@ class Simulation:
                 logging.debug(f"Can't move to '{element}' at {new_coords}")
                 return
 
-            self.grid.grid[self.player.coords.y][
-                self.player.coords.x
-            ] = self.player.standing_on
+            self.grid.grid[self.player.coords.y][self.player.coords.x] = (
+                self.player.standing_on
+            )
             self.player.standing_on = self.grid.grid[new_coords.y][new_coords.x]
             self._mark_passed()
             self.grid.grid[new_coords.y][new_coords.x] = self.player

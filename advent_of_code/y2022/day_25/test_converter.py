@@ -1,6 +1,6 @@
 import pytest
 
-from converter import dec_to_snafu, snafu_to_dec
+from advent_of_code.y2022.day_25.converter import dec_to_snafu, snafu_to_dec
 
 
 @pytest.mark.parametrize(

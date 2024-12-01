@@ -2,7 +2,8 @@ import pathlib
 import textwrap
 
 import pytest
-from grid import Grid
+
+from advent_of_code.y2022.day_14.grid import Grid
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 

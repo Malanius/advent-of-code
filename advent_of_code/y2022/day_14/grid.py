@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass, field
 from itertools import pairwise
 
-from elements import Air, Element, Rock, SandGenerator
+from advent_of_code.y2022.day_14.elements import Air, Element, Rock, SandGenerator
 
 
 @dataclass

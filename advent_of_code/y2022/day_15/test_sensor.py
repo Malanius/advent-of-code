@@ -1,6 +1,7 @@
 import pytest
-from coord import Coord
-from sensor import Sensor
+
+from advent_of_code.y2022.day_15.coord import Coord
+from advent_of_code.y2022.day_15.sensor import Sensor
 
 
 @pytest.fixture

@@ -1,8 +1,10 @@
-from copy import deepcopy
 import pathlib
+from copy import deepcopy
+
 import pytest
-import aoc_2022_08 as solver
-from aoc_2022_08 import Tree, VisibilityDirection
+
+import advent_of_code.y2022.day_08.aoc_2022_08 as solver
+from advent_of_code.y2022.day_08.aoc_2022_08 import Tree, VisibilityDirection
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 

@@ -1,7 +1,14 @@
 import pathlib
+
 import pytest
-import aoc_2022_09 as solver
-from aoc_2022_09 import Direction, MoveCommand, Knot, process_moves
+
+import advent_of_code.y2022.day_09.aoc_2022_09 as solver
+from advent_of_code.y2022.day_09.aoc_2022_09 import (
+    Direction,
+    Knot,
+    MoveCommand,
+    process_moves,
+)
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -54,14 +61,30 @@ def test_head_moves(example1, head, tail):
     assert head.visited == [
         (0, 0),  # Start
         # fmt: off
-        (1, 0), (2, 0), (3, 0), (4, 0), # R 4
-        (4, 1), (4, 2), (4, 3), (4, 4), # U 4
-        (3, 4), (2, 4), (1, 4), # L 3
-        (1, 3), # D 1
-        (2, 3), (3, 3), (4, 3), (5, 3), # R 4
-        (5, 2), # D 1
-        (4, 2), (3, 2), (2, 2), (1, 2), (0, 2), # L 5
-        (1, 2), (2, 2),
+        (1, 0),
+        (2, 0),
+        (3, 0),
+        (4, 0),  # R 4
+        (4, 1),
+        (4, 2),
+        (4, 3),
+        (4, 4),  # U 4
+        (3, 4),
+        (2, 4),
+        (1, 4),  # L 3
+        (1, 3),  # D 1
+        (2, 3),
+        (3, 3),
+        (4, 3),
+        (5, 3),  # R 4
+        (5, 2),  # D 1
+        (4, 2),
+        (3, 2),
+        (2, 2),
+        (1, 2),
+        (0, 2),  # L 5
+        (1, 2),
+        (2, 2),
         # R 2
         # fmt: on
     ]
@@ -72,13 +95,21 @@ def test_tail_moves(example1, head, tail):
     assert tail.visited == [
         (0, 0),  # Start
         # fmt: off
-        (1, 0), (2, 0), (3, 0), # Head R 4
-        (4, 1), (4, 2), (4, 3), # Head U 4
-        (3, 4), (2, 4), # Head L 3
+        (1, 0),
+        (2, 0),
+        (3, 0),  # Head R 4
+        (4, 1),
+        (4, 2),
+        (4, 3),  # Head U 4
+        (3, 4),
+        (2, 4),  # Head L 3
         # Head D 1
-        (3, 3), (4, 3), # Head R 4
+        (3, 3),
+        (4, 3),  # Head R 4
         # Head D 1
-        (3, 2), (2, 2), (1, 2),
+        (3, 2),
+        (2, 2),
+        (1, 2),
         # Head L 5
         # Head R 2
     ]

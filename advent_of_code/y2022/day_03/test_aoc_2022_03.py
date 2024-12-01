@@ -1,7 +1,8 @@
 import pathlib
 
-import aoc_2022_03
 import pytest
+
+from advent_of_code.y2022.day_03 import aoc_2022_03
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 

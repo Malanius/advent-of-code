@@ -1,8 +1,8 @@
 import re
 from dataclasses import dataclass
 
-from inventory import Inventory
-from material import Material
+from advent_of_code.y2022.day_19.inventory import Inventory
+from advent_of_code.y2022.day_19.material import Material
 
 BLUEPRINT_PATTERN = re.compile(
     r"Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian."

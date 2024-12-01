@@ -3,16 +3,15 @@ import pathlib
 import re
 from itertools import pairwise
 
-from arguments import init_args
-from coord import Boundaries, Coord
-from grid15 import print_grid
-from scan_coverage import (
+from advent_of_code.util.perf import perf
+from advent_of_code.y2022.day_15.arguments import init_args
+from advent_of_code.y2022.day_15.coord import Boundaries, Coord
+from advent_of_code.y2022.day_15.grid15 import print_grid
+from advent_of_code.y2022.day_15.scan_coverage import (
     get_sensors_coverage_at_row,
     is_covered,
 )
-from sensor import Sensor
-
-from advent_of_code.util.perf import perf
+from advent_of_code.y2022.day_15.sensor import Sensor
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")

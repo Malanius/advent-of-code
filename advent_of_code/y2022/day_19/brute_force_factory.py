@@ -1,10 +1,11 @@
 from functools import cache
+
 # import logging
 from typing import Optional
 
-from blueprint import Blueprint
-from inventory import Inventory
-from .material import Material
+from advent_of_code.y2022.day_19.blueprint import Blueprint
+from advent_of_code.y2022.day_19.inventory import Inventory
+from advent_of_code.y2022.day_19.material import Material
 
 build_strategies: list[Optional[Material]] = [
     Material.GEODE,

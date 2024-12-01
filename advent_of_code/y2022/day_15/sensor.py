@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
-from coord import Boundaries, Coord
+
+from advent_of_code.y2022.day_15.coord import Boundaries, Coord
 
 
 @dataclass

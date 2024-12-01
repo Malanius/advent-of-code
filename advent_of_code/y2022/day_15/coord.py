@@ -28,6 +28,7 @@ class Coord:
     def __str__(self) -> str:
         return f"({self.x}, {self.y})"
 
+
 @dataclass
 class Boundaries:
     min_x: int

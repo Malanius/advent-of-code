@@ -1,6 +1,8 @@
 import pathlib
+
 import pytest
-import aoc_2022_02
+
+from advent_of_code.y2022.day_02 import aoc_2022_02
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -46,11 +48,13 @@ def test_part1_example1(example):
     """Test part 1 on example input"""
     assert aoc_2022_02.part1(example) == 15
 
+
 def test_play_win():
     """Test that play win works properly"""
     assert aoc_2022_02.play_win(aoc_2022_02.Hand.ROCK) == aoc_2022_02.Hand.PAPER
     assert aoc_2022_02.play_win(aoc_2022_02.Hand.PAPER) == aoc_2022_02.Hand.SCISSORS
     assert aoc_2022_02.play_win(aoc_2022_02.Hand.SCISSORS) == aoc_2022_02.Hand.ROCK
+
 
 def test_play_draw():
     """Test that play draw works properly"""
@@ -58,11 +62,13 @@ def test_play_draw():
     assert aoc_2022_02.play_draw(aoc_2022_02.Hand.PAPER) == aoc_2022_02.Hand.PAPER
     assert aoc_2022_02.play_draw(aoc_2022_02.Hand.SCISSORS) == aoc_2022_02.Hand.SCISSORS
 
+
 def test_play_lose():
     """Test that play lose works properly"""
     assert aoc_2022_02.play_loss(aoc_2022_02.Hand.ROCK) == aoc_2022_02.Hand.SCISSORS
     assert aoc_2022_02.play_loss(aoc_2022_02.Hand.PAPER) == aoc_2022_02.Hand.ROCK
     assert aoc_2022_02.play_loss(aoc_2022_02.Hand.SCISSORS) == aoc_2022_02.Hand.PAPER
+
 
 def test_part2_example2(example):
     """Test part 2 on example input"""

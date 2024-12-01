@@ -1,7 +1,9 @@
 import pathlib
+
 import pytest
-import aoc_2022_13 as solver
-from aoc_2022_13 import Pair
+
+import advent_of_code.y2022.day_13.aoc_2022_13 as solver
+from advent_of_code.y2022.day_13.aoc_2022_13 import Pair
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -23,10 +25,12 @@ def data_part1():
     puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return solver.parse_part1(puzzle_input)
 
+
 @pytest.fixture
 def data_part2():
     puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return solver.parse_part2(puzzle_input)
+
 
 def test_parse_example_part1(example_part1):
     """Test that input is parsed properly"""

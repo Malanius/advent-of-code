@@ -1,8 +1,15 @@
-from collections import deque
 import pathlib
+from collections import deque
+
 import pytest
-import aoc_2022_11 as solver
-from aoc_2022_11 import play_rounds, parse, Monkey, part1, part2
+
+from advent_of_code.y2022.day_11.aoc_2022_11 import (
+    Monkey,
+    parse,
+    part1,
+    part2,
+    play_rounds,
+)
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 

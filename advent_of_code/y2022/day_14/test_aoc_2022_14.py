@@ -1,8 +1,9 @@
 import pathlib
 
-import aoc_2022_14 as solver
 import pytest
-from grid import Grid
+
+import advent_of_code.y2022.day_14.aoc_2022_14 as solver
+from advent_of_code.y2022.day_14.grid import Grid
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 

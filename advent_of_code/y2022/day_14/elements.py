@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from direction import Direction
+from advent_of_code.y2022.day_14.direction import Direction
 
 
 class Element:

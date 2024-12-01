@@ -1,11 +1,11 @@
+import logging
 from dataclasses import dataclass, field, replace
 from functools import cached_property
 from typing import Generator
-import logging
 
-from blueprint import Blueprint
-from inventory import Inventory
-from material import Material
+from advent_of_code.y2022.day_19.blueprint import Blueprint
+from advent_of_code.y2022.day_19.inventory import Inventory
+from advent_of_code.y2022.day_19.material import Material
 
 build_strategies: list[Material] = [
     Material.ORE,
@@ -79,8 +79,8 @@ class FactoryState:
             time_left = self.time_left
             inventory = self.inventory
             robots = self.robots
-            #logging.debug(f"---")
-            #logging.debug(f"{time_left:2d}: Trying to build {material} robot")
+            # logging.debug(f"---")
+            # logging.debug(f"{time_left:2d}: Trying to build {material} robot")
 
             # do not try building robot for which we don't collect materials yet
             if material == Material.OBSIDIAN and robots.clay == 0:
@@ -97,19 +97,19 @@ class FactoryState:
             while time_left:
                 # wait until enough resources to build given robot
                 if can_build_bot(material, self.blueprint, inventory, robots):
-                    #logging.debug(f"{time_left:2d}: Building {material} robot")
+                    # logging.debug(f"{time_left:2d}: Building {material} robot")
                     break
 
                 time_left -= 1
                 inventory += robots  # collect resources
-                #logging.debug(f"{time_left:2d}: I({inventory}), R({robots})")
+                # logging.debug(f"{time_left:2d}: I({inventory}), R({robots})")
 
             if time_left:
                 time_left -= 1
                 inventory -= self.blueprint.costs[material]  # pay for robot
                 gained_robots = Inventory(**{material: 1})
                 inventory += robots  # collect resources
-                #logging.debug(f"{time_left:2d}: I({inventory}), R({robots})")
+                # logging.debug(f"{time_left:2d}: I({inventory}), R({robots})")
                 yield replace(
                     self,
                     time_left=time_left,
@@ -145,10 +145,10 @@ def get_max_geodes_opt(
         if state.inventory.geode > max_geodes:
             max_geodes = state.inventory.geode
             best_state = state
-            #logging.debug(f"New best state: {best_state}")
+            # logging.debug(f"New best state: {best_state}")
 
         for next_state in state.next_states():
-            #logging.debug(next_state)
+            # logging.debug(next_state)
             to_visit.append(next_state)
 
     logging.debug(f"Best state: {best_state}")

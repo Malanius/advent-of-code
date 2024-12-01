@@ -2,11 +2,11 @@ import logging
 import math
 import pathlib
 
-from arguments import init_args
-from blueprint import BLUEPRINT_PATTERN, Blueprint
-from inventory import Inventory
-from optimized_factory import get_max_geodes_opt
 from advent_of_code.util.perf import perf
+from advent_of_code.y2022.day_19.arguments import init_args
+from advent_of_code.y2022.day_19.blueprint import BLUEPRINT_PATTERN, Blueprint
+from advent_of_code.y2022.day_19.inventory import Inventory
+from advent_of_code.y2022.day_19.optimized_factory import get_max_geodes_opt
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(
