@@ -1,21 +1,29 @@
 import logging
 import pathlib
 
-from advent_of_code.y{{YEAR}}.{{DAY}}.arguments import init_args
-
 from advent_of_code.util.perf import perf
+from advent_of_code.y2022.day_25.arguments import init_args
+from advent_of_code.y2022.day_25.converter import dec_to_snafu, snafu_to_dec
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
+    return puzzle_input.splitlines()
 
 
 @perf
-def part1(data):
+def part1(data: list[str]) -> str:
     """Solve part 1"""
+    fuel_amounts = []
+    for line in data:
+        converted = snafu_to_dec(line)
+        fuel_amounts.append(converted)
+
+    total_fuel = sum(fuel_amounts)
+    return dec_to_snafu(total_fuel)
 
 
 @perf

@@ -1,7 +1,8 @@
 import pathlib
+
 import pytest
 
-from advent_of_code.y{{YEAR}}.{{DAY}} import {{SOLVER}} as solver
+import advent_of_code.y2022.day_22.aoc_2022_22 as solver
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
@@ -19,12 +20,6 @@ def data():
 
 
 @pytest.mark.skip(reason="Not implemented")
-def test_parse_example(example):
-    """Test that input is parsed properly"""
-    assert example == ...
-
-
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_example(example):
     """Test part 1 on example input"""
     assert solver.part1(example) == ...
@@ -34,6 +29,7 @@ def test_part1_example(example):
 def test_part1_data(data):
     """Test part 1 on data input"""
     assert solver.part1(data) == ...
+
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_example(example):
