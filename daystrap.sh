@@ -1,2 +1,2 @@
 #!/bin/bash
-poetry run daystrap $@
+uv run daystrap $@
