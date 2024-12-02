@@ -21,20 +21,37 @@ LOWER_SAFE_BOUND = 1
 UPPER_SAFE_BOUND = 3
 
 
+def is_within_bounds(pair):
+    return LOWER_SAFE_BOUND <= abs(pair[0] - pair[1]) <= UPPER_SAFE_BOUND
+
+
+def is_consistent_direction(direction, pair):
+    return (direction == 1 and pair[0] <= pair[1]) or (
+        direction == -1 and pair[0] >= pair[1]
+    )
+
+
 def is_safe_report(report: list[int]) -> bool:
     """Check if the report is safe"""
     direction = 1 if report[0] < report[1] else -1
+
     for pair in pairwise(report):
-        if (
-            abs(pair[0] - pair[1]) > UPPER_SAFE_BOUND
-            or abs(pair[0] - pair[1]) < LOWER_SAFE_BOUND
-        ):
+        if not (is_within_bounds(pair) and is_consistent_direction(direction, pair)):
+            logging.debug(f"Unsafe {report}")
             return False
-        if direction == 1 and pair[0] > pair[1]:
-            return False
-        if direction == -1 and pair[0] < pair[1]:
-            return False
+
+    logging.debug(f"Safe {report}")
     return True
+
+
+def is_safe_with_dampener(report: list[int]) -> bool:
+    """Check if the report is safe using dampener to eliminate one issue"""
+    # Check all possible removed elements
+    for i in range(len(report)):
+        new_report = report[:i] + report[i + 1 :]
+        if is_safe_report(new_report):
+            return True
+    return False
 
 
 @perf
@@ -47,6 +64,8 @@ def part1(data: ParsedInput) -> int:
 @perf
 def part2(data):
     """Solve part 2"""
+    safe_reports = [report for report in data if is_safe_with_dampener(report)]
+    return len(safe_reports)
 
 
 def solve(puzzle_input):
