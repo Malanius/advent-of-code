@@ -17,22 +17,37 @@ def data():
     puzzle_input = (PUZZLE_DIR / "data.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
-@pytest.mark.skip(reason="Not implemented")
+
 def test_parse_example(example):
     """Test that input is parsed properly"""
-    assert example == ...
+    assert example == [
+        [7, 6, 4, 2, 1],
+        [1, 2, 7, 8, 9],
+        [9, 7, 6, 2, 1],
+        [1, 3, 2, 4, 5],
+        [8, 6, 4, 4, 1],
+        [1, 3, 6, 7, 9],
+    ]
 
 
-@pytest.mark.skip(reason="Not implemented")
+def test_is_safe_report():
+    assert solver.is_safe_report([7, 6, 4, 2, 1]) is True
+    assert solver.is_safe_report([1, 2, 7, 8, 9]) is False
+    assert solver.is_safe_report([9, 7, 6, 2, 1]) is False
+    assert solver.is_safe_report([1, 3, 2, 4, 5]) is False
+    assert solver.is_safe_report([8, 6, 4, 4, 1]) is False
+    assert solver.is_safe_report([1, 3, 6, 7, 9]) is True
+
+
 def test_part1_example(example):
     """Test part 1 on example input"""
-    assert solver.part1(example) == ...
+    assert solver.part1(example) == 2
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part1_data(data):
     """Test part 1 on data input"""
-    assert solver.part1(data) == ...
+    assert solver.part1(data) == 660
+
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_example(example):

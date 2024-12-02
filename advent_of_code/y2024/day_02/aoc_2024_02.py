@@ -1,5 +1,6 @@
 import logging
 import pathlib
+from itertools import pairwise
 
 from advent_of_code.y2024.day_02.arguments import init_args
 
@@ -8,14 +9,39 @@ from advent_of_code.util.perf import perf
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
+ParsedInput = list[list[int]]
 
-def parse(puzzle_input):
+
+def parse(puzzle_input: str) -> ParsedInput:
     """Parse input"""
+    return [[int(x) for x in line.split()] for line in puzzle_input.splitlines()]
+
+
+LOWER_SAFE_BOUND = 1
+UPPER_SAFE_BOUND = 3
+
+
+def is_safe_report(report: list[int]) -> bool:
+    """Check if the report is safe"""
+    direction = 1 if report[0] < report[1] else -1
+    for pair in pairwise(report):
+        if (
+            abs(pair[0] - pair[1]) > UPPER_SAFE_BOUND
+            or abs(pair[0] - pair[1]) < LOWER_SAFE_BOUND
+        ):
+            return False
+        if direction == 1 and pair[0] > pair[1]:
+            return False
+        if direction == -1 and pair[0] < pair[1]:
+            return False
+    return True
 
 
 @perf
-def part1(data):
+def part1(data: ParsedInput) -> int:
     """Solve part 1"""
+    safe_reports = [report for report in data if is_safe_report(report)]
+    return len(safe_reports)
 
 
 @perf
