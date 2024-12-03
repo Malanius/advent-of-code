@@ -1,5 +1,6 @@
 import logging
 import pathlib
+import re
 
 from advent_of_code.y2024.day_03.arguments import init_args
 
@@ -8,15 +9,23 @@ from advent_of_code.util.perf import perf
 PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
+MULTIPLY_PATTERN = re.compile(r"mul\((\d{1,3}),(\d{1,3})\)")
+
 
 def parse(puzzle_input: str) -> list[str]:
     """Parse input"""
     return puzzle_input.splitlines()
 
-@perf
-def part1(data):
-    """Solve part 1"""
 
+@perf
+def part1(data: list[str]) -> int:
+    """Solve part 1"""
+    total = 0
+    for line in data:
+        operations = re.findall(MULTIPLY_PATTERN, line)
+        for operation in operations:
+            total += int(operation[0]) * int(operation[1])
+    return total
 
 @perf
 def part2(data):
