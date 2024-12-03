@@ -18,10 +18,11 @@ def data():
     return solver.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_parse_example(example):
     """Test that input is parsed properly"""
-    assert example == ...
+    assert example == [
+        "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
+    ]
 
 
 @pytest.mark.skip(reason="Not implemented")
@@ -34,6 +35,7 @@ def test_part1_example(example):
 def test_part1_data(data):
     """Test part 1 on data input"""
     assert solver.part1(data) == ...
+
 
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_example(example):
