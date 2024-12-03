@@ -7,8 +7,14 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.fixture
-def example():
-    puzzle_input = (PUZZLE_DIR / "example.txt").read_text().strip()
+def example_1():
+    puzzle_input = (PUZZLE_DIR / "example_1.txt").read_text().strip()
+    return solver.parse(puzzle_input)
+
+
+@pytest.fixture
+def example_2():
+    puzzle_input = (PUZZLE_DIR / "example_2.txt").read_text().strip()
     return solver.parse(puzzle_input)
 
 
@@ -18,16 +24,19 @@ def data():
     return solver.parse(puzzle_input)
 
 
-def test_parse_example(example):
+def test_parse_example(example_1, example_2):
     """Test that input is parsed properly"""
-    assert example == [
+    assert example_1 == [
         "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
+    ]
+    assert example_2 == [
+        "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
     ]
 
 
-def test_part1_example(example):
+def test_part1_example(example_1):
     """Test part 1 on example input"""
-    assert solver.part1(example) == 161
+    assert solver.part1(example_1) == 161
 
 
 def test_part1_data(data):
@@ -35,13 +44,11 @@ def test_part1_data(data):
     assert solver.part1(data) == 166630675
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example(example):
+def test_part2_example(example_2):
     """Test part 2 on example input"""
-    assert solver.part2(example) == ...
+    assert solver.part2(example_2) == 48
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_data(data):
     """Test part 2 on data input"""
-    assert solver.part2(data) == ...
+    assert solver.part2(data) == 93465710
