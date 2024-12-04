@@ -1,6 +1,7 @@
 import logging
 import pathlib
 
+from advent_of_code.common.two_d.coord import Coord
 from advent_of_code.y2024.day_04.arguments import init_args
 
 from advent_of_code.util.perf import perf
@@ -9,8 +10,17 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> dict[Coord, str]:
     """Parse input"""
+    lines = puzzle_input.splitlines()
+    data = {}
+    for y, line in enumerate(lines):
+        for x, char in enumerate(line):
+            data[Coord(x, y)] = char
+    logging.debug("Parsed data:")
+    logging.debug(data)
+    logging.debug("-" * len(lines[0]))
+    return data
 
 
 @perf
