@@ -1,6 +1,13 @@
+use clap::Parser;
 use std::fs;
 
 static STARTING_POSITION: isize = 50;
+
+#[derive(Parser, Debug)]
+struct Args {
+    #[clap(long, short, action)]
+    data: bool,
+}
 
 fn parse_input(puzzle_input: &str) -> Vec<isize> {
     puzzle_input
@@ -42,7 +49,11 @@ fn solve(puzzle_input: &str) -> (usize, usize) {
 }
 
 fn main() {
-    let file = "example.txt";
+    let args = Args::parse();
+    let file = match args.data {
+        true => "data.txt",
+        false => "example.txt",
+    };
     let path = format!("data/{}", file);
     let puzzle_input = fs::read_to_string(&path).expect(&format!("Could not read file: {}", path));
     let solutions = solve(&puzzle_input);
