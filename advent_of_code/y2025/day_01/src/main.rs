@@ -80,4 +80,12 @@ mod tests {
         let result = part1(&data);
         assert_eq!(result, 3);
     }
+
+    #[test]
+    fn test_part1_data() {
+        let puzzle_input = fs::read_to_string("data/data.txt").unwrap();
+        let data = parse_input(&puzzle_input);
+        let result = part1(&data);
+        assert_eq!(result, 1141);
+    }
 }
