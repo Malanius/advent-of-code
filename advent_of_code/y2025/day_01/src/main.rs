@@ -36,11 +36,30 @@ fn part1(data: &Vec<isize>) -> usize {
     zeroes_seen
 }
 
-fn part2(data: &Vec<isize>) -> usize {
-    0
+fn part2(data: &Vec<isize>) -> isize {
+    let mut position = STARTING_POSITION;
+    let mut zeroes_clicked: isize = 0;
+
+    for step in data {
+        let position_before = position;
+        let position_after = (100 + (position + step)) % 100;
+
+        if step.abs() >= 50 && position_after != 0 {
+            let clicks = step.abs() / 50;
+            println!("Steps: {}, Clicked: {}", step.abs(), clicks);
+            zeroes_clicked += clicks;
+        }
+        if position_after == 0 {
+            zeroes_clicked += 1;
+        }
+
+        position = position_after;
+    }
+
+    zeroes_clicked
 }
 
-fn solve(puzzle_input: &str) -> (usize, usize) {
+fn solve(puzzle_input: &str) -> (usize, isize) {
     let data = parse_input(puzzle_input);
     let result1 = part1(&data);
     let result2 = part2(&data);
@@ -64,6 +83,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use claim::{assert_gt, assert_lt};
 
     #[test]
     fn test_parse_example() {
@@ -87,5 +107,22 @@ mod tests {
         let data = parse_input(&puzzle_input);
         let result = part1(&data);
         assert_eq!(result, 1141);
+    }
+
+    #[test]
+    fn test_part2_example() {
+        let puzzle_input = fs::read_to_string("data/example.txt").unwrap();
+        let data = parse_input(&puzzle_input);
+        let result = part2(&data);
+        assert_eq!(result, 6);
+    }
+
+    #[test]
+    fn test_part2_data() {
+        let puzzle_input = fs::read_to_string("data/example.txt").unwrap();
+        let data = parse_input(&puzzle_input);
+        let result = part2(&data);
+        assert_gt!(result, 6600);
+        assert_lt!(result, 9415);
     }
 }
