@@ -1,7 +1,9 @@
 #![warn(clippy::all, clippy::pedantic)]
 
 use clap::Parser;
-use std::fs;
+
+static EXAMPLE_INPUT: &str = include_str!("example.txt");
+static DATA_INPUT: &str = include_str!("data.txt");
 
 const INITIAL_STARTING_POSITION: isize = 50;
 const DIAL_SIZE: isize = 100;
@@ -121,12 +123,10 @@ fn solve(puzzle_input: &str) -> (usize, isize) {
 
 fn main() {
     let args = Args::parse();
-    let file = match args.data {
-        true => "data.txt",
-        false => "example.txt",
+    let puzzle_input = match args.data {
+        true => DATA_INPUT,
+        false => EXAMPLE_INPUT,
     };
-    let path = format!("data/{}", file);
-    let puzzle_input = fs::read_to_string(&path).expect(&format!("Could not read file: {}", path));
     let solutions = solve(&puzzle_input);
     println!("Part 1: {}", solutions.0);
     println!("Part 2: {}", solutions.1);
@@ -134,38 +134,33 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use std::vec;
 
     use super::*;
 
     #[test]
     fn test_parse_example() {
-        let puzzle_input = fs::read_to_string("data/example.txt").unwrap();
-        let result = parse_input(&puzzle_input);
+        let result = parse_input(EXAMPLE_INPUT);
         assert_eq!(result.len(), 10);
         assert_eq!(result, vec![-68, -30, 48, -5, 60, -55, -1, -99, 14, -82]);
     }
 
     #[test]
     fn test_part1_example() {
-        let puzzle_input = fs::read_to_string("data/example.txt").unwrap();
-        let data = parse_input(&puzzle_input);
+        let data = parse_input(EXAMPLE_INPUT);
         let result = part1(&data);
         assert_eq!(result, 3);
     }
 
     #[test]
     fn test_part1_data() {
-        let puzzle_input = fs::read_to_string("data/data.txt").unwrap();
-        let data = parse_input(&puzzle_input);
+        let data = parse_input(DATA_INPUT);
         let result = part1(&data);
         assert_eq!(result, 1141);
     }
 
     #[test]
     fn test_part2_example() {
-        let puzzle_input = fs::read_to_string("data/example.txt").unwrap();
-        let data = parse_input(&puzzle_input);
+        let data = parse_input(EXAMPLE_INPUT);
         let result = part2(&data);
         assert_eq!(result, 6);
     }
@@ -218,8 +213,7 @@ mod tests {
 
     #[test]
     fn test_part2_data() {
-        let puzzle_input = fs::read_to_string("data/data.txt").unwrap();
-        let data = parse_input(&puzzle_input);
+        let data = parse_input(DATA_INPUT);
         let result = part2(&data);
         assert_eq!(result, 6634);
     }
