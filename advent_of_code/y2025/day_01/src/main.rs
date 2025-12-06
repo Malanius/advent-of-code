@@ -27,7 +27,7 @@ fn part1(data: &Vec<isize>) -> usize {
     let mut zeroes_seen: usize = 0;
 
     for step in data {
-        position = (100 + (position + step)) % 100;
+        position = (position + step).rem_euclid(100);
         if position == 0 {
             zeroes_seen += 1;
         }
