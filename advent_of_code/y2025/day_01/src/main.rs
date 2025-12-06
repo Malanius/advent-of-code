@@ -1,7 +1,10 @@
+#![warn(clippy::all, clippy::pedantic)]
+
 use clap::Parser;
 use std::fs;
 
-static STARTING_POSITION: isize = 50;
+const INITIAL_STARTING_POSITION: isize = 50;
+const DIAL_SIZE: isize = 100;
 
 #[derive(Parser, Debug)]
 struct Args {
@@ -22,41 +25,90 @@ fn parse_input(puzzle_input: &str) -> Vec<isize> {
         .collect()
 }
 
+fn wrap_position(pos: isize) -> isize {
+    pos.rem_euclid(DIAL_SIZE)
+}
+
 fn part1(data: &Vec<isize>) -> usize {
-    let mut position = STARTING_POSITION;
-    let mut zeroes_seen: usize = 0;
+    let mut position = INITIAL_STARTING_POSITION;
+    let mut zeroes_encoded: usize = 0;
 
     for step in data {
-        position = (position + step).rem_euclid(100);
+        position = wrap_position(position + step);
         if position == 0 {
-            zeroes_seen += 1;
+            zeroes_encoded += 1;
         }
     }
 
-    zeroes_seen
+    zeroes_encoded
+}
+
+fn passes_zero(start: isize, step: isize) -> isize {
+    const N: isize = DIAL_SIZE;
+
+    if step == 0 {
+        return 0;
+    }
+
+    if step > 0 {
+        // Moving right: positions visited are start+1, ..., start+step (mod N)
+        // We want k in [1, step] s.t. s + k ≡ 0 (mod N)
+        let mut k0 = (-start).rem_euclid(N); // first k >= 0 with s + k ≡ 0 (mod N)
+
+        // If k0 == 0, that would mean we're already at 0 (starting state),
+        // so the next time we hit 0 is after a full revolution.
+        if k0 == 0 {
+            k0 = N;
+        }
+
+        if step < k0 {
+            0
+        } else {
+            // first hit at k0, then every N steps
+            1 + (step - k0) / N
+        }
+    } else {
+        // step < 0: moving left
+        let total = -step; // make it positive
+
+        // Moving left: positions visited are start-1, ..., start+step (mod N)
+        // We want t in [1, total] s.t. s - t ≡ 0 (mod N)
+        // This is t ≡ s (mod N), first t >= 0 is t0 = s.
+        let mut t0 = start.rem_euclid(N);
+
+        // If t0 == 0, that's the starting state; next hit is after a full revolution.
+        if t0 == 0 {
+            t0 = N;
+        }
+
+        if total < t0 {
+            0
+        } else {
+            // first hit at t0, then every N steps
+            1 + (total - t0) / N
+        }
+    }
 }
 
 fn part2(data: &Vec<isize>) -> isize {
-    let mut position = STARTING_POSITION;
-    let mut zeroes_clicked: isize = 0;
+    let mut starting_position = INITIAL_STARTING_POSITION;
+    let mut zeroes_visited: isize = 0;
 
     for step in data {
-        let position_before = position;
-        let position_after = (100 + (position + step)) % 100;
+        let position_after = wrap_position(starting_position + step);
+        let raw = starting_position + step;
 
-        if step.abs() >= 50 && position_after != 0 {
-            let clicks = step.abs() / 50;
-            println!("Steps: {}, Clicked: {}", step.abs(), clicks);
-            zeroes_clicked += clicks;
-        }
-        if position_after == 0 {
-            zeroes_clicked += 1;
-        }
+        println!(
+            "Start: {:>4}, Step: {:>4}, After: {:>4}, Raw: {:>4}",
+            starting_position, step, position_after, raw
+        );
+        zeroes_visited += passes_zero(starting_position, *step);
 
-        position = position_after;
+        starting_position = position_after;
     }
 
-    zeroes_clicked
+    println!("Zeroes visited: {}", zeroes_visited);
+    zeroes_visited
 }
 
 fn solve(puzzle_input: &str) -> (usize, isize) {
@@ -82,8 +134,9 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use std::vec;
+
     use super::*;
-    use claim::{assert_gt, assert_lt};
 
     #[test]
     fn test_parse_example() {
@@ -118,11 +171,56 @@ mod tests {
     }
 
     #[test]
-    fn test_part2_data() {
-        let puzzle_input = fs::read_to_string("data/example.txt").unwrap();
+    fn test_big_rotation_left() {
+        let puzzle_input = "L1000";
         let data = parse_input(&puzzle_input);
         let result = part2(&data);
-        assert_gt!(result, 6600);
-        assert_lt!(result, 9415);
+        assert_eq!(result, 10);
+    }
+
+    #[test]
+    fn test_big_rotation_right() {
+        let puzzle_input = "R1000";
+        let data = parse_input(&puzzle_input);
+        let result = part2(&data);
+        assert_eq!(result, 10);
+    }
+
+    #[test]
+    fn test_zeroes_counting_one() {
+        let inputs = vec![
+            ("L50\nR50", 1),
+            ("L50\nL50", 1),
+            ("R50\nL50", 1),
+            ("R50\nR50", 1),
+        ];
+        for (input, expected) in inputs {
+            let data = parse_input(input);
+            let result = part2(&data);
+            assert_eq!(result, expected);
+        }
+    }
+
+    #[test]
+    fn test_zeroes_counting_two() {
+        let inputs = vec![
+            ("L150\nL50", 2),
+            ("L150\nR50", 2),
+            ("R150\nL50", 2),
+            ("R150\nR50", 2),
+        ];
+        for (input, expected) in inputs {
+            let data = parse_input(input);
+            let result = part2(&data);
+            assert_eq!(result, expected);
+        }
+    }
+
+    #[test]
+    fn test_part2_data() {
+        let puzzle_input = fs::read_to_string("data/data.txt").unwrap();
+        let data = parse_input(&puzzle_input);
+        let result = part2(&data);
+        assert_eq!(result, 6634);
     }
 }
