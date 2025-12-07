@@ -1,6 +1,6 @@
 #![warn(clippy::all, clippy::pedantic)]
 
-use aoc_2025_day_01::{parse_input, part1, part2};
+use aoc_{{YEAR}}_day_{{DAY}}::{parse_input, part1, part2};
 use clap::Parser;
 
 static EXAMPLE_INPUT: &str = include_str!("../example.txt");

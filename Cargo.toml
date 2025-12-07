@@ -1,0 +1,10 @@
+[workspace]
+resolver = "2"
+members = [
+    "advent_of_code/y2025/day_01",
+    # "advent_of_code/y{YEAR}/day_{DAY}",
+]
+
+[workspace.dependencies]
+clap = { version = "4.5.53", features = ["derive"] }
+claim = "0.5.0"
