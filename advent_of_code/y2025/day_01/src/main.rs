@@ -3,8 +3,8 @@
 use aoc_2025_day_01::{parse_input, part1, part2};
 use clap::Parser;
 
-static EXAMPLE_INPUT: &str = include_str!("example.txt");
-static DATA_INPUT: &str = include_str!("data.txt");
+static EXAMPLE_INPUT: &str = include_str!("../example.txt");
+static DATA_INPUT: &str = include_str!("../data.txt");
 
 #[derive(Parser, Debug)]
 struct Args {
