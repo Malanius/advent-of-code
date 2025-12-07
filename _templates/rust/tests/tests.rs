@@ -1,0 +1,29 @@
+use aoc_{{YEAR}}_day_{{DAY}}::{parse_input, part1, part2};
+
+static EXAMPLE_INPUT: &str = include_str!("../src/example.txt");
+static DATA_INPUT: &str = include_str!("../src/data.txt");
+
+#[test]
+fn test_parse_example() {
+   panic!("not implemented"); 
+}
+
+#[test]
+fn test_part1_example() {
+    panic!("not implemented");
+}
+
+#[test]
+fn test_part1_data() {
+    panic!("not implemented");
+}
+
+#[test]
+fn test_part2_example() {
+    panic!("not implemented");
+}
+
+#[test]
+fn test_part2_data() {
+    panic!("not implemented");
+}
