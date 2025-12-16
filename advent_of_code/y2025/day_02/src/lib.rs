@@ -24,6 +24,9 @@ pub fn is_repeated_twice(num: isize) -> bool {
 
 pub fn is_repeated_pattern(num: isize) -> bool {
     let s = num.to_string();
+    if s.len() < 2 {
+        return false;
+    }
 
     if is_repeated_twice(num) {
         return true;

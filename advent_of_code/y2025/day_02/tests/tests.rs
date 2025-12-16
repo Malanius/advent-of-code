@@ -194,6 +194,13 @@ fn test_is_repeated_pattern() {
         "{} should not be repeated pattern",
         67696976
     );
+    // single digit can't repeat
+    assert_eq!(
+        is_repeated_pattern(7),
+        false,
+        "{} should not be repeated pattern",
+        7
+    );
 }
 
 #[test]
@@ -214,7 +221,8 @@ fn test_part2_example() {
     assert_eq!(part2(&puzzle_input), 4174379265);
 }
 
-// #[test]
-// fn test_part2_data() {
-//     panic!("not implemented");
-// }
+#[test]
+fn test_part2_data() {
+    let puzzle_input = parse_input(DATA_INPUT);
+    assert_eq!(part2(&puzzle_input), 50793864718);
+}
