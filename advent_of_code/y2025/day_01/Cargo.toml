@@ -8,3 +8,6 @@ clap = { workspace = true }
 
 [dev-dependencies]
 claim = { workspace = true }
+
+[lints]
+workspace = true

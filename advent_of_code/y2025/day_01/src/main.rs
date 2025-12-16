@@ -1,5 +1,3 @@
-#![warn(clippy::all, clippy::pedantic)]
-
 use aoc_2025_day_01::{parse_input, part1, part2};
 use clap::Parser;
 
