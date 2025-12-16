@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     "advent_of_code/y2025/day_01",
+    "advent_of_code/y2025/day_02",
     # "advent_of_code/y{YEAR}/day_{DAY}",
 ]
 
