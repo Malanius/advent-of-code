@@ -10,7 +10,7 @@ struct Args {
     data: bool,
 }
 
-fn solve(puzzle_input: &str) -> (usize, isize) {
+fn solve(puzzle_input: &str) -> (isize, isize) {
     let data = parse_input(puzzle_input);
     let result1 = part1(&data);
     let result2 = part2(&data);

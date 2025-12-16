@@ -16,8 +16,23 @@ pub fn parse_input(puzzle_input: &str) -> PuzzleInput {
     result
 }
 
-pub fn part1(data: &PuzzleInput) -> usize {
-    0
+pub fn is_repeated_pattern(num: isize) -> bool {
+    let s = num.to_string();
+    let len = s.len();
+    (len % 2 == 0) && (s[..len / 2] == s[len / 2..])
+}
+
+pub fn part1(data: &PuzzleInput) -> isize {
+    let mut result = 0;
+
+    for range in data {
+        for num in range.clone() {
+            if is_repeated_pattern(num) {
+                result += num;
+            }
+        }
+    }
+    result
 }
 
 pub fn part2(data: &PuzzleInput) -> isize {

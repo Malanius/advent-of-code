@@ -1,4 +1,4 @@
-use aoc_2025_day_02::{parse_input, part1, part2};
+use aoc_2025_day_02::{is_repeated_pattern, parse_input, part1, part2};
 
 static EXAMPLE_INPUT: &str = include_str!("../example.txt");
 static DATA_INPUT: &str = include_str!("../data.txt");
@@ -23,15 +23,27 @@ fn test_parse_example() {
     );
 }
 
-// #[test]
-// fn test_part1_example() {
-//     panic!("not implemented");
-// }
+#[test]
+fn test_is_repeated_pattern() {
+    assert_eq!(is_repeated_pattern(55), true);
+    assert_eq!(is_repeated_pattern(6464), true);
+    assert_eq!(is_repeated_pattern(123123), true);
+    assert_eq!(is_repeated_pattern(7), false);
+    assert_eq!(is_repeated_pattern(111), false);
+    assert_eq!(is_repeated_pattern(1234), false);
+}
 
-// #[test]
-// fn test_part1_data() {
-//     panic!("not implemented");
-// }
+#[test]
+fn test_part1_example() {
+    let puzzle_input = parse_input(EXAMPLE_INPUT);
+    assert_eq!(part1(&puzzle_input), 1227775554);
+}
+
+#[test]
+fn test_part1_data() {
+    let puzzle_input = parse_input(DATA_INPUT);
+    assert_eq!(part1(&puzzle_input), 40214376723);
+}
 
 // #[test]
 // fn test_part2_example() {
