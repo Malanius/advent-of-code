@@ -1,5 +1,6 @@
 use aoc_{{YEAR}}_day_{{DAY}}::{parse_input, part1, part2};
 use clap::Parser;
+use common::perf;
 use simplelog::{ColorChoice, Config, LevelFilter, TermLogger, TerminalMode};
 
 static EXAMPLE_INPUT: &str = include_str!("../example.txt");
@@ -16,8 +17,8 @@ struct Args {
 
 fn solve(puzzle_input: &str) -> (usize, isize) {
     let data = parse_input(puzzle_input);
-    let result1 = part1(&data);
-    let result2 = part2(&data);
+    let result1 = perf!(part1(&data));
+    let result2 = perf!(part2(&data));
 
     (result1, result2)
 }

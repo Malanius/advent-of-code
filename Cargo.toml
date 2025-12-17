@@ -1,12 +1,14 @@
 [workspace]
 resolver = "2"
 members = [
+    "advent_of_code/common",
     "advent_of_code/y2025/day_01",
     "advent_of_code/y2025/day_02",
     # "advent_of_code/y{YEAR}/day_{DAY}",
 ]
 
 [workspace.dependencies]
+common = { path = "advent_of_code/common" }
 clap = { version = "4.5.53", features = ["derive"] }
 claim = "0.5.0"
 simplelog = { version = "^0.12.2", features = ["paris"] }

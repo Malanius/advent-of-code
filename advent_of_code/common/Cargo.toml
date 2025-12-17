@@ -1,10 +1,9 @@
 [package]
-name = "aoc_2025_day_01"
+name = "common"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-common = { workspace = true }
 clap = { workspace = true }
 simplelog = { workspace = true }
 
@@ -13,3 +12,4 @@ claim = { workspace = true }
 
 [lints]
 workspace = true
+
