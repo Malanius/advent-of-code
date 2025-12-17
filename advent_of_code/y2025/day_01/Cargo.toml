@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 clap = { workspace = true }
+simplelog = { workspace = true }
 
 [dev-dependencies]
 claim = { workspace = true }

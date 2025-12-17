@@ -1,3 +1,5 @@
+use simplelog::debug;
+
 const INITIAL_STARTING_POSITION: isize = 50;
 const DIAL_SIZE: isize = 100;
 
@@ -92,7 +94,7 @@ pub fn part2(data: &Vec<isize>) -> isize {
         let position_after = wrap_position(starting_position + step);
         let raw = starting_position + step;
 
-        println!(
+        debug!(
             "Start: {starting_position:>4}, Step: {step:>4}, After: {position_after:>4}, Raw: {raw:>4}"
         );
         zeroes_visited += passes_zero(starting_position, *step);
@@ -100,6 +102,6 @@ pub fn part2(data: &Vec<isize>) -> isize {
         starting_position = position_after;
     }
 
-    println!("Zeroes visited: {zeroes_visited}");
+    debug!("Zeroes visited: {zeroes_visited}");
     zeroes_visited
 }
