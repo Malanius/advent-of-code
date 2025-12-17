@@ -1,3 +1,4 @@
+use simplelog::*;
 use std::ops::RangeInclusive;
 
 type PuzzleInput = Vec<RangeInclusive<isize>>;
@@ -51,9 +52,11 @@ pub fn is_repeated_pattern(num: isize) -> bool {
 
     let first_counted = counts.values().next().unwrap();
     if !counts.values().all(|&count| count == *first_counted) {
+        // not all digits have the same count
         return false;
     }
 
+    // check for pattern
     let pattern_length = counts.len();
     let pattern = &s[..pattern_length];
     for i in 0..(s.len() / pattern_length) {
@@ -65,6 +68,7 @@ pub fn is_repeated_pattern(num: isize) -> bool {
         }
     }
 
+    debug!("{num} -> {counts:?} -> {pattern}");
     true
 }
 
@@ -87,6 +91,7 @@ pub fn part2(data: &PuzzleInput) -> isize {
     for range in data {
         for num in range.clone() {
             if is_repeated_pattern(num) {
+                debug!("Found repeated pattern: {num}");
                 result += num;
             }
         }
