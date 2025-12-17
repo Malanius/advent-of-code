@@ -1,4 +1,4 @@
-use aoc_{{YEAR}}_day_{{DAY}}::{parse_input, part1, part2};
+use aoc_2025_day_02::{parse_input, part1, part2};
 use clap::Parser;
 use simplelog::{ColorChoice, Config, LevelFilter, TermLogger, TerminalMode};
 
@@ -14,7 +14,7 @@ struct Args {
     verbose: bool,
 }
 
-fn solve(puzzle_input: &str) -> (usize, isize) {
+fn solve(puzzle_input: &str) -> (isize, isize) {
     let data = parse_input(puzzle_input);
     let result1 = part1(&data);
     let result2 = part2(&data);

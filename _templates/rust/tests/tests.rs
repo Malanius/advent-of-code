@@ -8,22 +8,22 @@ fn test_parse_example() {
    panic!("not implemented"); 
 }
 
-#[test]
-fn test_part1_example() {
-    panic!("not implemented");
-}
+// #[test]
+// fn test_part1_example() {
+//     panic!("not implemented");
+// }
 
-#[test]
-fn test_part1_data() {
-    panic!("not implemented");
-}
+// #[test]
+// fn test_part1_data() {
+//     panic!("not implemented");
+// }
 
-#[test]
-fn test_part2_example() {
-    panic!("not implemented");
-}
+// #[test]
+// fn test_part2_example() {
+//     panic!("not implemented");
+// }
 
-#[test]
-fn test_part2_data() {
-    panic!("not implemented");
-}
+// #[test]
+// fn test_part2_data() {
+//     panic!("not implemented");
+// }

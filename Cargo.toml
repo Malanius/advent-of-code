@@ -2,13 +2,19 @@
 resolver = "2"
 members = [
     "advent_of_code/y2025/day_01",
+    "advent_of_code/y2025/day_02",
     # "advent_of_code/y{YEAR}/day_{DAY}",
 ]
 
 [workspace.dependencies]
 clap = { version = "4.5.53", features = ["derive"] }
 claim = "0.5.0"
+simplelog = { version = "^0.12.2", features = ["paris"] }
 
 [workspace.lints.clippy]
-all = "warn"
-pedantic = "warn"
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+
+module_name_repetitions = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"

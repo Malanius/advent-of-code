@@ -130,14 +130,17 @@ def init_args() -> argparse.Namespace:
 def main():
     args = init_args()
     lang = args.lang.lower()
-    year_dir = create_year_folder(args.year)
-    day_dir = create_day_folder(year_dir, args.day)
+    year = args.year
+    day = args.day.zfill(2)
+    print(f"Setting up Advent of Code {year} Day {day} in {lang}...")
+    year_dir = create_year_folder(year)
+    day_dir = create_day_folder(year_dir, day)
     if lang == "rust":
-        copy_templates_rust(args.year, args.day, day_dir)
+        copy_templates_rust(year, day, day_dir)
     if lang == "python":
-        copy_templates_python(args.year, args.day, day_dir)
+        copy_templates_python(year, day, day_dir)
     create_example_file(day_dir)
-    get_day_data(args.year, args.day, day_dir)
+    get_day_data(year, day, day_dir)
 
 
 if __name__ == "__main__":
