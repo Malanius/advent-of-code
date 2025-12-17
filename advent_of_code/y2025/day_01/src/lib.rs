@@ -1,12 +1,13 @@
 const INITIAL_STARTING_POSITION: isize = 50;
 const DIAL_SIZE: isize = 100;
 
+#[must_use]
 pub fn parse_input(puzzle_input: &str) -> Vec<isize> {
     puzzle_input
         .lines()
         .map(|line| {
-            line.replace("L", "-")
-                .replace("R", "")
+            line.replace('L', "-")
+                .replace('R', "")
                 .trim()
                 .parse::<isize>()
                 .unwrap()
@@ -14,10 +15,12 @@ pub fn parse_input(puzzle_input: &str) -> Vec<isize> {
         .collect()
 }
 
+#[must_use]
 pub fn wrap_position(pos: isize) -> isize {
     pos.rem_euclid(DIAL_SIZE)
 }
 
+#[must_use]
 pub fn part1(data: &Vec<isize>) -> usize {
     let mut position = INITIAL_STARTING_POSITION;
     let mut zeroes_encoded: usize = 0;
@@ -32,6 +35,7 @@ pub fn part1(data: &Vec<isize>) -> usize {
     zeroes_encoded
 }
 
+#[must_use]
 pub fn passes_zero(start: isize, step: isize) -> isize {
     const N: isize = DIAL_SIZE;
 
@@ -79,6 +83,7 @@ pub fn passes_zero(start: isize, step: isize) -> isize {
     }
 }
 
+#[must_use]
 pub fn part2(data: &Vec<isize>) -> isize {
     let mut starting_position = INITIAL_STARTING_POSITION;
     let mut zeroes_visited: isize = 0;
@@ -88,14 +93,13 @@ pub fn part2(data: &Vec<isize>) -> isize {
         let raw = starting_position + step;
 
         println!(
-            "Start: {:>4}, Step: {:>4}, After: {:>4}, Raw: {:>4}",
-            starting_position, step, position_after, raw
+            "Start: {starting_position:>4}, Step: {step:>4}, After: {position_after:>4}, Raw: {raw:>4}"
         );
         zeroes_visited += passes_zero(starting_position, *step);
 
         starting_position = position_after;
     }
 
-    println!("Zeroes visited: {}", zeroes_visited);
+    println!("Zeroes visited: {zeroes_visited}");
     zeroes_visited
 }
